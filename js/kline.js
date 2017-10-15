@@ -8180,7 +8180,7 @@ CDynamicLinePlotter.prototype.Draw = function (context) {
 };
 
 var isSize = false;
-$('#sizeIcon').on('click', function () {
+$('body').on('click', '#sizeIcon', function() {
     isSize = !isSize;
     if (isSize) {
         $(KlineIns.element).css({
