@@ -1,5 +1,5 @@
 var Kline = function (option) {
-    this.element = "#chart_container";
+    this.element = "#kline_container";
     this.chartMgr = null;
     this.G_HTTP_REQUEST = null;
     this.timer = null;

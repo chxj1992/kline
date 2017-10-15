@@ -5,7 +5,7 @@ body {
     min-width: 100%
 }
 
-#chart_container {
+#kline_container {
     cursor: default;
     font-family: arial, sans;
     font-size: 12px;
@@ -15,25 +15,25 @@ body {
     width: 100%
 }
 
-#chart_container div,
-#chart_container ul,
-#chart_container form {
+#kline_container div,
+#kline_container ul,
+#kline_container form {
     margin: 0;
     padding: 0
 }
 
-#chart_container a:hover {
+#kline_container a:hover {
     text-decoration: none
 }
 
-#chart_container ul {
+#kline_container ul {
     list-style: none;
     border: 0;
     margin: 0;
     padding: 0
 }
 
-#chart_container button {
+#kline_container button {
     cursor: pointer
 }
 
@@ -53,36 +53,36 @@ body {
     z-index: 3
 }
 
-#chart_container.dark #chart_toolbar {
+#kline_container.dark #chart_toolbar {
     background-color: #0a0a0a;
     border-bottom-color: #404040
 }
 
-#chart_container.light #chart_toolbar {
+#kline_container.light #chart_toolbar {
     background-color: #fff;
     border-bottom-color: #afb1b3
 }
 
-#chart_container .chart_toolbar_sep {
+#kline_container .chart_toolbar_sep {
     float: left;
     height: 100%;
     width: 16px
 }
 
-#chart_container .chart_toolbar_minisep {
+#kline_container .chart_toolbar_minisep {
     float: left;
     height: 100%;
     width: 4px
 }
 
-#chart_container .chart_dropdown {
+#kline_container .chart_dropdown {
     display: inline-block;
     float: left;
     position: relative;
     z-index: 100
 }
 
-#chart_container .chart_dropdown_t {
+#kline_container .chart_dropdown_t {
     background-origin: content-box;
     background-repeat: no-repeat;
     border-width: 1px;
@@ -94,12 +94,12 @@ body {
     position: relative
 }
 
-#chart_container .chart_dropdown_t a {
+#kline_container .chart_dropdown_t a {
     display: inline-block;
     padding: 3px 12px 5px 10px
 }
 
-#chart_container .chart_dropdown_data {
+#kline_container .chart_dropdown_data {
     border-width: 1px;
     border-style: solid;
     display: none;
@@ -109,13 +109,13 @@ body {
     z-index: 100
 }
 
-#chart_container .chart_dropdown_data table {
+#kline_container .chart_dropdown_data table {
     border-collapse: collapse;
     font-weight: normal;
     white-space: nowrap
 }
 
-#chart_container .chart_dropdown_data td {
+#kline_container .chart_dropdown_data td {
     border-bottom-width: 1px;
     border-bottom-style: solid;
     padding: 8px 6px;
@@ -141,30 +141,30 @@ body {
     line-height: 24px
 }
 
-#chart_container .chart_dropdown_data td.marketName_ a.dark {
+#kline_container .chart_dropdown_data td.marketName_ a.dark {
     color: #fff
 }
 
-#chart_container .chart_dropdown_data td.marketName_ a.light {
+#kline_container .chart_dropdown_data td.marketName_ a.light {
     color: #000
 }
 
-#chart_container .chart_dropdown_data table tr:last-child td {
+#kline_container .chart_dropdown_data table tr:last-child td {
     border-bottom: 0
 }
 
-#chart_container .chart_dropdown_data li {
+#kline_container .chart_dropdown_data li {
     white-space: nowrap;
     display: inline-block
 }
 
-#chart_container .chart_dropdown_data a {
+#kline_container .chart_dropdown_data a {
     text-decoration: none;
     cursor: pointer;
     padding: 5px 6px 5px 6px
 }
 
-#chart_container .chart_dropdown-hover.chart_dropdown_data {
+#kline_container .chart_dropdown-hover.chart_dropdown_data {
     display: block
 }
 
@@ -185,14 +185,14 @@ body {
     padding: 6px 1px 7px 6px
 }
 
-#chart_container.dark .chart_dropdown_t {
+#kline_container.dark .chart_dropdown_t {
     background-image: url("img/dropdown_w.png");
     background-position: right 9px;
     border-color: #0a0a0a;
     color: #e5e5e5
 }
 
-#chart_container.dark .chart_dropdown-hover.chart_dropdown_t {
+#kline_container.dark .chart_dropdown-hover.chart_dropdown_t {
     background-color: #0a0a0a;
     background-image: url("img/dropup_w.png");
     background-position: right 8px;
@@ -200,36 +200,36 @@ body {
     color: #fff
 }
 
-#chart_container.dark .chart_dropdown_data {
+#kline_container.dark .chart_dropdown_data {
     background-color: rgba(10, 10, 10, 0.8);
     border-color: #606060
 }
 
-#chart_container.dark .chart_dropdown_data td {
+#kline_container.dark .chart_dropdown_data td {
     border-bottom-color: #404040;
     color: #e5e5e5
 }
 
-#chart_container.dark .chart_dropdown_data li a {
+#kline_container.dark .chart_dropdown_data li a {
     color: #1987da
 }
 
-#chart_container.dark .chart_dropdown_data li a:hover {
+#kline_container.dark .chart_dropdown_data li a:hover {
     background-color: #383838
 }
 
-#chart_container.dark .chart_dropdown_data li a.selected {
+#kline_container.dark .chart_dropdown_data li a.selected {
     color: #ffac00
 }
 
-#chart_container.light .chart_dropdown_t {
+#kline_container.light .chart_dropdown_t {
     background-image: url("img/dropdown_b.png");
     background-position: right 10px;
     border-color: #fff;
     color: #393c40
 }
 
-#chart_container.light .chart_dropdown-hover.chart_dropdown_t {
+#kline_container.light .chart_dropdown-hover.chart_dropdown_t {
     background-color: #fff;
     background-image: url("img/dropup_b.png");
     background-position: right 9px;
@@ -237,46 +237,46 @@ body {
     color: #393c40
 }
 
-#chart_container.light .chart_dropdown_data {
+#kline_container.light .chart_dropdown_data {
     background-color: #fff;
     border-color: #4c4f53
 }
 
-#chart_container.light .chart_dropdown_data td {
+#kline_container.light .chart_dropdown_data td {
     border-bottom-color: #e4e5e6;
     color: #393c40
 }
 
-#chart_container.light .chart_dropdown_data li a {
+#kline_container.light .chart_dropdown_data li a {
     color: #1478c8
 }
 
-#chart_container.light .chart_dropdown_data a:hover {
+#kline_container.light .chart_dropdown_data a:hover {
     background-color: #f4f4f4
 }
 
-#chart_container.light .chart_dropdown_data a.selected {
+#kline_container.light .chart_dropdown_data a.selected {
     color: #f27935
 }
 
-#chart_container .chart_toolbar_label {
+#kline_container .chart_toolbar_label {
     cursor: default;
     display: inline-block;
     float: left;
     padding: 7px 4px
 }
 
-#chart_container.dark .chart_toolbar_label {
+#kline_container.dark .chart_toolbar_label {
     border-color: #232323;
     color: #e5e5e5
 }
 
-#chart_container.light .chart_toolbar_label {
+#kline_container.light .chart_toolbar_label {
     border-color: #fff;
     color: #393c40
 }
 
-#chart_container .chart_toolbar_button {
+#kline_container .chart_toolbar_button {
     border-width: 1px;
     border-style: solid;
     cursor: pointer;
@@ -287,85 +287,85 @@ body {
     z-index: 100
 }
 
-#chart_container.dark .chart_toolbar_button {
+#kline_container.dark .chart_toolbar_button {
     border-color: #404040;
     color: #e5e5e5
 }
 
-#chart_container.dark .chart_toolbar_button:hover {
+#kline_container.dark .chart_toolbar_button:hover {
     background-color: #383838;
     border-color: #606060;
     color: #fff
 }
 
-#chart_container.dark .chart_toolbar_button.selected {
+#kline_container.dark .chart_toolbar_button.selected {
     background-color: #383838;
     border-color: #606060;
     color: #ffac00
 }
 
-#chart_container.dark .chart_toolbar_button.selected:hover {
+#kline_container.dark .chart_toolbar_button.selected:hover {
     background-color: #474747;
     border-color: #808080;
     color: #ffac00
 }
 
-#chart_container.light .chart_toolbar_button {
+#kline_container.light .chart_toolbar_button {
     border-color: #ccc;
     color: #393c40
 }
 
-#chart_container.light .chart_toolbar_button:hover {
+#kline_container.light .chart_toolbar_button:hover {
     background-color: #f4f4f4;
     color: #393c40
 }
 
-#chart_container.light .chart_toolbar_button.selected {
+#kline_container.light .chart_toolbar_button.selected {
     background-color: #f4f4f4;
     border-color: #f27935;
     color: #f27935
 }
 
-#chart_container .chart_toolbar_tabgroup {
+#kline_container .chart_toolbar_tabgroup {
     float: left
 }
 
-#chart_container .chart_toolbar_tabgroup li {
+#kline_container .chart_toolbar_tabgroup li {
     display: inline-block;
     padding: 4px 0;
     margin: 3px 0
 }
 
-#chart_container .chart_toolbar_tabgroup li a {
+#kline_container .chart_toolbar_tabgroup li a {
     cursor: pointer;
     padding: 4px 4px
 }
 
-#chart_container .chart_toolbar_tabgroup li a:hover {
+#kline_container .chart_toolbar_tabgroup li a:hover {
     text-decoration: none
 }
 
-#chart_container.dark .chart_toolbar_tabgroup li a {
+#kline_container.dark .chart_toolbar_tabgroup li a {
     color: #1987da
 }
 
-#chart_container.dark .chart_toolbar_tabgroup li a:hover {
+#kline_container.dark .chart_toolbar_tabgroup li a:hover {
     background-color: #383838
 }
 
-#chart_container.dark .chart_toolbar_tabgroup li a.selected {
+#kline_container.dark .chart_toolbar_tabgroup li a.selected {
     color: #ffac00
 }
 
-#chart_container.light .chart_toolbar_tabgroup li a {
+#kline_container.light .chart_toolbar_tabgroup li a {
     color: #1478c8
 }
 
-#chart_container.light .chart_toolbar_tabgroup li a:hover {
+#kline_container.light .chart_toolbar_tabgroup li a:hover {
     background-color: #f4f4f4
 }
 
-#chart_container.light .chart_toolbar_tabgroup li a.selected {
+#kline_container.light .chart_toolbar_tabgroup li a.selected {
     color: #f27935
 }
 
@@ -380,7 +380,7 @@ body {
     float: left
 }
 
-#chart_container a.chart_icon {
+#kline_container a.chart_icon {
     border-width: 1px;
     border-style: solid;
     height: 16px;
@@ -388,77 +388,77 @@ body {
     width: 16px
 }
 
-#chart_container a.chart_icon:hover {
+#kline_container a.chart_icon:hover {
     border-width: 2px;
     height: 14px;
     width: 14px
 }
 
-#chart_container .chart_dropdown_data a.chart_icon {
+#kline_container .chart_dropdown_data a.chart_icon {
     display: inline-block;
     magin: 0 6px 0 6px
 }
 
-#chart_container a.chart_icon_theme_dark,
-#chart_container .chart_dropdown_data li a.chart_icon_theme_dark:hover {
+#kline_container a.chart_icon_theme_dark,
+#kline_container .chart_dropdown_data li a.chart_icon_theme_dark:hover {
     background-color: #000
 }
 
-#chart_container a.chart_icon_theme_light,
-#chart_container .chart_dropdown_data li a.chart_icon_theme_light:hover {
+#kline_container a.chart_icon_theme_light,
+#kline_container .chart_dropdown_data li a.chart_icon_theme_light:hover {
     background-color: #fff
 }
 
-#chart_container #chart_toolbar_theme {
+#kline_container #chart_toolbar_theme {
     float: left;
     padding: 0 8px
 }
 
-#chart_container #chart_toolbar_theme a.chart_icon {
+#kline_container #chart_toolbar_theme a.chart_icon {
     cursor: pointer;
     float: left;
     margin: 6px 4px
 }
 
-#chart_container #chart_select_theme td:last-child {
+#kline_container #chart_select_theme td:last-child {
     padding: 6px 6px 0 8px
 }
 
-#chart_container #chart_select_theme li {
+#kline_container #chart_select_theme li {
     padding: 0 4px 0 4px
 }
 
-#chart_container.dark a.chart_icon {
+#kline_container.dark a.chart_icon {
     border-color: #aaa
 }
 
-#chart_container.dark a.chart_icon:hover {
+#kline_container.dark a.chart_icon:hover {
     border-color: #1987da
 }
 
-#chart_container.dark a.chart_icon.selected {
+#kline_container.dark a.chart_icon.selected {
     border-color: #ffac00
 }
 
-#chart_container.light a.chart_icon {
+#kline_container.light a.chart_icon {
     border-color: #aaa
 }
 
-#chart_container.light a.chart_icon.selected {
+#kline_container.light a.chart_icon.selected {
     border-color: #f27935
 }
 
-#chart_container #chart_updated_time {
+#kline_container #chart_updated_time {
     float: right;
     margin: 4px 3px;
     padding: 3px 10px
 }
 
-#chart_container.dark #chart_updated_time {
+#kline_container.dark #chart_updated_time {
     color: #e5e5e5
 }
 
-#chart_container.light #chart_updated_time {
+#kline_container.light #chart_updated_time {
     color: #393c40
 }
 
@@ -513,135 +513,135 @@ body {
     display: block
 }
 
-#chart_container.dark #chart_toolpanel {
+#kline_container.dark #chart_toolpanel {
     background-color: #0a0a0a;
     border-right-color: #404040
 }
 
-#chart_container.dark .chart_toolpanel_icon {
+#kline_container.dark .chart_toolpanel_icon {
     background-color: #0a0a0a;
     border-color: #0a0a0a
 }
 
-#chart_container.dark .chart_toolpanel_button:hover .chart_toolpanel_icon {
+#kline_container.dark .chart_toolpanel_button:hover .chart_toolpanel_icon {
     background-color: #404040;
     border-color: #666
 }
 
-#chart_container.dark .chart_toolpanel_button.selected .chart_toolpanel_icon {
+#kline_container.dark .chart_toolpanel_button.selected .chart_toolpanel_icon {
     background-color: #080808;
     border-color: #666
 }
 
-#chart_container.dark .chart_toolpanel_tip {
+#kline_container.dark .chart_toolpanel_tip {
     background-color: #ffac00;
     border-color: #ffac00;
     color: #0a0a0a
 }
 
-#chart_container.light #chart_toolpanel {
+#kline_container.light #chart_toolpanel {
     background-color: #fff;
     border-right-color: #afb1b3
 }
 
-#chart_container.light .chart_toolpanel_icon {
+#kline_container.light .chart_toolpanel_icon {
     background-color: #fff;
     border-color: #fff
 }
 
-#chart_container.light .chart_toolpanel_button:hover .chart_toolpanel_icon {
+#kline_container.light .chart_toolpanel_button:hover .chart_toolpanel_icon {
     background-color: #eee;
     border-color: #afb1b3
 }
 
-#chart_container.light .chart_toolpanel_button.selected .chart_toolpanel_icon {
+#kline_container.light .chart_toolpanel_button.selected .chart_toolpanel_icon {
     background-color: #f4f4f4;
     border-color: #afb1b3
 }
 
-#chart_container.light .chart_toolpanel_tip {
+#kline_container.light .chart_toolpanel_tip {
     background-color: #f27938;
     border-color: #f27938;
     color: #eee
 }
 
-#chart_container.dark #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
+#kline_container.dark #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
     background-image: url("img/tool_d_normal.png")
 }
 
-#chart_container.dark #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {
+#kline_container.dark #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {
     background-image: url("img/tool_d_push.png")
 }
 
-#chart_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
+#kline_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
     background-image: url("img/tool_l_normal.png")
 }
 
-#chart_container.light #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {
+#kline_container.light #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {
     background-image: url("img/tool_l_push.png")
 }
 
-#chart_container #chart_toolpanel #chart_Cursor {
+#kline_container #chart_toolpanel #chart_Cursor {
     background-position: 0 0
 }
 
-#chart_container #chart_toolpanel #chart_CrossCursor {
+#kline_container #chart_toolpanel #chart_CrossCursor {
     background-position: 0 -20px
 }
 
-#chart_container #chart_toolpanel #chart_SegLine {
+#kline_container #chart_toolpanel #chart_SegLine {
     background-position: 0 -40px
 }
 
-#chart_container #chart_toolpanel #chart_StraightLine {
+#kline_container #chart_toolpanel #chart_StraightLine {
     background-position: 0 -60px
 }
 
-#chart_container #chart_toolpanel #chart_RayLine {
+#kline_container #chart_toolpanel #chart_RayLine {
     background-position: 0 -100px
 }
 
-#chart_container #chart_toolpanel #chart_ArrowLine {
+#kline_container #chart_toolpanel #chart_ArrowLine {
     background-position: 0 -80px
 }
 
-#chart_container #chart_toolpanel #chart_HoriSegLine {
+#kline_container #chart_toolpanel #chart_HoriSegLine {
     background-position: 0 -160px
 }
 
-#chart_container #chart_toolpanel #chart_HoriStraightLine {
+#kline_container #chart_toolpanel #chart_HoriStraightLine {
     background-position: 0 -120px
 }
 
-#chart_container #chart_toolpanel #chart_HoriRayLine {
+#kline_container #chart_toolpanel #chart_HoriRayLine {
     background-position: 0 -140px
 }
 
-#chart_container #chart_toolpanel #chart_VertiStraightLine {
+#kline_container #chart_toolpanel #chart_VertiStraightLine {
     background-position: 0 -180px
 }
 
-#chart_container #chart_toolpanel #chart_PriceLine {
+#kline_container #chart_toolpanel #chart_PriceLine {
     background-position: 0 -200px
 }
 
-#chart_container #chart_toolpanel #chart_TriParallelLine {
+#kline_container #chart_toolpanel #chart_TriParallelLine {
     background-position: 0 -220px
 }
 
-#chart_container #chart_toolpanel #chart_BiParallelLine {
+#kline_container #chart_toolpanel #chart_BiParallelLine {
     background-position: 0 -240px
 }
 
-#chart_container #chart_toolpanel #chart_BiParallelRayLine {
+#kline_container #chart_toolpanel #chart_BiParallelRayLine {
     background-position: 0 -260px
 }
 
-#chart_container .chart_toolpanel_button #chart_DrawFibRetrace {
+#kline_container .chart_toolpanel_button #chart_DrawFibRetrace {
     background-position: 0 -280px
 }
 
-#chart_container #chart_toolpanel #chart_DrawFibFans {
+#kline_container #chart_toolpanel #chart_DrawFibFans {
     background-position: 0 -300px
 }
 
@@ -682,39 +682,39 @@ body {
     text-decoration: none
 }
 
-#chart_container.dark #chart_tabbar {
+#kline_container.dark #chart_tabbar {
     background-color: #0a0a0a;
     border-top-color: #404040
 }
 
-#chart_container.dark #chart_tabbar a {
+#kline_container.dark #chart_tabbar a {
     color: #e5e5e5
 }
 
-#chart_container.dark #chart_tabbar a:hover {
+#kline_container.dark #chart_tabbar a:hover {
     background-color: #383838;
     color: #fff
 }
 
-#chart_container.dark #chart_tabbar a.selected {
+#kline_container.dark #chart_tabbar a.selected {
     color: #ffac00
 }
 
-#chart_container.light #chart_tabbar {
+#kline_container.light #chart_tabbar {
     background-color: #fff;
     border-top-color: #afb1b3
 }
 
-#chart_container.light #chart_tabbar a {
+#kline_container.light #chart_tabbar a {
     color: #393c40
 }
 
-#chart_container.light #chart_tabbar a:hover {
+#kline_container.light #chart_tabbar a:hover {
     background-color: #f4f4f4;
     color: #393c40
 }
 
-#chart_container.light #chart_tabbar a.selected {
+#kline_container.light #chart_tabbar a.selected {
     color: #f27935
 }
 
@@ -754,13 +754,13 @@ body {
     visibility: visible
 }
 
-#chart_container.dark #chart_loading {
+#kline_container.dark #chart_loading {
     border-color: #aaa;
     background-color: rgba(0, 0, 0, 0.6);
     color: #ccc
 }
 
-#chart_container.light #chart_loading {
+#kline_container.light #chart_loading {
     border-color: #afb1b3;
     background-color: rgba(244, 244, 244, 0.8);
     color: #393c40
@@ -819,57 +819,57 @@ body {
     margin-right: 24px
 }
 
-#chart_container.dark #chart_parameter_settings {
+#kline_container.dark #chart_parameter_settings {
     background-color: rgba(0, 0, 0, 0.6);
     border-color: #aaa;
     color: #ccc
 }
 
-#chart_container.dark #chart_parameter_settings #close_settings {
+#kline_container.dark #chart_parameter_settings #close_settings {
     background: #1887da;
     color: #eee
 }
 
-#chart_container.light #chart_parameter_settings {
+#kline_container.light #chart_parameter_settings {
     background-color: rgba(244, 244, 244, 0.8);
     border-color: #afb1b3;
     color: #393c40
 }
 
-#chart_container.light #chart_parameter_settings #close_settings {
+#kline_container.light #chart_parameter_settings #close_settings {
     background: #1478c8;
     color: #eee
 }
 
-#chart_container input,
-#chart_container button {
+#kline_container input,
+#kline_container button {
     border-radius: 4px;
     border-width: 1px;
     border-style: solid;
     padding: 4px
 }
 
-#chart_container input[type=text] {
+#kline_container input[type=text] {
     width: 12em
 }
 
-#chart_container input[type=button],
-#chart_container input[type=submit],
-#chart_container button {
+#kline_container input[type=button],
+#kline_container input[type=submit],
+#kline_container button {
     font-family: arial, sans;
     padding: 4px 8px;
     cursor: pointer
 }
 
-#chart_container.dark input,
-#chart_container.dark button {
+#kline_container.dark input,
+#kline_container.dark button {
     background-color: #333;
     border-color: #333;
     color: #ccc
 }
 
-#chart_container.light input,
-#chart_container.light button {
+#kline_container.light input,
+#kline_container.light button {
     background-color: #ddd;
     border-color: #ddd;
     color: #222
