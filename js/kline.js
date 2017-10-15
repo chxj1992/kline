@@ -8618,7 +8618,7 @@ function requestOverHttp() {
     }
     $(document).ready(
         KlineIns.G_HTTP_REQUEST = $.ajax({
-            type: "post",
+            type: "GET",
             url: KlineIns.url,
             dataType: 'json',
             data: KlineIns.requestParam,
