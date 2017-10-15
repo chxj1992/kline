@@ -43,9 +43,10 @@
         symbolName: "COIN5_COIN4",
         type: "socket", // polling/socket
         url: 'http://127.0.0.1:8088/socket',
+        limit: 1000,
+        intervalTime: 3000,
         subscribePath: "/kline/push",
         sendPath: "/app/kline",
-        limit: 1000,
         debug: true
     });
 

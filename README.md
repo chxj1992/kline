@@ -14,6 +14,7 @@
 ### ScreenShot!
 
 ![](screenshot_dark.png)
+
 ![](screenshot_light.png)
 
 ### 依赖
@@ -83,6 +84,7 @@
         type: "polling", // polling/socket
         url: "http://127.0.0.1:8080/mock.json",
         limit: 1000,
+        intervalTime: 3000,
         debug: true,
     });
     kline.draw();
@@ -101,9 +103,10 @@
         symbolName: "COIN5_COIN4",
         type: "socket", // polling/socket
         url: 'http://127.0.0.1:8088/socket',
-        subscribePath: "/kline/push",
-        sendPath: "/app/kline",
         limit: 1000,
+        intervalTime: 3000,
+        subscribePath: "/kline/push",
+        sendPath: "/app/kline",        
         debug: true
     });
     kline.draw();
@@ -112,17 +115,18 @@
 
 ### 参数说明
 
-* `width`: 宽度 (px)
-* `height`: 宽度 (px)
-* `theme`: 主题 dark(暗色)/light(亮色)
-* `language`: 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文)
-* `ranges`: 聚合选项 1w(1周)/1d(1天)/12h(12小时)/6h(6小时)/4h(4小时)/2h(2小时)/1h(1小时)/30m(30分钟)/15m(15分钟)/5m(5分钟)/3m(3分钟)/1m(1分钟)/line(分时)
+* `width`: 宽度 (px) Default: 1200
+* `height`: 宽度 (px) Default: 462
+* `theme`: 主题 dark(暗色)/light(亮色) Default: dark
+* `language`: 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文) Default: zh-cn
+* `ranges`: 聚合选项 1w(1周)/1d(1天)/12h(12小时)/6h(6小时)/4h(4小时)/2h(2小时)/1h(1小时)/30m(30分钟)/15m(15分钟)/5m(5分钟)/3m(3分钟)/1m(1分钟)/line(分时) Default: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
 * `symbol`: 交易代号
 * `symbolName`: 交易名称
-* `type`: 连接类型 socket(websocket)/polling(轮询)
+* `type`: 连接类型 socket(websocket)/polling(轮询) Default: polling
 * `url`: 请求地址
+* `limit`: 分页大小 Default: 1000
+* `intervalTime`: 请求间隔时间(毫秒) Default: 3000
 * `subscribePath`(仅socket方式需要): 订阅地址
 * `sendPath`(仅socket方式需要): 发送地址
-* `limit`: 分页大小
-* `debug`: 调试模式 true/false 
+* `debug`: 调试模式 true/false Default: true
 
