@@ -32,6 +32,12 @@
 
 ### Install & Load
 
+安装
+
+```bash
+$ npm install kline 
+```
+
 * 使用标签引入, 在HTML页面头部加入
 
 ```html
