@@ -14,6 +14,7 @@
     ✅ 可配置的时间聚合方式
     ✅ 支持多种画线工具
     ✅ 支持多种画图算法
+    ✅ 支持深度图数据及最近成交数据展示
     ✅ 支持普通轮询和Websocket Over Stomp两种连接方式
 
 ### ScreenShot!
@@ -90,8 +91,9 @@
         type: "poll", // poll/socket
         url: "http://127.0.0.1:8080/mock.json",
         limit: 1000,
-        intervalTime: 3000,
+        intervalTime: 5000,
         debug: true,
+        enableTrade: true
     });
     kline.draw();
 ```
@@ -102,7 +104,7 @@
    var kline = new Kline({
         element: "#kline_container",
         width: 1200,
-        height: 462,
+        height: 650,
         theme: 'dark', // light/dark
         language: 'zh-cn', // zh-cn/en-us/zh-tw
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
@@ -111,10 +113,11 @@
         type: "socket", // poll/socket
         url: 'http://127.0.0.1:8088/socket',
         limit: 1000,
-        intervalTime: 3000,
+        intervalTime: 5000,
         subscribePath: "/kline/push",
         sendPath: "/app/kline",        
-        debug: true
+        debug: true,
+        enableTrade: true
     });
     kline.draw();
 ```
@@ -124,7 +127,7 @@
 
 * `element`: 容器元素选择器 Default: #kline_container
 * `width`: 宽度 (px) Default: 1200
-* `height`: 宽度 (px) Default: 462
+* `height`: 宽度 (px) Default: 650
 * `theme`: 主题 dark(暗色)/light(亮色) Default: dark
 * `language`: 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文) Default: zh-cn
 * `ranges`: 聚合选项 1w(1周)/1d(1天)/12h(12小时)/6h(6小时)/4h(4小时)/2h(2小时)/1h(1小时)/30m(30分钟)/15m(15分钟)/5m(5分钟)/3m(3分钟)/1m(1分钟)/line(分时) Default: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
@@ -137,4 +140,56 @@
 * `subscribePath`(仅socket方式需要): 订阅地址
 * `sendPath`(仅socket方式需要): 发送地址
 * `debug`: 调试模式 true/false Default: true
+* `enableTrade`: 显示行情侧边栏 true/false Default: true
 
+
+### Response
+
+example: 
+
+```json
+{
+  "success": true,
+  "data": {
+    "lines": [
+      [
+        1.50790476E12,
+        99.30597249871,
+        99.30597249871,
+        99.30597249871,
+        99.30597249871,
+        66.9905449283
+      ]
+    ],
+    "trades": [
+      {
+        "amount": 0.02,
+        "price": 5798.79,
+        "tid": 373015085,
+        "time": 1508136949,
+        "type": "buy"
+      }
+    ],
+    "depths": {
+      "asks": [
+        [
+          500654.27,
+          0.5
+        ]
+      ],
+      "bids": [
+        [
+          5798.79,
+          0.013
+        ]
+      ]
+    }
+  }
+}
+```
+
+说明:
+
+* `lines`: K线图, 依次是: 时间(毫秒), 开盘价, 最高价, 最低价, 收盘价, 成交量
+* `depths`(可选, enableTrade后展示): 深度图数据,  `asks`:一定比例的卖单类别, `bids`:一定比例的买单列表
+* `trades`(可选, enableTrade后展示): 最近成交记录,  `amount`: 成交量, `price`:单价, `tid`:订单ID, `time`:Unix时间戳, `type`:成交类型 buy/sell

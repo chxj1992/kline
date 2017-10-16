@@ -36,19 +36,20 @@
     var kline = new Kline({
         element: "#kline_container",
         width: 1200,
-        height: 462,
+        height: 650,
         theme: 'dark', // light/dark
         language: 'zh-cn', // zh-cn/en-us/zh-tw
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
         symbol: "coin5/coin4",
         symbolName: "COIN5_COIN4",
         type: "socket", // poll/socket
-        url: 'http://127.0.0.1:8088/socket',
+        url: 'http://127.0.0.1:8088/trade/socket',
         limit: 1000,
-        intervalTime: 3000,
-        subscribePath: "/kline/push",
-        sendPath: "/app/kline",
-        debug: true
+        intervalTime: 5000,
+        subscribePath: "/trade/kline/push",
+        sendPath: "/trade/kline",
+        debug: true,
+        enableTrade: true
     });
 
     kline.draw();

@@ -8,7 +8,7 @@ var Kline = function (option) {
     this.requestParam = "";
     this.data = {};
     this.width = 1200;
-    this.height = 462;
+    this.height = 650;
     this.symbol = "";
     this.symbolName = "";
     this.range = null;
@@ -18,11 +18,13 @@ var Kline = function (option) {
     this.subscribePath = "";
     this.sendPath = "";
     this.socketClient = null;
-    this.intervalTime = 3000;
+    this.intervalTime = 5000;
     this.debug = true;
     this.language = "zh-cn";
     this.theme = "dark";
     this.ranges = ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
+    this.enableTrade = true;
+    this.tradeWidth = 250;
 
     this.periodMap = {
         "01w": 7 * 86400 * 1000,
@@ -78,6 +80,389 @@ Kline.prototype = {
 };
 
 var KlineIns = null;
+
+
+var KlineTrade = function () {
+};
+
+KlineTrade.prototype = {
+    browerState: 0,
+    tradeDate: new Date(),
+    tradesLimit: 100,
+    lastDepth: null,
+    depthShowSize: 15,
+    priceDecimalDigits: 6,
+    amountDecimalDigits: 4,
+    symbol: null,
+    curPrice: null,
+    title: "",
+
+    reset: function (symbol) {
+        this.symbol = symbol;
+        this.lastDepth = null;
+        this.curPrice = null;
+        this.klineTradeInit = false;
+        $("#trades .trades_list").empty();
+        $("#gasks .table").empty();
+        $("#gbids .table").empty();
+        $("#asks .table").empty();
+        $("#bids .table").empty();
+    },
+    pushTrades: function (array) {
+        var $trades = $("#trades .trades_list");
+        var totalUls = "";
+        for (var i = 0; i < array.length; i++) {
+            var item = array[i];
+            if (i >= array.length - this.tradesLimit) {
+                this.tradeDate.setTime(item.time * 1000);
+                var dateStr = this.dateFormatTf(this.tradeDate.getHours())
+                    + ":" + this.dateFormatTf(this.tradeDate.getMinutes())
+                    + ":" + this.dateFormatTf(this.tradeDate.getSeconds());
+                var arr = (item.amount.toFixed(4) + "").split(".");
+                var price = item.price;
+                if (price > 1) {
+                    price = (item.price).toFixed(2)
+                }
+                if (price < 1 && price > 0.00001) {
+                    price = (item.price).toFixed(4)
+                }
+                if (price < 0.00001) {
+                    price = (item.price).toFixed(6)
+                }
+
+                if (this.klineTradeInit) {
+                    totalUls = "<ul class='newul'><li class='tm'>" + dateStr + "</li><li class='pr-" + (item.type == 'buy' ? 'green' : 'red') + "'>" + price + "</li><li class='vl'>" + arr[0] + "<g>" + (arr.length > 1 ? '.' + arr[1] : '') + "</g></li></ul>" + totalUls;
+                } else {
+                    totalUls = "<ul><li class='tm'>" + dateStr + "</li><li class='pr-" + (item.type == 'buy' ? 'green' : 'red') + "'>" + price + "</li><li class='vl'>" + arr[0] + "<g>" + (arr.length > 1 ? '.' + arr[1] : '') + "</g></li></ul>" + totalUls;
+                }
+            }
+        }
+        var j = 0;
+        var that = this;
+        if (this.klineTradeInit) {
+            clearInterval(myTime);
+            var myTime = setInterval(function () {
+                var item = array[j]
+                //that.curPrice = item.price
+                var price = Number(item.price)
+                if (price > 1) {
+                    price = price.toFixed(2)
+                }
+
+                if (price < 1 && price > 0.0001) {
+                    price = price.toFixed(4)
+                }
+                if (price < 0.0001) {
+                    price = price.toFixed(6)
+                }
+                that.curPrice = price;
+                $("div#price").attr("class", item.type == 'buy' ? 'green' : 'red').text(price);
+                j++;
+                if (j >= array.length) {
+                    clearInterval(myTime);
+                }
+            }, 100)
+        } else {
+            if (array.length > 0) {
+                //this.curPrice=array[array.length-1].price.toFixed(6);
+                var price = Number(array[array.length - 1].price)
+                if (price > 1) {
+                    price = price.toFixed(2)
+                }
+
+                if (price < 1 && price > 0.0001) {
+                    price = price.toFixed(4)
+                }
+                if (price < 0.0001) {
+                    price = price.toFixed(6)
+                }
+                that.curPrice = price;
+                $("div#price").attr("class", array[array.length - 1].type == 'buy' ? 'green' : 'red').text(price);
+            }
+        }
+
+        if (this.klineTradeInit) {
+            $trades.prepend(totalUls);
+        } else {
+            $trades.append(totalUls);
+        }
+        totalUls = null;
+        $trades.find("ul.newul").slideDown(1000, function () {
+            $(this).removeClass("newul");
+        });
+        $trades.find("ul:gt(" + (this.tradesLimit - 1) + ")").remove();
+    },
+    updateDepth: function (data) {
+        window._set_current_depth(data);
+        if (!data) return;
+        $("#gasks .table").html(this.getgview(this.getgasks(data.asks)));
+        $("#gbids .table").html(this.getgview(this.getgbids(data.bids)));
+        if (this.lastDepth == null) {
+            this.lastDepth = {};
+            this.lastDepth.asks = this.getAsks(data.asks, this.depthShowSize);
+            this.depthInit(this.lastDepth.asks, $("#asks .table"));
+            this.lastDepth.bids = this.getBids(data.bids, this.depthShowSize);
+            this.depthInit(this.lastDepth.bids, $("#bids .table"));
+        } else {
+            var parentAsks = $("#asks .table");
+            parentAsks.find("div.remove").remove();
+            parentAsks.find("div.add").removeClass("add");
+            var newasks = this.getAsks(data.asks, this.depthShowSize);
+            var oldasks = this.lastDepth.asks;
+            this.lastDepth.asks = newasks;
+            this.asksAndBids(newasks.slice(0), oldasks, parentAsks);
+
+            var parentBids = $("#bids .table");
+            parentBids.find("div.remove").remove();
+            parentBids.find("div.add").removeClass("add");
+            var newbids = this.getBids(data.bids, this.depthShowSize);
+            var oldbids = this.lastDepth.bids;
+            this.lastDepth.bids = newbids;
+            this.asksAndBids(newbids.slice(0), oldbids, $("#bids .table"));
+        }
+    },
+    depthInit: function (data, $obj) {
+        $obj.empty();
+        if (data && data.length > 0) {
+            var lastInt, view = "";
+            for (var i = 0; i < data.length; i++) {
+                var arr = (data[i][0] + "").split(".");
+                var prices = this.getPrice(arr, lastInt);
+                lastInt = arr[0];
+                arr = (data[i][1] + "").split(".");
+                var amounts = this.getAmount(arr);
+                view += "<div class='row'><span class='price'>" + prices[0] + "<g>" + prices[1] + "</g></span> <span class='amount'>" + amounts[0] + "<g>" + amounts[1] + "</g></span></div>";
+            }
+            $obj.append(view);
+            view = null;
+        }
+    },
+    asksAndBids: function (addasks, oldasks, tbDiv) {
+        for (var i = 0; i < oldasks.length; i++) {
+            var isExist = false;
+            for (var j = 0; j < addasks.length; j++) {
+                if (oldasks[i][0] == addasks[j][0]) {
+                    isExist = true;
+                    if (oldasks[i][1] != addasks[j][1]) {
+                        var $amount = tbDiv.find("div:eq(" + i + ") .amount");
+                        $amount.addClass(oldasks[i][1] > addasks[j][1] ? "red" : "green");
+                        var amounts = this.getAmount((addasks[j][1] + "").split("."));
+                        setTimeout((function ($amount, amounts) {
+                            return function () {
+                                $amount.html(amounts[0] + "<g>" + amounts[1] + "</g>");
+                                $amount.removeClass("red").removeClass("green");
+                                $amount = null;
+                                amounts = null;
+                            };
+                        })($amount, amounts), 500);
+                    }
+                    addasks.splice(j, 1);
+                    break;
+                }
+            }
+            if (!isExist) {
+                tbDiv.find("div:eq(" + i + ")").addClass("remove");
+                oldasks[i][2] = -1;//标识该数据对应div被移除
+            }
+        }
+        for (var j = 0; j < oldasks.length; j++) {
+            for (var i = 0; i < addasks.length; i++) {
+                if (addasks[i][0] > oldasks[j][0]) {
+                    var arr = (addasks[i][1] + "").split(".");
+                    var amounts = this.getAmount(arr);
+                    tbDiv.find("div:eq(" + j + ")").before("<div class='row add'><span class='price'></span> <span class='amount'>" + amounts[0] + "<g>" + amounts[1] + "</g></span></div>");
+                    oldasks.splice(j, 0, addasks[i]);
+                    addasks.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        var totalDiv = "";
+        for (var i = 0; i < addasks.length; i++) {
+            oldasks.push(addasks[i]);
+            var arr = (addasks[i][1] + "").split(".");
+            var amounts = this.getAmount(arr);
+            totalDiv += "<div class='row add'><span class='price'></span> <span class='amount'>" + amounts[0] + "<g>" + amounts[1] + "</g></span></div>";
+        }
+        if (totalDiv.length > 0) {
+            tbDiv.append(totalDiv);
+        }
+        totalDiv = null;
+
+        var lastInt;
+        for (var i = 0; i < oldasks.length; i++) {
+            var $div = tbDiv.find("div:eq(" + i + ")");
+            if (!(oldasks[i].length >= 3 && oldasks[i][2] == -1)) {
+                var arr = (oldasks[i][0] + "").split(".");
+                var prices = this.getPrice(arr, lastInt);
+                lastInt = arr[0];
+                $div.find(".price").html(prices[0] + "<g>" + prices[1] + "</g>");
+            }
+        }
+        addasks = null;
+        oldasks = null;
+        tbDiv.find("div.add").slideDown(800);
+        setTimeout((function ($remove, $add) {
+            return function () {
+                $remove.slideUp(500, function () {
+                    $(this).remove();
+                });
+                $add.removeClass("add");
+            };
+        })(tbDiv.find("div.remove"), tbDiv.find("div.add")), 1000);
+
+    },
+    getAsks: function (array, len) {
+        if (array.length > len) {
+            array.splice(0, array.length - len);
+        }
+        return array;
+    },
+    getBids: function (array, len) {
+        if (array.length > len) {
+            array.splice(len, array.length - 1);
+        }
+        return array;
+    },
+    getgview: function (g) {
+        var gstr = "";
+        var lastInt;
+        for (var i = 0; i < g.length; i++) {
+            var arr = g[i][0].split(".");
+            if (arr.length == 1 || arr[0] != lastInt) {
+                gstr += "<div class='row'><span class='price'>" + g[i][0] + "</span> <span class='amount'>" + g[i][1] + "</span></div>";
+                lastInt = arr[0];
+            } else {
+                gstr += "<div class='row'><span class='price'><h>" + arr[0] + ".</h>" + arr[1] + "</span> <span class='amount'>" + g[i][1] + "</span></div>";
+            }
+        }
+        return gstr;
+    },
+    getgasks: function (array) {
+        if (array.length < 1) {
+            return [];
+        }
+        var low = array[array.length - 1][0];//最低价
+        var high = array[0][0];//最高价
+        var r = high - low;
+        var block = this.getBlock(r, 100);
+        var n = Math.abs(Number(Math.log(block) / Math.log(10))).toFixed(0);//精确小数位数
+        if (r / block < 2) {
+            block = block / 2;
+            n++;
+        }
+        if (block >= 1) (n = 0);
+        low = parseInt(low / block) * block;
+        high = parseInt(high / block) * block;
+        var gasks = [];
+        var amount = 0;
+        for (var i = array.length - 1; i >= 0; i--) {
+            if (array[i][0] > low) {
+                var amountInt = parseInt(amount, 10);
+                if (amountInt > 0) {
+                    gasks.unshift([Number(low).toFixed(n), amountInt]);
+                }
+                if (low >= high) {
+                    break;
+                }
+                low += block;
+            }
+            amount += array[i][1];
+        }
+        return gasks;
+    },
+    getgbids: function (array) {
+        if (array.length < 1) {
+            return [];
+        }
+        var low = array[array.length - 1][0];
+        var high = array[0][0];
+        var r = high - low;
+        var block = this.getBlock(r, 100);
+        var n = Math.abs(Number(Math.log(block) / Math.log(10))).toFixed(0);//精确小数位数
+        if (r / block < 2) {
+            block = block / 2;
+            n++;
+        }
+        if (block >= 1) (n = 0);
+        low = parseInt(low / block) * block;
+        high = parseInt(high / block) * block;
+
+        var gbids = [];
+        var amount = 0;
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][0] < high) {
+                var amountInt = parseInt(amount, 10);
+                if (amountInt > 0) {
+                    gbids.push([Number(high).toFixed(n), amountInt]);
+                }
+                if (high <= low) {
+                    break;
+                }
+                high -= block;
+            }
+            amount += array[i][1];
+        }
+        return gbids;
+    },
+    getBlock: function (b, scale) {
+        if (b > scale) {
+            return scale;
+        } else {
+            scale = scale / 10;
+            return this.getBlock(b, scale);
+        }
+    },
+    getZeros: function (i) {
+        var zeros = "";
+        while (i > 0) {
+            i--;
+            zeros += "0";
+        }
+        return zeros;
+    },
+    getPrice: function (arr, lastInt) {
+        var price1 = arr[0];
+        if (lastInt == price1) {
+            price1 = "<h>" + price1 + ".</h>";
+        } else {
+            price1 += ".";
+        }
+        var price2 = "";
+        if (arr.length == 1) {
+            price1 += "0";
+            price2 = this.getZeros(this.priceDecimalDigits - 1);
+        } else {
+            price1 += arr[1];
+            price2 = this.getZeros(this.priceDecimalDigits - arr[1].length);
+        }
+        return [price1, price2];
+    },
+    getAmount: function (arr) {
+        var amount1 = arr[0];
+        var amount2 = "";
+        var zerosLen = this.amountDecimalDigits - amount1.length + 1;
+        if (zerosLen > 0) {
+            amount2 = ".";
+            if (arr.length == 1) {
+                amount2 += this.getZeros(zerosLen);
+            } else if (zerosLen > arr[1].length) {
+                amount2 += arr[1] + this.getZeros(zerosLen - arr[1].length);
+            } else if (zerosLen == arr[1].length) {
+                amount2 += arr[1];
+            } else {
+                amount2 += arr[1].substring(0, zerosLen);
+            }
+        }
+        return [amount1, amount2];
+    },
+    dateFormatTf:function(i){
+        return (i < 10 ? '0' : '') + i;
+    },
+};
+
+var KlineTradeIns = null;
+
 
 var classId = 0;
 
@@ -1971,10 +2356,11 @@ Chart.prototype.setSymbol = function (symbol) {
 Chart.prototype.updateDataAndDisplay = function () {
     KlineIns.symbol = this._symbol;
     KlineIns.range = this._range;
-    this.setTitle();
     ChartManager.getInstance().setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
     ChartManager.getInstance().setNormalMode();
     var f = KlineIns.chartMgr.getDataSource("frame0.k0").getLastDate();
+
+    $('.symbol-title>a').text(KlineIns.symbolName);
 
     if (f == -1) {
         KlineIns.requestParam = setHttpRequestParam(KlineIns.symbol, KlineIns.range, KlineIns.limit, null);
@@ -6158,9 +6544,7 @@ RangePlotter.prototype.Draw = function (context) {
         context.fill();
     }
 };
-/**
- * Created by Administrator on 2014/10/11.
- */
+
 var COrderGraphPlotter = create_class(NamedObject);
 COrderGraphPlotter.prototype.__construct = function (name) {
     COrderGraphPlotter.__super.__construct.call(this, name);
@@ -8180,7 +8564,7 @@ CDynamicLinePlotter.prototype.Draw = function (context) {
 };
 
 var isSize = false;
-$('body').on('click', '#sizeIcon', function() {
+$('body').on('click', '#sizeIcon', function () {
     isSize = !isSize;
     if (isSize) {
         $(KlineIns.element).css({
@@ -8223,27 +8607,6 @@ function KLineMouseEvent() {
             e.preventDefault();
             e.stopPropagation();
             return false;
-        });
-        $('#chart_input_interface').submit(function (e) {
-            e.preventDefault();
-            var text = $('#chart_input_interface_text').val();
-            var json_text = JSON.parse(text);
-            var command = json_text.command;
-            var content = json_text.content;
-            switch (command) {
-                case 'set current depth':
-                    ChartManager.getInstance().getChart().updateDepth(content);
-                    break;
-                case 'set current future':
-                    break;
-                case 'set current language':
-                    chart_switch_language(content);
-                    break;
-                case 'set current theme':
-                    break;
-                default:
-                    break;
-            }
         });
         $(".chart_container .chart_dropdown .chart_dropdown_t")
             .mouseover(function () {
@@ -8664,10 +9027,17 @@ function requestSuccessHandler(res) {
     chart.setTitle();
     KlineIns.data = eval(res.data);
 
-    if (!KlineIns.chartMgr.updateData("frame0.k0", KlineIns.data)) {
+    if (!KlineIns.chartMgr.updateData("frame0.k0", KlineIns.data.lines)) {
         KlineIns.requestParam = setHttpRequestParam(KlineIns.symbol, KlineIns.range, null, KlineIns.chartMgr.getDataSource("frame0.k0").getLastDate());
         KlineIns.timer = setTimeout(RequestData, KlineIns.intervalTime);
         return;
+    }
+    if (KlineIns.data.trades && KlineIns.data.trades.length > 0) {
+        KlineTradeIns.pushTrades(KlineIns.data.trades);
+        KlineTradeIns.klineTradeInit = true;
+    }
+    if (KlineIns.data.depths) {
+        KlineTradeIns.updateDepth(KlineIns.data.depths);
     }
     clear_refresh_counter();
     KlineIns.timer = setTimeout(TwoSecondThread, KlineIns.intervalTime);
@@ -8800,6 +9170,7 @@ function chart_switch_language(lang) {
 
 function on_size(w, h) {
     var width = w || window.innerWidth;
+    var chartWidth = KlineIns.enableTrade ? (width - KlineIns.tradeWidth) : width;
     var height = h || window.innerHeight;
     var container = $(KlineIns.element);
     container.css({
@@ -8815,18 +9186,18 @@ function on_size(w, h) {
     var toolBarRect = {};
     toolBarRect.x = 0;
     toolBarRect.y = 0;
-    toolBarRect.w = width;
-    toolBarRect.h = 29 /*parseInt(toolBar.css("height"))*/;
+    toolBarRect.w = chartWidth;
+    toolBarRect.h = 29;
     var toolPanelRect = {};
     toolPanelRect.x = 0;
-    toolPanelRect.y = toolBarRect.h + 1 /*parseInt(toolBar.css("border-bottom-width"))*/;
-    toolPanelRect.w = toolPanelShown ? 32 /*parseInt(toolPanel.css("width"))*/ : 0;
+    toolPanelRect.y = toolBarRect.h + 1;
+    toolPanelRect.w = toolPanelShown ? 32 : 0;
     toolPanelRect.h = height - toolPanelRect.y;
     var tabBarRect = {};
-    tabBarRect.w = toolPanelShown ? width - (toolPanelRect.w + 1 /*parseInt(toolPanel.css("border-right-width"))*/ ) : width;
-    tabBarRect.h = tabBarShown ? 22 /*parseInt(tabBar.css("height"))*/ : -1 /*parseInt(tabBar.css("border-top-width"))*/;
-    tabBarRect.x = width - tabBarRect.w;
-    tabBarRect.y = height - (tabBarRect.h + 1 /*parseInt(tabBar.css("border-top-width"))*/ );
+    tabBarRect.w = toolPanelShown ? chartWidth - (toolPanelRect.w + 1 ) : chartWidth;
+    tabBarRect.h = tabBarShown ? 22 : -1;
+    tabBarRect.x = chartWidth - tabBarRect.w;
+    tabBarRect.y = height - (tabBarRect.h + 1 );
     var canvasGroupRect = {};
     canvasGroupRect.x = tabBarRect.x;
     canvasGroupRect.y = toolPanelRect.y;
@@ -8869,12 +9240,12 @@ function on_size(w, h) {
     }
     var dlgSettings = $("#chart_parameter_settings");
     dlgSettings.css({
-        left: (width - dlgSettings.width()) >> 1,
+        left: (chartWidth - dlgSettings.width()) >> 1,
         top: (height - dlgSettings.height()) >> 1
     });
     var dlgLoading = $("#chart_loading");
     dlgLoading.css({
-        left: (width - dlgLoading.width()) >> 1,
+        left: (chartWidth - dlgLoading.width()) >> 1,
         top: (height - dlgLoading.height()) >> 2
     });
     var domElemCache = $('#chart_dom_elem_cache');
@@ -8898,26 +9269,26 @@ function on_size(w, h) {
     showIndicNW += dropDownSettingsW;
     showToolsNW += dropDownSettingsW;
     selectThemeNW += dropDownSettingsW;
-    if (width < periodsHorzNW) {
+    if (chartWidth < periodsHorzNW) {
         domElemCache.append(periodsHorz);
     } else {
         periodsVert.after(periodsHorz);
     }
-    if (width < showIndicNW) {
+    if (chartWidth < showIndicNW) {
         domElemCache.append(showIndic);
         rowIndic.style.display = "";
     } else {
         dropDownSettings.before(showIndic);
         rowIndic.style.display = "none";
     }
-    if (width < showToolsNW) {
+    if (chartWidth < showToolsNW) {
         domElemCache.append(showTools);
         rowTools.style.display = "";
     } else {
         dropDownSettings.before(showTools);
         rowTools.style.display = "none";
     }
-    if (width < selectThemeNW) {
+    if (chartWidth < selectThemeNW) {
         domElemCache.append(selectTheme);
         rowTheme.style.display = "";
     } else {
@@ -8925,37 +9296,27 @@ function on_size(w, h) {
         rowTheme.style.display = "none";
     }
 
-    if (width < 1050) {
-        $("#chart_updated_time").css("display", "none");
-    } else {
-        $("#chart_updated_time").css("display", "");
-    }
-    if (width < 900) {
+    if (chartWidth < 900) {
         $("#chart_language_setting_div").css("display", "none");
     } else {
         $("#chart_language_setting_div").css("display", "");
     }
-    if (width < 280) {
+    if (chartWidth < 280) {
         $("#chart_exchanges_setting_div").css("display", "none");
     } else {
         $("#chart_exchanges_setting_div").css("display", "");
     }
-    if (width < 1170) {
-        $("#chart_updated_time").css("display", "none");
-    } else {
-        $("#chart_updated_time").css("display", "");
-    }
-    if (width < 1070) {
+    if (chartWidth < 1070) {
         $("#chart_language_setting_div").css("display", "none");
     } else {
         $("#chart_language_setting_div").css("display", "");
     }
-    if (width < 980) {
+    if (chartWidth < 980) {
         $("#chart_othercoin_setting_div").css("display", "none");
     } else {
         $("#chart_othercoin_setting_div").css("display", "");
     }
-    if (width < 280) {
+    if (chartWidth < 280) {
         $("#chart_exchanges_setting_div").css("display", "none");
     } else {
         $("#chart_exchanges_setting_div").css("display", "");
@@ -8988,14 +9349,12 @@ function switch_theme(name) {
 
     if (name == 'dark') {
         $("#trade_container").addClass("dark").removeClass("light");
-        $("#markettop").addClass("dark").removeClass("light");
         ChartManager.getInstance().setThemeName('frame0', 'Dark');
         var tmp = ChartSettings.get();
         tmp.theme = 'Dark';
         ChartSettings.save();
     } else if (name == 'light') {
         $("#trade_container").addClass("light").removeClass("dark");
-        $("#markettop").addClass("light").removeClass("dark");
         ChartManager.getInstance().setThemeName('frame0', 'Light');
         var tmp = ChartSettings.get();
         tmp.theme = 'Light';
@@ -9107,12 +9466,10 @@ function switch_period(name) {
 
 function reset(symbol) {
     KlineIns.symbol = symbol;
-    $("#markettop li a").removeClass("selected");
-    $("#trades .trades_list").empty();
-    $("#gasks .table").empty();
-    $("#gbids .table").empty();
-    $("#asks .table").empty();
-    $("#bids .table").empty();
+
+    if (KlineIns.enableTrade) {
+        KlineTradeIns.reset(symbol);
+    }
 }
 
 function switch_symbol_selected(symbol) {
@@ -9138,17 +9495,6 @@ function switch_symbol(symbol) {
     ChartManager.getInstance().getChart().setSymbol(symbol);
 }
 
-function IsSupportedBrowers() {
-    function isCanvasSupported() {
-        var elem = document.createElement('canvas');
-        return !!(elem.getContext && elem.getContext('2d'));
-    }
-
-    if (!isCanvasSupported())
-        return false;
-    return true;
-}
-
 function calcPeriodWeight(period) {
     var index = period;
     if (period != 'line')
@@ -9161,17 +9507,6 @@ function calcPeriodWeight(period) {
     }
     period_weight[index] = 8;
     ChartSettings.save();
-    // $('#chart_toolbar_periods_horz').find('li').each(function () {
-    //     var a = $(this).attr('name');
-    //     var i = a;
-    //     if (a != 'line')
-    //         i = KlineIns.periodMap[KlineIns.tagMapPeriod[a]];
-    //     if (period_weight[i] == 0) {
-    //         $(this).css('display', 'none');
-    //     } else {
-    //         $(this).css('display', 'inline-block');
-    //     }
-    // });
 }
 
 function socketConnect() {
@@ -9193,10 +9528,41 @@ function socketConnect() {
 }
 
 var template_str = "\n" +
+    "<div id=\"trade_container\" class=\"dark\">\n" +
+    "        <div class=\"m_cent\">\n" +
+    "            <div class=\"m_guadan\">\n" +
+    "                <div class=\"symbol-title\">\n" +
+    "                    <a class=\"dark\">test</a>\n" +
+    "                    \n" +
+    "                </div>\n" +
+    "                <div id=\"orderbook\">\n" +
+    "                    <div id=\"asks\">\n" +
+    "                        <div class=\"table\"> </div>\n" +
+    "                   </div>\n" +
+    "                   <div id=\"gasks\">\n" +
+    "                        <div class=\"table\"> </div>\n" +
+    "                   </div>\n" +
+    "                   <div id=\"price\" class=\"green\"></div>\n" +
+    "                   <div id=\"bids\">\n" +
+    "                        <div class=\"table\"> </div>\n" +
+    "                    </div>\n" +
+    "                    <div id=\"gbids\">\n" +
+    "                        <div class=\"table\"> </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div id=\"trades\" class=\"trades\">\n" +
+    "                <div class=\"trades_list\"> </div>\n" +
+    "                </div>\n" +
+    "            \n" +
+    "            </div>\n" +
+    "        \n" +
+    "        </div>\n" +
+    "</div>\n" +
+
     "<div class=\"chart_container dark\">\n" +
     "            <div id=\"chart_dom_elem_cache\"></div>\n" +
     "            <!-- ToolBar -->\n" +
-    "            <div id=\"chart_toolbar\" style=\"left: 0px; top: 0px; width: 1670px; height: 29px;\">\n" +
+    "            <div id=\"chart_toolbar\">\n" +
     "                <div class=\"chart_toolbar_minisep\"></div>\n" +
     "                <!-- Periods -->\n" +
     "                <div class=\"chart_dropdown\" id=\"chart_toolbar_periods_vert\">\n" +
@@ -9345,16 +9711,11 @@ var template_str = "\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <div id=\"chart_updated_time\">\n" +
-    "                    <div style=\"display:none;\">\n" +
-    "                        <span class=\"chart_str_updated\">更新于</span>\n" +
-    "                        <span id=\"chart_updated_time_text\">4秒</span>\n" +
-    "                        <span class=\"chart_str_ago\">前</span>\n" +
-    "                    </div>\n" +
     "                    <div id=\"sizeIcon\" class=\"chart_BoxSize\">大小</div>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "            <!-- ToolPanel -->\n" +
-    "            <div id=\"chart_toolpanel\" style=\"display: none; left: 0px; top: 30px; width: 32px; height: 331px;\">\n" +
+    "            <div id=\"chart_toolpanel\">\n" +
     "                <div class=\"chart_toolpanel_separator\"></div>\n" +
     "                <div class=\"chart_toolpanel_button\">\n" +
     "                    <div class=\"chart_toolpanel_icon\" id=\"chart_Cursor\" name=\"Cursor\"></div>\n" +
@@ -9425,15 +9786,14 @@ var template_str = "\n" +
     "                </div>\n" +
     "            </div>\n" +
     "            <!-- Canvas Group -->\n" +
-    "            <div id=\"chart_canvasGroup\" style=\"left: 0px; top: 30px; width: 1670px; height: 308px;\" class=\"temp\">\n" +
-    "                <canvas class=\"chart_canvas\" id=\"chart_mainCanvas\" width=\"1670\" height=\"308\"\n" +
+    "            <div id=\"chart_canvasGroup\" class=\"temp\">\n" +
+    "                <canvas class=\"chart_canvas\" id=\"chart_mainCanvas\"\n" +
     "                        style=\"cursor: default;\"></canvas>\n" +
-    "                <canvas class=\"chart_canvas\" id=\"chart_overlayCanvas\" width=\"1670\" height=\"308\"\n" +
+    "                <canvas class=\"chart_canvas\" id=\"chart_overlayCanvas\"\n" +
     "                        style=\"cursor: default;\"></canvas>\n" +
     "            </div>\n" +
     "            <!-- TabBar -->\n" +
-    "            <div id=\"chart_tabbar\"\n" +
-    "                 style=\"display: block; position: relative; left: 0px; top: 338px; width: 1670px; height: 22px;\">\n" +
+    "            <div id=\"chart_tabbar\"\">\n" +
     "                <ul>\n" +
     "                    <li><a name=\"MACD\" class=\"\">MACD</a></li>\n" +
     "                    <li><a name=\"KDJ\" class=\"\">KDJ</a></li>\n" +
@@ -9455,7 +9815,7 @@ var template_str = "\n" +
     "                </ul>\n" +
     "            </div>\n" +
     "            <!-- Parameter Settings -->\n" +
-    "            <div id=\"chart_parameter_settings\" style=\"left: 515px; top: -64px;\">\n" +
+    "            <div id=\"chart_parameter_settings\">\n" +
     "                <h2 class=\"chart_str_indicator_parameters\">指标参数设置</h2>\n" +
     "                <table>\n" +
     "                    <tbody>\n" +
@@ -9583,7 +9943,7 @@ var template_str = "\n" +
     "                <div id=\"close_settings\"><a class=\"chart_str_close\">关闭</a></div>\n" +
     "            </div>\n" +
     "            <!-- Loading -->\n" +
-    "            <div id=\"chart_loading\" class=\"chart_str_loading\" style=\"left: 735px; top: 78px;\">正在读取数据...</div>\n" +
+    "            <div id=\"chart_loading\" class=\"chart_str_loading\">正在读取数据...</div>\n" +
     "        </div>\n" +
     "        <div style=\"display: none\" id=\"chart_language_switch_tmp\">\n" +
     "            <span name=\"chart_str_period\" zh_tw=\"週期\" zh_cn=\"周期\" en_us=\"TIME\"></span>\n" +
@@ -9661,6 +10021,7 @@ var template_str = "\n" +
 
 function draw(instance) {
     KlineIns = instance;
+    KlineTradeIns = new KlineTrade();
     var template = $.parseHTML(template_str);
     for (var k in KlineIns.ranges) {
         var res = $(template).find('[name="' + KlineIns.ranges[k] + '"]');

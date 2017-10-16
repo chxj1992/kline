@@ -916,8 +916,8 @@ body {
 }
 
 .m_rightbot {
-    position: fixed;
-    bottom: 0;
+    /*position: fixed;*/
+    /*bottom: 0;*/
     height: 22px;
     line-height: 22px;
     border-top: 1px solid #404040;
@@ -958,8 +958,8 @@ body {
     overflow: hidden
 }
 
-#market {
-    font-size: 12px;
+.symbol-title {
+    font-size: 14px;
     font-weight: bold;
     text-align: center;
     height: 16px;
@@ -968,16 +968,16 @@ body {
     padding: 5px
 }
 
-#market .dark {
+.symbol-title .dark {
     color: #6BF
 }
 
-#market .infoDepth {
+.symbol-title .infoDepth {
     margin-left: 8px;
     color: #f78d15
 }
 
-#market a:hover {
+.symbol-title a:hover {
     text-decoration: underline
 }
 

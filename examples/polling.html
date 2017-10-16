@@ -34,7 +34,7 @@
     var kline = new Kline({
         element: "#kline_container",
         width: 1200,
-        height: 462,
+        height: 650,
         theme: 'dark', // light/dark
         language: 'zh-cn', // zh-cn/en-us/zh-tw
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
@@ -43,8 +43,9 @@
         type: "poll", // poll/socket
         url: "http://127.0.0.1:8080/mock.json",
         limit: 1000,
-        intervalTime: 3000,
-        debug: true
+        intervalTime: 5000,
+        debug: true,
+        enableTrade: true
     });
 
     kline.draw();
