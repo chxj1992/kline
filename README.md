@@ -1,6 +1,7 @@
 # Kline
 
 > 本项目基于某网站的K线插件做了一些封装和二次开发,使插件更加易用,方便后来的开发者. 修改主要涉及以下几个点:
+
 * 删除了一些不必要的逻辑
 * 把源码中可配置的部分抽出来
 * 添加了对 websocket(websocket over stomp)连接方式的支持
@@ -21,14 +22,14 @@
 
 ![](screenshot_light.png)
 
-### 依赖
+### Requirement
 
 * jquery
 * jquery.mousewheel
 * sockjs (socket方式)
 * stomp (socket方式)
 
-### 安装
+### Install & Load
 
 * 使用标签引入, 在HTML页面头部加入
 
@@ -40,7 +41,7 @@
     <script src="/lib/jquery.mousewheel.js"></script>
 ```
 
-* 或者使用RequireJs引入
+* OR 使用RequireJs引入
 
 ```javascript
     require.config({
@@ -72,12 +73,13 @@
   <div id="kline_container"></div>
 ```
 
-### 开发
+### Develop
 
-* 轮询
+* Poll(轮询)
 
 ```javascript
     var kline = new Kline({
+        element: "#kline_container",
         width: 1200,
         height: 462,
         theme: 'dark', // light/dark
@@ -85,7 +87,7 @@
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
         symbol: "coin5/coin4",
         symbolName: "COIN5_COIN4",
-        type: "polling", // polling/socket
+        type: "poll", // poll/socket
         url: "http://127.0.0.1:8080/mock.json",
         limit: 1000,
         intervalTime: 3000,
@@ -98,6 +100,7 @@
 
 ```javascript
    var kline = new Kline({
+        element: "#kline_container",
         width: 1200,
         height: 462,
         theme: 'dark', // light/dark
@@ -105,7 +108,7 @@
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
         symbol: "coin5/coin4",
         symbolName: "COIN5_COIN4",
-        type: "socket", // polling/socket
+        type: "socket", // poll/socket
         url: 'http://127.0.0.1:8088/socket',
         limit: 1000,
         intervalTime: 3000,
@@ -117,8 +120,9 @@
 ```
 
 
-### 参数说明
+### Parameters
 
+* `element`: 容器元素选择器 Default: #kline_container
 * `width`: 宽度 (px) Default: 1200
 * `height`: 宽度 (px) Default: 462
 * `theme`: 主题 dark(暗色)/light(亮色) Default: dark
@@ -126,7 +130,7 @@
 * `ranges`: 聚合选项 1w(1周)/1d(1天)/12h(12小时)/6h(6小时)/4h(4小时)/2h(2小时)/1h(1小时)/30m(30分钟)/15m(15分钟)/5m(5分钟)/3m(3分钟)/1m(1分钟)/line(分时) Default: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
 * `symbol`: 交易代号
 * `symbolName`: 交易名称
-* `type`: 连接类型 socket(websocket)/polling(轮询) Default: polling
+* `type`: 连接类型 socket(websocket)/poll(轮询) Default: poll
 * `url`: 请求地址
 * `limit`: 分页大小 Default: 1000
 * `intervalTime`: 请求间隔时间(毫秒) Default: 3000

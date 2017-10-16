@@ -14,7 +14,7 @@ var Kline = function (option) {
     this.range = null;
     this.url = "";
     this.limit = 1000;
-    this.type = "polling";
+    this.type = "poll";
     this.subscribePath = "";
     this.sendPath = "";
     this.socketClient = null;
@@ -8245,9 +8245,9 @@ function KLineMouseEvent() {
                     break;
             }
         });
-        $(KlineIns.element + " .chart_dropdown .chart_dropdown_t")
+        $(".chart_container .chart_dropdown .chart_dropdown_t")
             .mouseover(function () {
-                var container = $(KlineIns.element);
+                var container = $(".chart_container");
                 var title = $(this);
                 var dropdown = title.next();
                 var containerLeft = container.offset().left;
@@ -8299,8 +8299,7 @@ function KLineMouseEvent() {
         $("#close_settings").click(function () {
             $('#chart_parameter_settings').removeClass("clicked");
         });
-        $(KlineIns.element + " .chart_toolbar_tabgroup a")
-
+        $(".chart_container .chart_toolbar_tabgroup a")
             .click(function () {
                 switch_period($(this).parent().attr('name'));
 
@@ -8984,7 +8983,7 @@ function switch_theme(name) {
             $(this).addClass('selected');
         }
     });
-    $(KlineIns.element).attr('class', name);
+    $(".chart_container").attr('class', "chart_container " + name);
     $(".marketName_ a").attr('class', name);
 
     if (name == 'dark') {
@@ -9074,9 +9073,9 @@ function switch_indic(name) {
 
 function switch_period(name) {
 
-    $(KlineIns.element + " .chart_toolbar_tabgroup a").removeClass("selected");
+    $(".chart_container .chart_toolbar_tabgroup a").removeClass("selected");
     $("#chart_toolbar_periods_vert ul a").removeClass("selected");
-    $(KlineIns.element + " .chart_toolbar_tabgroup a").each(function () {
+    $(".chart_container .chart_toolbar_tabgroup a").each(function () {
         if ($(this).parent().attr('name') == name) {
             $(this).addClass('selected');
         }
@@ -9194,6 +9193,7 @@ function socketConnect() {
 }
 
 var template_str = "\n" +
+    "<div class=\"chart_container dark\">\n" +
     "            <div id=\"chart_dom_elem_cache\"></div>\n" +
     "            <!-- ToolBar -->\n" +
     "            <div id=\"chart_toolbar\" style=\"left: 0px; top: 0px; width: 1670px; height: 29px;\">\n" +
@@ -9657,8 +9657,7 @@ var template_str = "\n" +
     "\n" +
     "            <span name=\"chart_str_updated\" zh_tw=\"更新於\" zh_cn=\"更新于\" en_us=\"Updated\"></span>\n" +
     "            <span name=\"chart_str_ago\" zh_tw=\"前\" zh_cn=\"前\" en_us=\"ago\"></span>\n" +
-    "\n" +
-    "    ";
+    "</div>\n";
 
 function draw(instance) {
     KlineIns = instance;
@@ -9668,10 +9667,6 @@ function draw(instance) {
         res.each(function (i, e) {
             $(e).attr("style", "display:inline-block");
         });
-        // for (var i in res) {
-        //     console.log(i, res[i]);
-        //     $(res[i]).attr("style", "display:inline-block");
-        // }
     }
     $(KlineIns.element).html(template);
     var refresh_handler = setInterval(refresh_function, KlineIns.intervalTime);
