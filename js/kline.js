@@ -24,7 +24,7 @@ var Kline = function (option) {
     this.language = "zh-cn";
     this.theme = "dark";
     this.ranges = ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
-    this.enableTrade = true;
+    this.showTrade = true;
     this.tradeWidth = 250;
 
     this.periodMap = {
@@ -63,22 +63,88 @@ var Kline = function (option) {
 };
 
 Kline.prototype = {
+
+    /*********************************************
+     * Methods
+     *********************************************/
+
     draw: function () {
         draw(this);
     },
+
+    resize: function (width, height) {
+        this.width = width;
+        this.height = height;
+        on_size(this.width, this.height);
+    },
+
     setSymbol: function (symbol, symbolName) {
         KlineIns.symbol = symbol;
         KlineIns.symbolName = symbolName;
         switch_symbol(symbol);
+        KlineIns.onSymbolChange(symbol, symbolName);
     },
+
     setTheme: function (style) {
         KlineIns.theme = style;
         switch_theme(style);
     },
+
     setLanguage: function (lang) {
         KlineIns.language = lang;
         chart_switch_language(lang);
+    },
+
+    setShowTrade: function (isShow) {
+        this.showTrade = isShow;
+        if (isShow) {
+            $(".trade_container").show();
+        } else {
+            $(".trade_container").hide();
+        }
+        on_size(this.width, this.height);
+    },
+
+    toggleTrade: function () {
+        if (!this.showTrade) {
+            this.showTrade = true;
+            $(".trade_container").show();
+        } else {
+            this.showTrade = false;
+            $(".trade_container").hide();
+        }
+        on_size(this.width, this.height);
+    },
+
+
+    /*********************************************
+     * Events
+     *********************************************/
+
+    onResize: function(width, height) {
+        if (this.debug) {
+            console.log("chart resized!");
+        }
+    },
+
+    onLangChange: function(lang) {
+        if (this.debug) {
+            console.log("language changed!");
+        }
+    },
+
+    onSymbolChange: function(symbol, symbolName) {
+        if (this.debug) {
+            console.log("symbol changed!");
+        }
+    },
+
+    onThemeChange: function(theme) {
+        if (this.debug) {
+            console.log("theme changed!");
+        }
     }
+
 };
 
 var KlineIns = null;
@@ -9176,11 +9242,12 @@ function chart_switch_language(lang) {
     var tmp = ChartSettings.get();
     tmp.language = lang;
     ChartSettings.save();
+    KlineIns.onLangChange(lang);
 }
 
 function on_size(w, h) {
     var width = w || window.innerWidth;
-    var chartWidth = KlineIns.enableTrade ? (width - KlineIns.tradeWidth) : width;
+    var chartWidth = KlineIns.showTrade ? (width - KlineIns.tradeWidth) : width;
     var height = h || window.innerHeight;
     var container = $(KlineIns.element);
     container.css({
@@ -9307,6 +9374,8 @@ function on_size(w, h) {
     }
 
     ChartManager.getInstance().redraw('All', true);
+
+    KlineIns.onResize(width, height);
 }
 
 function mouseWheel(e, delta) {
@@ -9333,13 +9402,13 @@ function switch_theme(name) {
     $(".marketName_ a").attr('class', name);
 
     if (name == 'dark') {
-        $("#trade_container").addClass("dark").removeClass("light");
+        $(".trade_container").addClass("dark").removeClass("light");
         ChartManager.getInstance().setThemeName('frame0', 'Dark');
         var tmp = ChartSettings.get();
         tmp.theme = 'Dark';
         ChartSettings.save();
     } else if (name == 'light') {
-        $("#trade_container").addClass("light").removeClass("dark");
+        $(".trade_container").addClass("light").removeClass("dark");
         ChartManager.getInstance().setThemeName('frame0', 'Light');
         var tmp = ChartSettings.get();
         tmp.theme = 'Light';
@@ -9352,6 +9421,8 @@ function switch_theme(name) {
     $('#chart_output_interface_submit').submit();
     window._current_theme_change.raise(name);
     ChartManager.getInstance().redraw();
+
+    KlineIns.onThemeChange(name);
 }
 
 function switch_tools(name) {
@@ -9452,7 +9523,7 @@ function switch_period(name) {
 function reset(symbol) {
     KlineIns.symbol = symbol;
 
-    if (KlineIns.enableTrade) {
+    if (KlineIns.showTrade) {
         KlineTradeIns.reset(symbol);
     }
 }
@@ -9513,7 +9584,7 @@ function socketConnect() {
 }
 
 var template_str = "\n" +
-    "<div id=\"trade_container\" class=\"dark\">\n" +
+    "<div class=\"trade_container dark\">\n" +
     "        <div class=\"m_cent\">\n" +
     "            <div class=\"m_guadan\">\n" +
     "                <div class=\"symbol-title\">\n" +

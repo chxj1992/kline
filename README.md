@@ -128,7 +128,7 @@ $ npm install kline
 * `subscribePath`(仅socket方式需要): 订阅地址
 * `sendPath`(仅socket方式需要): 发送地址
 * `debug`: 调试模式 true/false Default: true
-* `enableTrade`: 显示行情侧边栏 true/false Default: true
+* `showTrade`: 显示行情侧边栏 true/false Default: true
 
 
 ### Methods
@@ -139,6 +139,14 @@ $ npm install kline
 
 ```javascript
 kline.draw();
+```
+
+* resize(int width, int height)
+
+    设置画布大小
+
+```javascript
+kline.resize(1200, 550);
 ```
 
 * setSymbol(string symbol, string symbolName)
@@ -163,6 +171,48 @@ kline.setTheme('dark');  // dark/light
 
 ```javascript
 kline.setLanguage('en-us');  // en-us/zh-ch/zh-tw
+```
+
+* setShowTrade: function (isShow) 
+
+    设置展示是否展示交易模块
+
+```javascript
+kline.setShowTrade(false);  // true/false
+```
+
+* toggleTrade: function () 
+
+    切换展示是否展示交易模块
+
+```javascript
+kline.toggleTrade(); 
+```
+
+
+### Events
+
+* onResize: function(width, height) : 画布尺寸改变时触发
+
+* onLangChange: function(lang) : 语言改变时触发
+
+* onSymbolChange: function(symbol, symbolName) : 交易品种代码改变时触发
+
+* onThemeChange: function(theme) : 主题改变时触发
+
+#### Examples
+
+```javascript
+    var kline = new Kline({
+        element: "#kline_container",
+        symbol: "coin5/coin4",
+        symbolName: "COIN5_COIN4",
+        type: "poll", // poll/socket
+        url: "http://127.0.0.1:8080/mock.json",
+        onResize: function(width, height) {
+            console.log("chart resized: " + width + " " + height);
+        }
+    });
 ```
 
 
@@ -214,5 +264,5 @@ example:
 说明:
 
 * `lines`: K线图, 依次是: 时间(毫秒), 开盘价, 最高价, 最低价, 收盘价, 成交量
-* `depths`(可选, enableTrade后展示): 深度图数据,  `asks`:一定比例的卖单类别, `bids`:一定比例的买单列表, 其中每项的值依次是 成交价, 成交量
-* `trades`(可选, enableTrade后展示): 最近成交记录,  `amount`: 成交量, `price`:单价, `tid`:订单ID, `time`:成交时间(毫秒), `type`:成交类型 buy/sell
+* `depths`(可选, showTrade后展示): 深度图数据,  `asks`:一定比例的卖单类别, `bids`:一定比例的买单列表, 其中每项的值依次是 成交价, 成交量
+* `trades`(可选, showTrade后展示): 最近成交记录,  `amount`: 成交量, `price`:单价, `tid`:订单ID, `time`:成交时间(毫秒), `type`:成交类型 buy/sell

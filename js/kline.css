@@ -875,7 +875,7 @@ body {
     color: #222
 }
 
-#trade_container {
+.trade_container {
     width: 250px;
     height: 100%;
     float: right;
@@ -884,7 +884,7 @@ body {
     overflow: hidden
 }
 
-#trade_container.dark {
+.trade_container.dark {
     background: #0a0a0a;
     color: #f1f1f1
 }
@@ -1059,30 +1059,30 @@ body {
     line-height: 25px
 }
 
-#trade_container .green {
+.trade_container .green {
     color: #0F0
 }
 
-#trade_container .red {
+.trade_container .red {
     color: #F00
 }
 
-#trade_container.dark #orderbook div.table div.remove g,
-#trade_container.dark #orderbook div.table div.remove span {
+.trade_container.dark #orderbook div.table div.remove g,
+.trade_container.dark #orderbook div.table div.remove span {
     color: #444
 }
 
-#trade_container.light #orderbook div.table div.remove g,
-#trade_container.light #orderbook div.table div.remove span {
+.trade_container.light #orderbook div.table div.remove g,
+.trade_container.light #orderbook div.table div.remove span {
     color: #ddd
 }
 
-#trade_container.dark #orderbook div.table div.add {
+.trade_container.dark #orderbook div.table div.add {
     display: none;
     background-color: rgba(238, 238, 238, 0.2)
 }
 
-#trade_container.light #orderbook div.table div.add {
+.trade_container.light #orderbook div.table div.add {
     display: none;
     background-color: rgba(100, 100, 100, 0.2)
 }
@@ -1094,17 +1094,17 @@ body {
     padding-top: 5px
 }
 
-#trade_container.light {
+.trade_container.light {
     background: #fff;
     border-left: 1px solid #afb1b3;
     color: #000
 }
 
-#trade_container.light .m_righttop em {
+.trade_container.light .m_righttop em {
     background-position: 0 -32px
 }
 
-#trade_container.light .m_righttop {
+.trade_container.light .m_righttop {
     position: fixed;
     top: 0;
     height: 40px;
@@ -1116,24 +1116,24 @@ body {
     padding-right: 20px
 }
 
-#trade_container.light #trades.trades table {
+.trade_container.light #trades.trades table {
     color: #333
 }
 
-#trade_container.light #trades.trades .v {
+.trade_container.light #trades.trades .v {
     color: #333
 }
 
-#trade_container.light #trades.trades .v g {
+.trade_container.light #trades.trades .v g {
     color: #333
 }
 
-#trade_container.light .m_rightbot {
+.trade_container.light .m_rightbot {
     background: #fff;
     border-top: 1px solid #afb1b3
 }
 
-#trade_container.light #orderbook {
+.trade_container.light #orderbook {
     border-bottom: 1px solid #afb1b3
 }
 
@@ -1190,12 +1190,12 @@ body {
     color: #666
 }
 
-#trade_container.dark .trades_list ul.newul {
+.trade_container.dark .trades_list ul.newul {
     display: none;
     background-color: rgba(238, 238, 238, 0.2)
 }
 
-#trade_container.light .trades_list ul.newul {
+.trade_container.light .trades_list ul.newul {
     display: none;
     background-color: rgba(100, 100, 100, 0.2)
 }
@@ -1251,30 +1251,6 @@ body {
     margin-left: 3px;
     font-family: Consolas, monospace;
     color: #ccc
-}
-
-#markettop {
-    height: 40px;
-    line-height: 41px;
-    font-size: 12px
-}
-
-#markettop.dark {
-    background: #0a0a0a;
-    border-bottom: 1px solid #333
-}
-
-#markettop.light {
-    background: #fff;
-    border-bottom: 1px solid #afb1b3
-}
-
-#markettop.light a.selected {
-    color: #f27935
-}
-
-#markettop.dark a.selected {
-    color: #ffac00
 }
 
 .light .container span {
