@@ -65,8 +65,9 @@ Kline.prototype = {
     draw: function () {
         draw(this);
     },
-    setSymbol: function (symbol) {
+    setSymbol: function (symbol, symbolName) {
         KlineIns.symbol = symbol;
+        KlineIns.symbolName = symbolName;
         switch_symbol(symbol);
     },
     setTheme: function (style) {

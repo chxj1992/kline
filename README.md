@@ -87,19 +87,10 @@ $ npm install kline
 ```javascript
     var kline = new Kline({
         element: "#kline_container",
-        width: 1200,
-        height: 462,
-        theme: 'dark', // light/dark
-        language: 'zh-cn', // zh-cn/en-us/zh-tw
-        ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
         symbol: "coin5/coin4",
         symbolName: "COIN5_COIN4",
         type: "poll", // poll/socket
-        url: "http://127.0.0.1:8080/mock.json",
-        limit: 1000,
-        intervalTime: 5000,
-        debug: true,
-        enableTrade: true
+        url: "http://127.0.0.1:8080/mock.json"
     });
     kline.draw();
 ```
@@ -109,27 +100,18 @@ $ npm install kline
 ```javascript
    var kline = new Kline({
         element: "#kline_container",
-        width: 1200,
-        height: 650,
-        theme: 'dark', // light/dark
-        language: 'zh-cn', // zh-cn/en-us/zh-tw
-        ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
         symbol: "coin5/coin4",
         symbolName: "COIN5_COIN4",
         type: "socket", // poll/socket
         url: 'http://127.0.0.1:8088/socket',
-        limit: 1000,
-        intervalTime: 5000,
         subscribePath: "/kline/push",
-        sendPath: "/app/kline",        
-        debug: true,
-        enableTrade: true
+        sendPath: "/app/kline"       
     });
     kline.draw();
 ```
 
 
-### Parameters
+### Support Options
 
 * `element`: 容器元素选择器 Default: #kline_container
 * `width`: 宽度 (px) Default: 1200
@@ -147,6 +129,41 @@ $ npm install kline
 * `sendPath`(仅socket方式需要): 发送地址
 * `debug`: 调试模式 true/false Default: true
 * `enableTrade`: 显示行情侧边栏 true/false Default: true
+
+
+### Methods
+
+* draw()
+
+    画K线图
+
+```javascript
+kline.draw();
+```
+
+* setSymbol(string symbol, string symbolName)
+
+    设置交易品种
+
+```javascript
+kline.setSymbol('usd/btc', 'USD/BTC');
+```
+
+* setTheme(string style)
+
+    设置主题
+
+```javascript
+kline.setTheme('dark');  // dark/light
+```
+
+* setLanguage(string lang)
+
+    设置语言
+
+```javascript
+kline.setLanguage('en-us');  // en-us/zh-ch/zh-tw
+```
 
 
 ### Response
