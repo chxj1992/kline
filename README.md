@@ -8,6 +8,7 @@
 * 把源码中可配置的部分抽出来
 * 添加了对 websocket(websocket over stomp)连接方式的支持
 * 用 js 创建 K 线页面元素
+* 增加对外接口及事件回调
 
 ### Features
 
