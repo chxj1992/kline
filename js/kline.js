@@ -339,7 +339,7 @@ KlineTrade.prototype = {
         return gstr;
     },
     getgasks: function (array) {
-        if (array.length < 1) {
+        if (array.length < 2) {
             return [];
         }
         var low = array[array.length - 1][0];//最低价
@@ -372,7 +372,7 @@ KlineTrade.prototype = {
         return gasks;
     },
     getgbids: function (array) {
-        if (array.length < 1) {
+        if (array.length < 2) {
             return [];
         }
         var low = array[array.length - 1][0];
@@ -2966,6 +2966,7 @@ TableLayout.prototype.measure = function (context, width, height) {
         rh[0] = h;
     }
     var nw = 8;
+    // chart depths sidebar
     var minRW = 64;
     var maxRW = Math.min(240, width >> 1);
     var rw = minRW;
@@ -8991,9 +8992,6 @@ function requestOverHttp() {
                 this.symbol = KlineIns.symbol;
             },
             success: function (res) {
-                if (KlineIns.debug) {
-                    console.log(res);
-                }
                 if (KlineIns.G_HTTP_REQUEST) {
                     requestSuccessHandler(res);
                 }
@@ -9017,6 +9015,9 @@ function requestOverHttp() {
 }
 
 function requestSuccessHandler(res) {
+    if (KlineIns.debug) {
+        console.log(res);
+    }
     if (!res || !res.success) {
         KlineIns.timer = setTimeout(function () {
             RequestData(true);
@@ -9027,8 +9028,9 @@ function requestSuccessHandler(res) {
     chart.setTitle();
     KlineIns.data = eval(res.data);
 
-    if (!KlineIns.chartMgr.updateData("frame0.k0", KlineIns.data.lines)) {
-        KlineIns.requestParam = setHttpRequestParam(KlineIns.symbol, KlineIns.range, null, KlineIns.chartMgr.getDataSource("frame0.k0").getLastDate());
+    var updateDataRes = KlineIns.chartMgr.updateData("frame0.k0", KlineIns.data.lines);
+    KlineIns.requestParam = setHttpRequestParam(KlineIns.symbol, KlineIns.range, null, KlineIns.chartMgr.getDataSource("frame0.k0").getLastDate());
+    if (!updateDataRes) {
         KlineIns.timer = setTimeout(RequestData, KlineIns.intervalTime);
         return;
     }
@@ -9296,31 +9298,6 @@ function on_size(w, h) {
         rowTheme.style.display = "none";
     }
 
-    if (chartWidth < 900) {
-        $("#chart_language_setting_div").css("display", "none");
-    } else {
-        $("#chart_language_setting_div").css("display", "");
-    }
-    if (chartWidth < 280) {
-        $("#chart_exchanges_setting_div").css("display", "none");
-    } else {
-        $("#chart_exchanges_setting_div").css("display", "");
-    }
-    if (chartWidth < 1070) {
-        $("#chart_language_setting_div").css("display", "none");
-    } else {
-        $("#chart_language_setting_div").css("display", "");
-    }
-    if (chartWidth < 980) {
-        $("#chart_othercoin_setting_div").css("display", "none");
-    } else {
-        $("#chart_othercoin_setting_div").css("display", "");
-    }
-    if (chartWidth < 280) {
-        $("#chart_exchanges_setting_div").css("display", "none");
-    } else {
-        $("#chart_exchanges_setting_div").css("display", "");
-    }
     ChartManager.getInstance().redraw('All', true);
 }
 
