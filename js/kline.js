@@ -9576,7 +9576,7 @@ function socketConnect() {
             requestSuccessHandler(JSON.parse(res.body));
         });
     }, function () {
-        socket.disconnect();
+        KlineIns.socketClient.disconnect();
         console.log("reconnect in 5 seconds ...");
         setTimeout(function () {
             socketConnect();
