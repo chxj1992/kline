@@ -214,5 +214,5 @@ example:
 说明:
 
 * `lines`: K线图, 依次是: 时间(毫秒), 开盘价, 最高价, 最低价, 收盘价, 成交量
-* `depths`(可选, enableTrade后展示): 深度图数据,  `asks`:一定比例的卖单类别, `bids`:一定比例的买单列表
+* `depths`(可选, enableTrade后展示): 深度图数据,  `asks`:一定比例的卖单类别, `bids`:一定比例的买单列表, 其中每项的值依次是 成交价, 成交量
 * `trades`(可选, enableTrade后展示): 最近成交记录,  `amount`: 成交量, `price`:单价, `tid`:订单ID, `time`:Unix时间戳, `type`:成交类型 buy/sell
