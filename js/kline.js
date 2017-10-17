@@ -119,20 +119,20 @@ KlineTrade.prototype = {
         for (var i = 0; i < array.length; i++) {
             var item = array[i];
             if (i >= array.length - this.tradesLimit) {
-                this.tradeDate.setTime(item.time * 1000);
+                this.tradeDate.setTime(item.time);
                 var dateStr = this.dateFormatTf(this.tradeDate.getHours())
                     + ":" + this.dateFormatTf(this.tradeDate.getMinutes())
                     + ":" + this.dateFormatTf(this.tradeDate.getSeconds());
                 var arr = (item.amount.toFixed(4) + "").split(".");
                 var price = item.price;
                 if (price > 1) {
-                    price = (item.price).toFixed(2)
+                    price = price.toFixed(2)
                 }
                 if (price < 1 && price > 0.00001) {
-                    price = (item.price).toFixed(4)
+                    price = price.toFixed(4)
                 }
                 if (price < 0.00001) {
-                    price = (item.price).toFixed(6)
+                    price = price.toFixed(6)
                 }
 
                 if (this.klineTradeInit) {
@@ -9124,7 +9124,7 @@ function setHttpRequestParam(mark_from, range, limit, since) {
     else
         str += "&since=" + since;
     if (KlineTradeIns.tradeDate.getTime() != 0) {
-        str += "&prevTradeTime=" + KlineTradeIns.tradeDate.getTime()
+        str += "&prevTradeTime=" + KlineTradeIns.tradeDate.getTime();
     }
     return str;
 }
