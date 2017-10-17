@@ -23,12 +23,12 @@
 
 ![](screenshot_light.png)
 
-### Requirement
+### Requirements
 
 * jquery
 * jquery.mousewheel
-* sockjs (socket方式)
-* stomp (socket方式)
+* sockjs (仅socket方式需要)
+* stomp (仅socket方式需要)
 
 ### Install & Load
 
