@@ -200,7 +200,7 @@ kline.toggleTrade();
 
 * onThemeChange: function(theme) : 主题改变时触发
 
-#### Examples
+> Examples
 
 ```javascript
     var kline = new Kline({
