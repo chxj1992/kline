@@ -1,4 +1,5 @@
 var Kline = function (option) {
+
     this.element = "#kline_container";
     this.chartMgr = null;
     this.G_HTTP_REQUEST = null;
@@ -83,20 +84,23 @@ Kline.prototype = {
 var KlineIns = null;
 
 
-var KlineTrade = function () {
+var KlineTrade = function (option) {
+
+    this.browerState = 0;
+    this.tradeDate = new Date();
+    this.tradesLimit = 20;
+    this.lastDepth = null;
+    this.depthShowSize = 15;
+    this.priceDecimalDigits = 6;
+    this.amountDecimalDigits = 4;
+    this.symbol = null;
+    this.curPrice = null;
+    this.title = "";
+
+    Object.assign(this, option);
 };
 
 KlineTrade.prototype = {
-    browerState: 0,
-    tradeDate: new Date(),
-    tradesLimit: 100,
-    lastDepth: null,
-    depthShowSize: 15,
-    priceDecimalDigits: 6,
-    amountDecimalDigits: 4,
-    symbol: null,
-    curPrice: null,
-    title: "",
 
     reset: function (symbol) {
         this.symbol = symbol;
@@ -407,7 +411,7 @@ KlineTrade.prototype = {
         return gbids;
     },
     getBlock: function (b, scale) {
-        if (b > scale) {
+        if (b > scale || b <= 0) {
             return scale;
         } else {
             scale = scale / 10;
@@ -457,7 +461,7 @@ KlineTrade.prototype = {
         }
         return [amount1, amount2];
     },
-    dateFormatTf:function(i){
+    dateFormatTf: function (i) {
         return (i < 10 ? '0' : '') + i;
     },
 };
@@ -8973,7 +8977,7 @@ function requestOverSocket() {
     }
     KlineIns.timer = setTimeout(function () {
         RequestData(true);
-    }, KlineIns.intervalTime);
+    }, 1000);
 }
 
 function requestOverHttp() {
@@ -9119,6 +9123,9 @@ function setHttpRequestParam(mark_from, range, limit, since) {
         str += "&limit=" + limit;
     else
         str += "&since=" + since;
+    if (KlineTradeIns.tradeDate.getTime() != 0) {
+        str += "&prevTradeTime=" + KlineTradeIns.tradeDate.getTime()
+    }
     return str;
 }
 
@@ -9498,8 +9505,8 @@ function socketConnect() {
             requestSuccessHandler(JSON.parse(res.body));
         });
     }, function () {
+        console.log("reconnect in 5 seconds ...");
         setTimeout(function () {
-            console.log("reconnect in 5 seconds");
             socketConnect();
         }, 5000);
     });
