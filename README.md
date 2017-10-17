@@ -1,4 +1,6 @@
-# Kline
+# Kline     [![npm version](https://badge.fury.io/js/kline.svg)](https://badge.fury.io/js/kline)
+
+[![NPM](https://nodei.co/npm/kline.png)](https://npmjs.org/package/kline)
 
 > 本项目基于某网站的K线插件做了一些封装和二次开发,使插件更加易用,方便后来的开发者. 修改主要涉及以下几个点:
 
