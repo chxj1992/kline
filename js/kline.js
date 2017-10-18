@@ -121,25 +121,25 @@ Kline.prototype = {
      * Events
      *********************************************/
 
-    onResize: function(width, height) {
+    onResize: function (width, height) {
         if (this.debug) {
             console.log("chart resized!");
         }
     },
 
-    onLangChange: function(lang) {
+    onLangChange: function (lang) {
         if (this.debug) {
             console.log("language changed!");
         }
     },
 
-    onSymbolChange: function(symbol, symbolName) {
+    onSymbolChange: function (symbol, symbolName) {
         if (this.debug) {
             console.log("symbol changed!");
         }
     },
 
-    onThemeChange: function(theme) {
+    onThemeChange: function (theme) {
         if (this.debug) {
             console.log("theme changed!");
         }
@@ -3776,7 +3776,7 @@ ChartManager.prototype.drawAreaOverlay = function (context, area) {
     this.drawArea(context, area, plotterNames);
 };
 ChartManager.prototype.drawMain = function (frameName, context) {
-    drawn = false;
+    var drawn = false;
 
     if (!drawn) {
         for (var it in this._areas) {
@@ -10133,3 +10133,6 @@ function draw(instance) {
     $(KlineIns.element).css({visibility: "visible"});
 }
 
+try {
+    module.exports = exports = Kline;
+} catch (e) {}
