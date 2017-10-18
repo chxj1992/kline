@@ -129,7 +129,7 @@ body {
 .market_chooser .chart_dropdown_data td {
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    padding: .5px 6px!important;
+    padding: .5px 6px !important;
     vertical-align: top;
     line-height: 24px
 }
@@ -1261,4 +1261,10 @@ body {
     text-decoration: none;
     color: #1478c8;
     font-family: Arial, sans
+}
+
+.chart_BoxSize {
+    width: 20px;
+    height: 20px;
+    background: url("img/size.png") no-repeat;
 }

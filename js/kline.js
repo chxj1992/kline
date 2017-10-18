@@ -9768,7 +9768,7 @@ var template_str = "\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <div id=\"chart_updated_time\">\n" +
-    "                    <div id=\"sizeIcon\" class=\"chart_BoxSize\">大小</div>\n" +
+    "                    <div id=\"sizeIcon\" class=\"chart_BoxSize\"></div>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "            <!-- ToolPanel -->\n" +
