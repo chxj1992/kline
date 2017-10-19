@@ -123,7 +123,7 @@ $ npm install kline
 |`height`   | 高度度 (px)      | 650
 |`theme`   | 主题 dark(暗色)/light(亮色) | dark
 |`language` | 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文) | zh-cn
-|`ranges` | 聚合选项 1w(1周)/1d(1天)/12h(12小时)/6h(6小时)/4h(4小时)/2h(2小时)/1h(1小时)/30m(30分钟)/15m(15分钟)/5m(5分钟)/3m(3分钟)/1m(1分钟)/line(分时) | ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
+|`ranges` | 聚合选项 1w/1d/12h/6h/4h/2h/1h/30m/15m/5m/3m/1m/line (w:周, d:天, h:小时, m:分钟, line:分时数据) | ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
 |`symbol` | 交易代号 | 
 |`symbolName`  | 交易名称 | 
 |`type`  | 连接类型 socket(websocket)/poll(轮询) |  poll
