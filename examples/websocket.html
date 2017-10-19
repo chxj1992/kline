@@ -27,6 +27,18 @@
     <h1>K线图</h1>
 
     <div id="kline_container"></div>
+
+    <hr>
+
+    <input id="interval-time" type="text" value="5000">
+    <button id="socket-set-interval">Set Interval Time</button>
+    <hr>
+
+    <button id="socket-connect">Connect</button>
+    <hr>
+
+    <button id="socket-disconnect">Disconnect</button>
+
 </div>
 
 <script src="/js/kline.js"></script>
@@ -43,7 +55,7 @@
         symbol: "coin5/coin4",
         symbolName: "COIN5_COIN4",
         type: "socket", // poll/socket
-        url: 'http://127.0.0.1:8088/trade/socket',
+        url: 'http://127.0.0.1:8080/v1/trade/socket',
         limit: 1000,
         intervalTime: 5000,
         subscribePath: "/trade/kline/push",
@@ -53,6 +65,19 @@
     });
 
     kline.draw();
+
+    $('#socket-connect').click(function () {
+        kline.connect();
+    });
+
+    $('#socket-disconnect').click(function () {
+        kline.disconnect();
+    });
+
+    $('#socket-set-interval').click(function () {
+        var intervalTime = $('#interval-time').val();
+        kline.setIntervalTime(intervalTime);
+    });
 
 </script>
 

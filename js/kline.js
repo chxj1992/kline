@@ -26,8 +26,10 @@ var Kline = function (option) {
     this.ranges = ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
     this.showTrade = true;
     this.tradeWidth = 250;
+    this.socketConnected = false;
 
     this.periodMap = {
+        "line": 1000,
         "01w": 7 * 86400 * 1000,
         "03d": 3 * 86400 * 1000,
         "01d": 86400 * 1000,
@@ -56,7 +58,8 @@ var Kline = function (option) {
         "15m": "15m",
         "5m": "05m",
         "3m": "03m",
-        "1m": "01m"
+        "1m": "01m",
+        "line": "line"
     };
 
     Object.assign(this, option);
@@ -116,6 +119,40 @@ Kline.prototype = {
         on_size(this.width, this.height);
     },
 
+    setIntervalTime: function (intervalTime) {
+        this.intervalTime = intervalTime;
+        if (this.debug) {
+            console.log('DEBUG: interval time changed to ' + intervalTime);
+        }
+    },
+
+    connect: function () {
+        if (this.type != 'socket') {
+            if (this.debug) {
+                console.log('DEBUG: this is for socket type');
+            }
+            return;
+        }
+        socketConnect();
+        RequestData();
+    },
+
+    disconnect: function () {
+        if (this.type != 'socket') {
+            if (this.debug) {
+                console.log('DEBUG: this is for socket type');
+            }
+            return;
+        }
+        if (this.socketClient) {
+            this.socketClient.disconnect();
+            KlineIns.socketConnected = false;
+        }
+        if (this.debug) {
+            console.log('DEBUG: socket disconnected');
+        }
+    },
+
 
     /*********************************************
      * Events
@@ -123,25 +160,31 @@ Kline.prototype = {
 
     onResize: function (width, height) {
         if (this.debug) {
-            console.log("chart resized!");
+            console.log("DEBUG: chart resized to width: " + width + " height: " + height);
         }
     },
 
     onLangChange: function (lang) {
         if (this.debug) {
-            console.log("language changed!");
+            console.log("DEBUG: language changed to " + lang);
         }
     },
 
     onSymbolChange: function (symbol, symbolName) {
         if (this.debug) {
-            console.log("symbol changed!");
+            console.log("DEBUG: symbol changed to " + symbol + " " + symbolName);
         }
     },
 
     onThemeChange: function (theme) {
         if (this.debug) {
-            console.log("theme changed!");
+            console.log("DEBUG: theme changed to : " + theme);
+        }
+    },
+
+    onRangeChange: function (range) {
+        if (this.debug) {
+            console.log("DEBUG: range changed to " + range);
         }
     }
 
@@ -2453,6 +2496,7 @@ Chart.prototype.setCurrentMoneyType = function (moneyType) {
 Chart.prototype.setCurrentPeriod = function (period) {
     this._range = KlineIns.periodMap[period];
     this.updateDataAndDisplay();
+    KlineIns.onRangeChange(this._range);
 };
 Chart.prototype.updateDataSource = function (data) {
     this._data = data;
@@ -9037,9 +9081,18 @@ function parseRequestParam(str) {
 }
 
 function requestOverSocket() {
+    if (!KlineIns.socketConnected) {
+        if (KlineIns.debug) {
+            console.log("DEBUG: socket is not coonnected")
+        }
+        return;
+    }
     if (KlineIns.socketClient && KlineIns.socketClient.ws.readyState == 1) {
         KlineIns.socketClient.send(KlineIns.sendPath, {}, JSON.stringify(parseRequestParam(KlineIns.requestParam)));
         return;
+    }
+    if (KlineIns.debug) {
+        console.log("DEBUG: socket client is not ready yet ...");
     }
     KlineIns.timer = setTimeout(function () {
         RequestData(true);
@@ -9048,7 +9101,7 @@ function requestOverSocket() {
 
 function requestOverHttp() {
     if (KlineIns.debug) {
-        console.log(KlineIns.requestParam);
+        console.log("DEBUG: " + KlineIns.requestParam);
     }
     $(document).ready(
         KlineIns.G_HTTP_REQUEST = $.ajax({
@@ -9101,8 +9154,11 @@ function requestSuccessHandler(res) {
 
     var updateDataRes = KlineIns.chartMgr.updateData("frame0.k0", KlineIns.data.lines);
     KlineIns.requestParam = setHttpRequestParam(KlineIns.symbol, KlineIns.range, null, KlineIns.chartMgr.getDataSource("frame0.k0").getLastDate());
+
+    var intervalTime = KlineIns.intervalTime < KlineIns.range ? KlineIns.intervalTime : KlineIns.range;
+
     if (!updateDataRes) {
-        KlineIns.timer = setTimeout(RequestData, KlineIns.intervalTime);
+        KlineIns.timer = setTimeout(RequestData, intervalTime);
         return;
     }
     if (KlineIns.data.trades && KlineIns.data.trades.length > 0) {
@@ -9113,7 +9169,7 @@ function requestSuccessHandler(res) {
         KlineTradeIns.updateDepth(KlineIns.data.depths);
     }
     clear_refresh_counter();
-    KlineIns.timer = setTimeout(TwoSecondThread, KlineIns.intervalTime);
+    KlineIns.timer = setTimeout(TwoSecondThread, intervalTime);
     $("#chart_loading").removeClass("activated");
     ChartManager.getInstance().redraw('All', false);
 }
@@ -9505,7 +9561,7 @@ function switch_period(name) {
     if (name == 'line') {
         ChartManager.getInstance().getChart().strIsLine = true;
         ChartManager.getInstance().setChartStyle('frame0.k0', 'Line');
-        ChartManager.getInstance().getChart().setCurrentPeriod('01m');
+        ChartManager.getInstance().getChart().setCurrentPeriod('line');
         var settings = ChartSettings.get();
         settings.charts.period = name;
         ChartSettings.save();
@@ -9566,6 +9622,11 @@ function calcPeriodWeight(period) {
 }
 
 function socketConnect() {
+    KlineIns.socketConnected = true;
+    if (KlineIns.socketClient && KlineIns.socketClient.ws.readyState == 1) {
+        console.log('DEBUG: already connected');
+        return;
+    }
     var socket = new SockJS(KlineIns.url);
     KlineIns.socketClient = Stomp.over(socket);
     if (!KlineIns.debug) {
@@ -9577,7 +9638,7 @@ function socketConnect() {
         });
     }, function () {
         KlineIns.socketClient.disconnect();
-        console.log("reconnect in 5 seconds ...");
+        console.log("DEBUG: reconnect in 5 seconds ...");
         setTimeout(function () {
             socketConnect();
         }, 5000);
@@ -10135,4 +10196,5 @@ function draw(instance) {
 
 try {
     module.exports = exports = Kline;
-} catch (e) {}
+} catch (e) {
+}

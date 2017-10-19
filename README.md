@@ -194,6 +194,30 @@ kline.setShowTrade(false);  // true/false
 kline.toggleTrade(); 
 ```
 
+* setIntervalTime: function (intervalTime) 
+
+    设置请求间隔时间(ms)
+
+```javascript
+kline.setIntervalTime(5000); 
+```
+
+* connect: function () 
+
+    建立socket连接
+
+```javascript
+kline.connect(); 
+```
+
+* disconnect: function () 
+
+    断开socket连接
+
+```javascript
+kline.disconnect(); 
+```
+
 
 ### Events
 
@@ -203,6 +227,7 @@ kline.toggleTrade();
 | `onLangChange: function(lang)`   | 语言改变时触发
 | `onSymbolChange: function(symbol, symbolName)`   | 交易品种改变时触发
 | `onThemeChange: function(theme)`   | 主题改变时触发
+| `onRangeChange: function(range)`   | 聚合时间改变时触发
 
 
 > Example
