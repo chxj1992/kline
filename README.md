@@ -83,7 +83,7 @@ $ npm install kline
   <div id="kline_container"></div>
 ```
 
-### Develop
+### Examples
 
 * Poll(轮询)
 
@@ -116,22 +116,24 @@ $ npm install kline
 
 ### Support Options
 
-* `element`: 容器元素选择器 Default: #kline_container
-* `width`: 宽度 (px) Default: 1200
-* `height`: 宽度 (px) Default: 650
-* `theme`: 主题 dark(暗色)/light(亮色) Default: dark
-* `language`: 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文) Default: zh-cn
-* `ranges`: 聚合选项 1w(1周)/1d(1天)/12h(12小时)/6h(6小时)/4h(4小时)/2h(2小时)/1h(1小时)/30m(30分钟)/15m(15分钟)/5m(5分钟)/3m(3分钟)/1m(1分钟)/line(分时) Default: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
-* `symbol`: 交易代号
-* `symbolName`: 交易名称
-* `type`: 连接类型 socket(websocket)/poll(轮询) Default: poll
-* `url`: 请求地址
-* `limit`: 分页大小 Default: 1000
-* `intervalTime`: 请求间隔时间(毫秒) Default: 3000
-* `subscribePath`(仅socket方式需要): 订阅地址
-* `sendPath`(仅socket方式需要): 发送地址
-* `debug`: 调试模式 true/false Default: true
-* `showTrade`: 显示行情侧边栏 true/false Default: true
+| 参数名称   | 参数说明          |   默认值
+|:---------|:-----------------|:------------
+|`element` | 容器元素选择器     | #kline_container
+|`width`   | 宽度 (px)         | 1200
+|`height`   | 高度度 (px)      | 650
+|`theme`   | 主题 dark(暗色)/light(亮色) | dark
+|`language` | 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文) | zh-cn
+|`ranges` | 聚合选项 1w(1周)/1d(1天)/12h(12小时)/6h(6小时)/4h(4小时)/2h(2小时)/1h(1小时)/30m(30分钟)/15m(15分钟)/5m(5分钟)/3m(3分钟)/1m(1分钟)/line(分时) | ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
+|`symbol` | 交易代号 | 
+|`symbolName`  | 交易名称 | 
+|`type`  | 连接类型 socket(websocket)/poll(轮询) |  poll
+|`url`  | 请求地址 | 
+|`limit`  | 分页大小 | 1000
+|`intervalTime`  | 请求间隔时间(ms) | 3000
+|`subscribePath`   | 订阅地址 (仅socket方式需要) | 
+|`sendPath`   | 发送地址 (仅socket方式需要) | 
+|`debug`   | 是否开启调试模式 true/false |  true
+|`showTrade`   | 是否显示行情侧边栏 true/false |  true
 
 
 ### Methods
@@ -195,15 +197,15 @@ kline.toggleTrade();
 
 ### Events
 
-* onResize: function(width, height) : 画布尺寸改变时触发
+| 事件函数                 |   说明
+|:-----------------------|:------------
+| `onResize: function(width, height)`   | 画布尺寸改变时触发
+| `onLangChange: function(lang)`   | 语言改变时触发
+| `onSymbolChange: function(symbol, symbolName)`   | 交易品种改变时触发
+| `onThemeChange: function(theme)`   | 主题改变时触发
 
-* onLangChange: function(lang) : 语言改变时触发
 
-* onSymbolChange: function(symbol, symbolName) : 交易品种代码改变时触发
-
-* onThemeChange: function(theme) : 主题改变时触发
-
-> Examples
+> Example
 
 ```javascript
     var kline = new Kline({
@@ -221,7 +223,7 @@ kline.toggleTrade();
 
 ### Response
 
-example: 
+> Example
 
 ```json
 {
@@ -264,8 +266,8 @@ example:
 }
 ```
 
-说明:
+* 响应参数说明:
 
-* `lines`: K线图, 依次是: 时间(毫秒), 开盘价, 最高价, 最低价, 收盘价, 成交量
-* `depths`(可选, showTrade后展示): 深度图数据,  `asks`:一定比例的卖单类别, `bids`:一定比例的买单列表, 其中每项的值依次是 成交价, 成交量
-* `trades`(可选, showTrade后展示): 最近成交记录,  `amount`: 成交量, `price`:单价, `tid`:订单ID, `time`:成交时间(毫秒), `type`:成交类型 buy/sell
+* `lines`: K线图, 依次是: 时间(ms), 开盘价, 最高价, 最低价, 收盘价, 成交量
+* `depths`(可选, 行情侧边栏显示): 深度图数据,  `asks`:一定比例的卖单列表, `bids`:一定比例的买单列表, 其中每项的值依次是 成交价, 成交量
+* `trades`(可选, 行情侧边栏显示): 最近成交记录,  `amount`: 成交量, `price`:单价, `tid`:订单ID, `time`:成交时间(ms), `type`:成交类型 buy/sell
