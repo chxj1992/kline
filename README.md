@@ -134,6 +134,7 @@ $ npm install kline
 |`sendPath`   | 发送地址 (仅socket方式需要) | 
 |`debug`   | 是否开启调试模式 true/false |  true
 |`showTrade`   | 是否显示行情侧边栏 true/false |  true
+|`enableSockjs`   | 是否开启sockjs支持 true/false |  true
 
 
 ### Methods

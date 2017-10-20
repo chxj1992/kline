@@ -52,7 +52,7 @@
         theme: 'dark', // light/dark
         language: 'zh-cn', // zh-cn/en-us/zh-tw
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
-        symbol: "coin5/coin4",
+        symbol: "btc/cny",
         symbolName: "COIN5_COIN4",
         type: "socket", // poll/socket
         url: 'http://127.0.0.1:8080/v1/trade/socket',
@@ -61,7 +61,8 @@
         subscribePath: "/trade/kline/push",
         sendPath: "/trade/kline",
         debug: true,
-        showTrade: true
+        showTrade: true,
+        enableSockjs: true
     });
 
     kline.draw();

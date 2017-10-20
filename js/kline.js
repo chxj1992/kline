@@ -27,6 +27,7 @@ var Kline = function (option) {
     this.showTrade = true;
     this.tradeWidth = 250;
     this.socketConnected = false;
+    this.enableSockjs = true;
 
     this.periodMap = {
         "line": 1000,
@@ -7091,12 +7092,16 @@ TimelineSelectionPlotter.prototype.Draw = function (context) {
     var date = time.getDate();
     var hour = time.getHours();
     var minute = time.getMinutes();
+    var second = time.getSeconds();
     var strMonth = month.toString();
     var strDate = date.toString();
     var strHour = hour.toString();
     var strMinute = minute.toString();
+    var strSecond = second.toString();
     if (minute < 10)
         strMinute = "0" + strMinute;
+    if (second < 10)
+        strSecond = "0" + strSecond;
     var text = "";
     if (lang == "zh-cn") {
         text = strMonth + "月" + strDate + "日  " +
@@ -7107,6 +7112,9 @@ TimelineSelectionPlotter.prototype.Draw = function (context) {
     } else if (lang == "en-us") {
         text = TimelineSelectionPlotter.MonthConvert[month] + " " + strDate + "  " +
             strHour + ":" + strMinute;
+    }
+    if (KlineIns.range < 60000) {
+        text += ":" + strSecond;
     }
     context.fillText(text, x, area.getMiddle());
 };
@@ -9627,8 +9635,12 @@ function socketConnect() {
         console.log('DEBUG: already connected');
         return;
     }
-    var socket = new SockJS(KlineIns.url);
-    KlineIns.socketClient = Stomp.over(socket);
+    if ( KlineIns.enableSockjs ) {
+        var socket = new SockJS(KlineIns.url);
+        KlineIns.socketClient = Stomp.over(socket);
+    } else {
+        KlineIns.socketClient = Stomp.client(KlineIns.url);
+    }
     if (!KlineIns.debug) {
         KlineIns.socketClient.debug = null;
     }
