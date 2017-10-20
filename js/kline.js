@@ -30,7 +30,6 @@ var Kline = function (option) {
     this.enableSockjs = true;
 
     this.periodMap = {
-        "line": 1000,
         "01w": 7 * 86400 * 1000,
         "03d": 3 * 86400 * 1000,
         "01d": 86400 * 1000,
@@ -43,7 +42,8 @@ var Kline = function (option) {
         "15m": 15 * 60 * 1000,
         "05m": 5 * 60 * 1000,
         "03m": 3 * 60 * 1000,
-        "01m": 60 * 1000
+        "01m": 60 * 1000,
+        "line": 60 * 1000
     };
 
     this.tagMapPeriod = {
