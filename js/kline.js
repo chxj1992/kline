@@ -28,6 +28,7 @@ var Kline = function (option) {
     this.tradeWidth = 250;
     this.socketConnected = false;
     this.enableSockjs = true;
+    this.reverseColor = false;
 
     this.periodMap = {
         "01w": 7 * 86400 * 1000,
@@ -5311,10 +5312,18 @@ Theme.Font = {
 var DarkTheme = create_class(Theme);
 DarkTheme.prototype.__construct = function () {
     this._colors = [];
-    this._colors[Theme.Color.Positive] = "#19b34c";
-    this._colors[Theme.Color.Negative] = "#990e0e";
-    this._colors[Theme.Color.PositiveDark] = "#004718";
-    this._colors[Theme.Color.NegativeDark] = "#3b0e08";
+    
+    if (KlineIns.reverseColor) {
+        this._colors[Theme.Color.Positive] = "#990e0e";
+        this._colors[Theme.Color.Negative] = "#19b34c";
+        this._colors[Theme.Color.PositiveDark] = "#3b0e08";
+        this._colors[Theme.Color.NegativeDark] = "#004718";
+    } else {
+        this._colors[Theme.Color.Positive] = "#19b34c";
+        this._colors[Theme.Color.Negative] = "#990e0e";
+        this._colors[Theme.Color.PositiveDark] = "#004718";
+        this._colors[Theme.Color.NegativeDark] = "#3b0e08";
+    }
     this._colors[Theme.Color.Unchanged] = "#fff";
     this._colors[Theme.Color.Background] = "#0a0a0a";
     this._colors[Theme.Color.Cursor] = "#aaa";
@@ -5347,10 +5356,18 @@ DarkTheme.prototype.__construct = function () {
 var LightTheme = create_class(Theme);
 LightTheme.prototype.__construct = function () {
     this._colors = [];
-    this._colors[Theme.Color.Positive] = "#53b37b";
-    this._colors[Theme.Color.Negative] = "#db5542";
-    this._colors[Theme.Color.PositiveDark] = "#66d293";
-    this._colors[Theme.Color.NegativeDark] = "#ffadaa";
+
+    if (KlineIns.reverseColor) {
+        this._colors[Theme.Color.Positive] = "#db5542";
+        this._colors[Theme.Color.Negative] = "#53b37b";
+        this._colors[Theme.Color.PositiveDark] = "#ffadaa";
+        this._colors[Theme.Color.NegativeDark] = "#66d293";
+    } else {
+        this._colors[Theme.Color.Positive] = "#53b37b";
+        this._colors[Theme.Color.Negative] = "#db5542";
+        this._colors[Theme.Color.PositiveDark] = "#66d293";
+        this._colors[Theme.Color.NegativeDark] = "#ffadaa";
+    }
     this._colors[Theme.Color.Unchanged] = "#fff";
     this._colors[Theme.Color.Background] = "#fff";
     this._colors[Theme.Color.Cursor] = "#aaa";
