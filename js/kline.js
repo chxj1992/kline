@@ -136,7 +136,6 @@ Kline.prototype = {
             return;
         }
         socketConnect();
-        RequestData();
     },
 
     disconnect: function () {
@@ -9665,6 +9664,7 @@ function socketConnect() {
         KlineIns.socketClient.subscribe(KlineIns.subscribePath, function (res) {
             requestSuccessHandler(JSON.parse(res.body));
         });
+        RequestData(true);
     }, function () {
         KlineIns.socketClient.disconnect();
         console.log("DEBUG: reconnect in 5 seconds ...");
