@@ -9172,6 +9172,8 @@ function requestSuccessHandler(res) {
         }, KlineIns.intervalTime);
         return;
     }
+    $("#chart_loading").removeClass("activated");
+
     var chart = ChartManager.getInstance().getChart();
     chart.setTitle();
     KlineIns.data = eval(res.data);
@@ -9194,7 +9196,6 @@ function requestSuccessHandler(res) {
     }
     clear_refresh_counter();
     KlineIns.timer = setTimeout(TwoSecondThread, intervalTime);
-    $("#chart_loading").removeClass("activated");
     ChartManager.getInstance().redraw('All', false);
 }
 
