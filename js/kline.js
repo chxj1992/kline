@@ -29,6 +29,7 @@ var Kline = function (option) {
     this.socketConnected = false;
     this.enableSockjs = true;
     this.reverseColor = false;
+    this.isSized = false;
 
     this.periodMap = {
         "01w": 7 * 86400 * 1000,
@@ -136,7 +137,6 @@ Kline.prototype = {
             return;
         }
         socketConnect();
-        RequestData();
     },
 
     disconnect: function () {
@@ -8704,10 +8704,9 @@ CDynamicLinePlotter.prototype.Draw = function (context) {
     return;
 };
 
-var isSize = false;
 $('body').on('click', '#sizeIcon', function () {
-    isSize = !isSize;
-    if (isSize) {
+    KlineIns.isSized = !KlineIns.isSized;
+    if (KlineIns.isSized) {
         $(KlineIns.element).css({
             position: 'fixed',
             left: '0',
@@ -8718,6 +8717,7 @@ $('body').on('click', '#sizeIcon', function () {
             height: '100%',
             zIndex: '10000'
         });
+
         on_size();
         $('html,body').css({width: '100%', height: '100%', overflow: 'hidden'});
     } else {
@@ -9173,6 +9173,8 @@ function requestSuccessHandler(res) {
         }, KlineIns.intervalTime);
         return;
     }
+    $("#chart_loading").removeClass("activated");
+
     var chart = ChartManager.getInstance().getChart();
     chart.setTitle();
     KlineIns.data = eval(res.data);
@@ -9195,7 +9197,6 @@ function requestSuccessHandler(res) {
     }
     clear_refresh_counter();
     KlineIns.timer = setTimeout(TwoSecondThread, intervalTime);
-    $("#chart_loading").removeClass("activated");
     ChartManager.getInstance().redraw('All', false);
 }
 
@@ -9455,7 +9456,6 @@ function on_size(w, h) {
     }
 
     ChartManager.getInstance().redraw('All', true);
-
     KlineIns.onResize(width, height);
 }
 
@@ -9534,7 +9534,11 @@ function switch_tools(name) {
         ChartManager.getInstance().setRunningMode(ChartManager.getInstance()._beforeDrawingTool);
         ChartManager.getInstance().redraw("All", true);
     }
-    on_size(KlineIns.width, KlineIns.height);
+    if (KlineIns.isSized) {
+        on_size();
+    } else {
+        on_size(KlineIns.width, KlineIns.height);
+    }
 }
 
 function switch_indic(name) {
@@ -9564,7 +9568,11 @@ function switch_indic(name) {
         $('#chart_tabbar')[0].style.display = 'none';
         $("#chart_tabbar a").removeClass("selected");
     }
-    on_size(KlineIns.width, KlineIns.height);
+    if (KlineIns.isSized) {
+        on_size();
+    } else {
+        on_size(KlineIns.width, KlineIns.height);
+    }
 }
 
 function switch_period(name) {
@@ -9665,6 +9673,7 @@ function socketConnect() {
         KlineIns.socketClient.subscribe(KlineIns.subscribePath, function (res) {
             requestSuccessHandler(JSON.parse(res.body));
         });
+        RequestData(true);
     }, function () {
         KlineIns.socketClient.disconnect();
         console.log("DEBUG: reconnect in 5 seconds ...");
