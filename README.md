@@ -220,6 +220,21 @@ kline.connect();
 kline.disconnect(); 
 ```
 
+* pause: function () 
+
+    暂停请求数据
+
+```javascript
+kline.pause(); 
+```
+
+* resend: function () 
+
+    重新请求数据
+
+```javascript
+kline.resend(); 
+```
 
 ### Events
 

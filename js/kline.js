@@ -30,6 +30,7 @@ var Kline = function (option) {
     this.enableSockjs = true;
     this.reverseColor = false;
     this.isSized = false;
+    this.paused = false;
 
     this.periodMap = {
         "01w": 7 * 86400 * 1000,
@@ -127,6 +128,21 @@ Kline.prototype = {
         if (this.debug) {
             console.log('DEBUG: interval time changed to ' + intervalTime);
         }
+    },
+
+    pause: function () {
+        if (this.debug) {
+            console.log('DEBUG: kline paused');
+        }
+        this.paused = true;
+    },
+
+    resend: function () {
+        if (this.debug) {
+            console.log('DEBUG: kline continue');
+        }
+        this.paused = false;
+        RequestData(true);
     },
 
     connect: function () {
@@ -9091,6 +9107,9 @@ function clear_refresh_counter() {
 function RequestData(showLoading) {
     AbortRequest();
     window.clearTimeout(KlineIns.timer);
+    if (KlineIns.paused) {
+        return;
+    }
     if (showLoading == true) {
         $("#chart_loading").addClass("activated");
     }
