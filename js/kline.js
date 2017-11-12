@@ -9675,16 +9675,21 @@ function calcPeriodWeight(period) {
 
 function socketConnect() {
     KlineIns.socketConnected = true;
-    if (KlineIns.socketClient && KlineIns.socketClient.ws.readyState == 1) {
+
+    if (!KlineIns.socketClient) {
+        if ( KlineIns.enableSockjs ) {
+            var socket = new SockJS(KlineIns.url);
+            KlineIns.socketClient = Stomp.over(socket);
+        } else {
+            KlineIns.socketClient = Stomp.client(KlineIns.url);
+        }
+    }
+
+    if (KlineIns.socketClient.ws.readyState == 1) {
         console.log('DEBUG: already connected');
         return;
     }
-    if ( KlineIns.enableSockjs ) {
-        var socket = new SockJS(KlineIns.url);
-        KlineIns.socketClient = Stomp.over(socket);
-    } else {
-        KlineIns.socketClient = Stomp.client(KlineIns.url);
-    }
+
     if (!KlineIns.debug) {
         KlineIns.socketClient.debug = null;
     }
