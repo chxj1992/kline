@@ -136,6 +136,7 @@ $ npm install kline
 |`showTrade`   | 是否显示行情侧边栏 true/false |  true
 |`enableSockjs`   | 是否开启sockjs支持 true/false |  true
 |`reverseColor`   | 是否反色, 默认绿涨红跌 true/false | false
+|`socketClient`   | websocket 连接对象 | null
 
 
 ### Methods
