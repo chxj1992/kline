@@ -9708,7 +9708,7 @@ function socketConnect() {
 }
 
 var template_str = "\n" +
-    "<div class=\"trade_container dark\">\n" +
+    "<div class=\"trade_container dark hide\">\n" +
     "        <div class=\"m_cent\">\n" +
     "            <div class=\"m_guadan\">\n" +
     "                <div class=\"symbol-title\">\n" +
