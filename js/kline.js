@@ -30,6 +30,7 @@ var Kline = function (option) {
     this.enableSockjs = true;
     this.reverseColor = false;
     this.isSized = false;
+    this.paused = false;
 
     this.periodMap = {
         "01w": 7 * 86400 * 1000,
@@ -127,6 +128,21 @@ Kline.prototype = {
         if (this.debug) {
             console.log('DEBUG: interval time changed to ' + intervalTime);
         }
+    },
+
+    pause: function () {
+        if (this.debug) {
+            console.log('DEBUG: kline paused');
+        }
+        this.paused = true;
+    },
+
+    resend: function () {
+        if (this.debug) {
+            console.log('DEBUG: kline continue');
+        }
+        this.paused = false;
+        RequestData(true);
     },
 
     connect: function () {
@@ -9091,6 +9107,9 @@ function clear_refresh_counter() {
 function RequestData(showLoading) {
     AbortRequest();
     window.clearTimeout(KlineIns.timer);
+    if (KlineIns.paused) {
+        return;
+    }
     if (showLoading == true) {
         $("#chart_loading").addClass("activated");
     }
@@ -9656,16 +9675,21 @@ function calcPeriodWeight(period) {
 
 function socketConnect() {
     KlineIns.socketConnected = true;
-    if (KlineIns.socketClient && KlineIns.socketClient.ws.readyState == 1) {
+
+    if (!KlineIns.socketClient) {
+        if ( KlineIns.enableSockjs ) {
+            var socket = new SockJS(KlineIns.url);
+            KlineIns.socketClient = Stomp.over(socket);
+        } else {
+            KlineIns.socketClient = Stomp.client(KlineIns.url);
+        }
+    }
+
+    if (KlineIns.socketClient.ws.readyState == 1) {
         console.log('DEBUG: already connected');
         return;
     }
-    if ( KlineIns.enableSockjs ) {
-        var socket = new SockJS(KlineIns.url);
-        KlineIns.socketClient = Stomp.over(socket);
-    } else {
-        KlineIns.socketClient = Stomp.client(KlineIns.url);
-    }
+
     if (!KlineIns.debug) {
         KlineIns.socketClient.debug = null;
     }
@@ -9684,7 +9708,7 @@ function socketConnect() {
 }
 
 var template_str = "\n" +
-    "<div class=\"trade_container dark\">\n" +
+    "<div class=\"trade_container dark hide\">\n" +
     "        <div class=\"m_cent\">\n" +
     "            <div class=\"m_guadan\">\n" +
     "                <div class=\"symbol-title\">\n" +
