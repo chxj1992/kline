@@ -812,7 +812,7 @@ body {
     text-align: center;
     margin: 8px auto;
     padding: 5px 24px 5px 24px;
-    width: 72px
+    width: 84px
 }
 
 #chart_parameter_settings .chart_str_default {
@@ -820,9 +820,9 @@ body {
 }
 
 .chart_container.dark #chart_parameter_settings {
-    background-color: rgba(0, 0, 0, 0.6);
-    border-color: #aaa;
-    color: #ccc
+    background-color: rgba(0, 0, 0, 0.9);
+    border-color: rgba(0,0,0,0.9);
+    color: #ccc;
 }
 
 .chart_container.dark #chart_parameter_settings #close_settings {
@@ -863,7 +863,7 @@ body {
 
 .chart_container.dark input,
 .chart_container.dark button {
-    background-color: #333;
+    background-color: #151515;
     border-color: #333;
     color: #ccc
 }
