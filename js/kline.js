@@ -2449,7 +2449,7 @@ Chart.strPeriod = {
         '1hour': '(1小時)',
         '1day': '(日線)',
         '1week': '(周線)',
-        '3min': '(3分钟)',
+        '3min': '(3分鐘)',
         '2hour': '(2小時)',
         '4hour': '(4小時)',
         '6hour': '(6小時)',
@@ -9073,6 +9073,8 @@ function refresh_function() {
         var num = new Number(refresh_counter / 3600);
         if (lang == "en-us") {
             $("#chart_updated_time_text").html(num.toFixed(0) + "h");
+        } else if (lang == "zh-tw") {
+            $("#chart_updated_time_text").html(num.toFixed(0) + "小時");
         } else {
             $("#chart_updated_time_text").html(num.toFixed(0) + "小时");
         }
@@ -9080,6 +9082,8 @@ function refresh_function() {
         var num = new Number(refresh_counter / 60);
         if (lang == "en-us") {
             $("#chart_updated_time_text").html(num.toFixed(0) + "m");
+        } else if (lang == "zh-tw") {
+            $("#chart_updated_time_text").html(num.toFixed(0) + "分鐘");
         } else {
             $("#chart_updated_time_text").html(num.toFixed(0) + "分钟");
         }
@@ -9113,7 +9117,7 @@ function RequestData(showLoading) {
     if (showLoading == true) {
         $("#chart_loading").addClass("activated");
     }
-    if (KlineIns.type == "socket" && KlineIns.socketClient) {
+    if (KlineIns.type == "socket" && KlineIns.socket分鐘{
         requestOverSocket();
     } else {
         requestOverHttp();
@@ -10128,11 +10132,11 @@ var template_str = "\n" +
     "        <div style=\"display: none\" id=\"chart_language_switch_tmp\">\n" +
     "            <span name=\"chart_str_period\" zh_tw=\"週期\" zh_cn=\"周期\" en_us=\"TIME\"></span>\n" +
     "            <span name=\"chart_str_period_line\" zh_tw=\"分時\" zh_cn=\"分时\" en_us=\"Line\"></span>\n" +
-    "            <span name=\"chart_str_period_1m\" zh_tw=\"1分钟\" zh_cn=\"1分钟\" en_us=\"1m\"></span>\n" +
-    "            <span name=\"chart_str_period_3m\" zh_tw=\"3分钟\" zh_cn=\"3分钟\" en_us=\"3m\"></span>\n" +
-    "            <span name=\"chart_str_period_5m\" zh_tw=\"5分钟\" zh_cn=\"5分钟\" en_us=\"5m\"></span>\n" +
-    "            <span name=\"chart_str_period_15m\" zh_tw=\"15分钟\" zh_cn=\"15分钟\" en_us=\"15m\"></span>\n" +
-    "            <span name=\"chart_str_period_30m\" zh_tw=\"30分钟\" zh_cn=\"30分钟\" en_us=\"30m\"></span>\n" +
+    "            <span name=\"chart_str_period_1m\" zh_tw=\"1分鐘\" zh_cn=\"1分钟\" en_us=\"1m\"></span>\n" +
+    "            <span name=\"chart_str_period_3m\" zh_tw=\"3分鐘\" zh_cn=\"3分钟\" en_us=\"3m\"></span>\n" +
+    "            <span name=\"chart_str_period_5m\" zh_tw=\"5分鐘\" zh_cn=\"5分钟\" en_us=\"5m\"></span>\n" +
+    "            <span name=\"chart_str_period_15m\" zh_tw=\"15分鐘\" zh_cn=\"15分钟\" en_us=\"15m\"></span>\n" +
+    "            <span name=\"chart_str_period_30m\" zh_tw=\"30分鐘\" zh_cn=\"30分钟\" en_us=\"30m\"></span>\n" +
     "            <span name=\"chart_str_period_1h\" zh_tw=\"1小時\" zh_cn=\"1小时\" en_us=\"1h\"></span>\n" +
     "            <span name=\"chart_str_period_2h\" zh_tw=\"2小時\" zh_cn=\"2小时\" en_us=\"2h\"></span>\n" +
     "            <span name=\"chart_str_period_4h\" zh_tw=\"4小時\" zh_cn=\"4小时\" en_us=\"4h\"></span>\n" +
