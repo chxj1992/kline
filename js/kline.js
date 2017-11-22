@@ -9117,7 +9117,7 @@ function RequestData(showLoading) {
     if (showLoading == true) {
         $("#chart_loading").addClass("activated");
     }
-    if (KlineIns.type == "socket" && KlineIns.socket分鐘{
+    if (KlineIns.type == "socket" && KlineIns.socketClient) {
         requestOverSocket();
     } else {
         requestOverHttp();
