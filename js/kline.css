@@ -573,12 +573,20 @@ body {
     background-image: url("img/tool_d_push.png")
 }
 
+.chart_container.dark #chart_toolbar .chart_BoxSize {
+    background: url("img/size_d.png") no-repeat;
+}
+
 .chart_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
     background-image: url("img/tool_l_normal.png")
 }
 
 .chart_container.light #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {
     background-image: url("img/tool_l_push.png")
+}
+
+.chart_container.light #chart_toolbar .chart_BoxSize {
+    background: url("img/size_l.png") no-repeat;
 }
 
 .chart_container #chart_toolpanel #chart_Cursor {
@@ -1266,5 +1274,4 @@ body {
 .chart_BoxSize {
     width: 20px;
     height: 20px;
-    background: url("img/size.png") no-repeat;
 }
