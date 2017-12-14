@@ -6,7 +6,7 @@
 
 * 删除了一些不必要的逻辑
 * 把源码中可配置的部分抽出来
-* 添加了对 websocket(websocket over stomp)连接方式的支持
+* 添加了对 websocket(websocket over stomp) 连接方式的支持
 * 用 js 创建 K 线页面元素
 * 增加对外接口及事件回调
 
@@ -90,8 +90,8 @@ $ npm install kline
 ```javascript
     var kline = new Kline({
         element: "#kline_container",
-        symbol: "coin5/coin4",
-        symbolName: "COIN5_COIN4",
+        symbol: "BTC",
+        symbolName: "比特币",
         type: "poll", // poll/socket
         url: "http://127.0.0.1:8080/mock.json"
     });
@@ -103,12 +103,12 @@ $ npm install kline
 ```javascript
    var kline = new Kline({
         element: "#kline_container",
-        symbol: "coin5/coin4",
-        symbolName: "COIN5_COIN4",
+        symbol: "BTC",
+        symbolName: "比特币",
         type: "socket", // poll/socket
         url: 'http://127.0.0.1:8088/socket',
-        subscribePath: "/kline/push",
-        sendPath: "/app/kline"       
+        subscribePath: "/kline/down",
+        sendPath: "/kline/up"       
     });
     kline.draw();
 ```
@@ -253,8 +253,8 @@ kline.resend();
 ```javascript
     var kline = new Kline({
         element: "#kline_container",
-        symbol: "coin5/coin4",
-        symbolName: "COIN5_COIN4",
+        symbol: "BTC",
+        symbolName: "比特币",
         type: "poll", // poll/socket
         url: "http://127.0.0.1:8080/mock.json",
         onResize: function(width, height) {

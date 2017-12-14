@@ -31,6 +31,7 @@ var Kline = function (option) {
     this.reverseColor = false;
     this.isSized = false;
     this.paused = false;
+    this.subscribed = null;
 
     this.periodMap = {
         "01w": 7 * 86400 * 1000,
@@ -86,9 +87,9 @@ Kline.prototype = {
     },
 
     setSymbol: function (symbol, symbolName) {
+        switch_symbol(symbol);
         KlineIns.symbol = symbol;
         KlineIns.symbolName = symbolName;
-        switch_symbol(symbol);
         KlineIns.onSymbolChange(symbol, symbolName);
     },
 
@@ -2513,6 +2514,10 @@ Chart.prototype.setCurrentMoneyType = function (moneyType) {
 };
 Chart.prototype.setCurrentPeriod = function (period) {
     this._range = KlineIns.periodMap[period];
+    if (KlineIns.type == "socket" && KlineIns.socketClient.ws.readyState == 1) {
+        KlineIns.subscribed.unsubscribe();
+        KlineIns.subscribed = KlineIns.socketClient.subscribe(KlineIns.subscribePath + '/' + KlineIns.symbol + '/' + this._range, subscribeCallback);
+    }
     this.updateDataAndDisplay();
     KlineIns.onRangeChange(this._range);
 };
@@ -9191,9 +9196,11 @@ function requestSuccessHandler(res) {
         console.log(res);
     }
     if (!res || !res.success) {
-        KlineIns.timer = setTimeout(function () {
-            RequestData(true);
-        }, KlineIns.intervalTime);
+        if (KlineIns.type == 'poll') {
+            KlineIns.timer = setTimeout(function () {
+                RequestData(true);
+            }, KlineIns.intervalTime);
+        }
         return;
     }
     $("#chart_loading").removeClass("activated");
@@ -9208,7 +9215,9 @@ function requestSuccessHandler(res) {
     var intervalTime = KlineIns.intervalTime < KlineIns.range ? KlineIns.intervalTime : KlineIns.range;
 
     if (!updateDataRes) {
-        KlineIns.timer = setTimeout(RequestData, intervalTime);
+        if (KlineIns.type == 'poll') {
+            KlineIns.timer = setTimeout(RequestData, intervalTime);
+        }
         return;
     }
     if (KlineIns.data.trades && KlineIns.data.trades.length > 0) {
@@ -9219,7 +9228,11 @@ function requestSuccessHandler(res) {
         KlineTradeIns.updateDepth(KlineIns.data.depths);
     }
     clear_refresh_counter();
-    KlineIns.timer = setTimeout(TwoSecondThread, intervalTime);
+
+    if (KlineIns.type == 'poll') {
+        KlineIns.timer = setTimeout(TwoSecondThread, intervalTime);
+    }
+
     ChartManager.getInstance().redraw('All', false);
 }
 
@@ -9651,6 +9664,10 @@ function switch_symbol_selected(symbol) {
 }
 
 function switch_symbol(symbol) {
+    if (KlineIns.type == "socket" && KlineIns.socketClient.ws.readyState == 1) {
+        KlineIns.subscribed.unsubscribe();
+        KlineIns.subscribed = KlineIns.socketClient.subscribe(KlineIns.subscribePath + '/' + symbol + '/' + KlineIns.range, subscribeCallback);
+    }
     switch_symbol_selected(symbol);
     var settings = ChartSettings.get();
     if (settings.charts.period == "line") {
@@ -9677,6 +9694,10 @@ function calcPeriodWeight(period) {
     ChartSettings.save();
 }
 
+function subscribeCallback (res) {
+    requestSuccessHandler(JSON.parse(res.body));
+}
+
 function socketConnect() {
     KlineIns.socketConnected = true;
 
@@ -9698,9 +9719,8 @@ function socketConnect() {
         KlineIns.socketClient.debug = null;
     }
     KlineIns.socketClient.connect({}, function () {
-        KlineIns.socketClient.subscribe(KlineIns.subscribePath, function (res) {
-            requestSuccessHandler(JSON.parse(res.body));
-        });
+        KlineIns.socketClient.subscribe('/user' + KlineIns.subscribePath, subscribeCallback);
+        KlineIns.subscribed = KlineIns.socketClient.subscribe(KlineIns.subscribePath + '/' + KlineIns.symbol + '/' + KlineIns.range, subscribeCallback);
         RequestData(true);
     }, function () {
         KlineIns.socketClient.disconnect();
