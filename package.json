@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pack": "webpack --progress --colors --watch"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,12 @@
   "bugs": {
     "url": "https://github.com/chxj1992/kline/issues"
   },
-  "homepage": "https://github.com/chxj1992/kline#readme"
+  "homepage": "https://github.com/chxj1992/kline#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.36",
+    "@babel/preset-env": "^7.0.0-beta.36",
+    "babel-loader": "^8.0.0-beta.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "webpack": "^3.10.0"
+  }
 }

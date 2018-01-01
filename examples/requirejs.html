@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>K线图</title>
-    <link href="/js/kline.css" rel="stylesheet"/>
+    <link href="/src/css/kline.css" rel="stylesheet"/>
     <script src="../lib/require.js"></script>
     <style type="text/css">
         .kline {
@@ -32,7 +32,7 @@
             "jquery.mousewheel": "../lib/jquery.mousewheel",
             "sockjs": "../lib/sockjs",
             "stomp": "../lib/stomp",
-            "kline": "../js/kline"
+            "kline": "../src/js/areas"
         },
         shim: {
             "jquery.mousewheel": {
@@ -44,7 +44,7 @@
         }
     });
 
-    require(['kline'], function () {
+    require(['backup.js'], function () {
         var kline = new Kline({
             element: "#kline_container",
             width: 1200,
@@ -55,7 +55,7 @@
             symbol: "coin5/coin4",
             symbolName: "COIN5_COIN4",
             type: "poll", // poll/socket
-            url: "http://127.0.0.1:8080/mock.json",
+            url: "http://127.0.0.1:8080/examples/mock.json",
             limit: 1000,
             intervalTime: 5000,
             debug: true,

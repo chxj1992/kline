@@ -4,7 +4,7 @@
     <meta name="renderer" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link href="/js/kline.css" rel="stylesheet"/>
+    <link href="/src/css/kline.css" rel="stylesheet"/>
     <script src="/lib/jquery.js"></script>
     <script src="/lib/jquery.mousewheel.js"></script>
     <style type="text/css">
@@ -53,7 +53,7 @@
 
 </div>
 
-<script src="/js/kline.js"></script>
+<script src="/dist/kline.js"></script>
 
 <script type="text/javascript">
 
@@ -64,10 +64,10 @@
         theme: 'dark', // light/dark
         language: 'zh-cn', // zh-cn/en-us/zh-tw
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
-        symbol: "coin5/coin4",
-        symbolName: "COIN5_COIN4",
+        symbol: "btc",
+        symbolName: "BTC/USD",
         type: "poll", // poll/socket
-        url: "http://127.0.0.1:8080/mock.json",
+        url: "http://127.0.0.1:8080/examples/mock.json",
         limit: 1000,
         intervalTime: 5000,
         debug: true,

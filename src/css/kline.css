@@ -186,7 +186,7 @@ body {
 }
 
 .chart_container.dark .chart_dropdown_t {
-    background-image: url("img/dropdown_w.png");
+    background-image: url("../img/dropdown_w.png");
     background-position: right 9px;
     border-color: #0a0a0a;
     color: #e5e5e5
@@ -194,7 +194,7 @@ body {
 
 .chart_container.dark .chart_dropdown-hover.chart_dropdown_t {
     background-color: #0a0a0a;
-    background-image: url("img/dropup_w.png");
+    background-image: url("../img/dropup_w.png");
     background-position: right 8px;
     border-color: #606060;
     color: #fff
@@ -223,7 +223,7 @@ body {
 }
 
 .chart_container.light .chart_dropdown_t {
-    background-image: url("img/dropdown_b.png");
+    background-image: url("../img/dropdown_b.png");
     background-position: right 10px;
     border-color: #fff;
     color: #393c40
@@ -231,7 +231,7 @@ body {
 
 .chart_container.light .chart_dropdown-hover.chart_dropdown_t {
     background-color: #fff;
-    background-image: url("img/dropup_b.png");
+    background-image: url("../img/dropup_b.png");
     background-position: right 9px;
     border-color: #4c4f53;
     color: #393c40
@@ -566,27 +566,27 @@ body {
 }
 
 .chart_container.dark #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
-    background-image: url("img/tool_d_normal.png")
+    background-image: url("../img/tool_d_normal.png")
 }
 
 .chart_container.dark #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {
-    background-image: url("img/tool_d_push.png")
+    background-image: url("../img/tool_d_push.png")
 }
 
 .chart_container.dark #chart_toolbar .chart_BoxSize {
-    background: url("img/size_d.png") no-repeat;
+    background: url("../img/size_d.png") no-repeat;
 }
 
 .chart_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
-    background-image: url("img/tool_l_normal.png")
+    background-image: url("../img/tool_l_normal.png")
 }
 
 .chart_container.light #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {
-    background-image: url("img/tool_l_push.png")
+    background-image: url("../img/tool_l_push.png")
 }
 
 .chart_container.light #chart_toolbar .chart_BoxSize {
-    background: url("img/size_l.png") no-repeat;
+    background: url("../img/size_l.png") no-repeat;
 }
 
 .chart_container #chart_toolpanel #chart_Cursor {
