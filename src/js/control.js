@@ -604,7 +604,7 @@ export default class Control {
     static switchSymbol(symbol) {
         if (Kline.instance.type === "socket" && Kline.instance.socketClient.ws.readyState === 1) {
             Kline.instance.subscribed.unsubscribe();
-            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + symbol + '/' + Kline.instance.range, subscribeCallback);
+            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + symbol + '/' + Kline.instance.range, Control.subscribeCallback);
         }
         Control.switchSymbolSelected(symbol);
         let settings = ChartSettings.get();
@@ -658,7 +658,7 @@ export default class Control {
         }
         Kline.instance.socketClient.connect({}, function () {
             Kline.instance.socketClient.subscribe('/user' + Kline.instance.subscribePath, Control.subscribeCallback);
-            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + Kline.instance.range, subscribeCallback);
+            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + Kline.instance.range, Control.subscribeCallback);
             Control.RequestData(true);
         }, function () {
             Kline.instance.socketClient.disconnect();

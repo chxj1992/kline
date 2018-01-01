@@ -122,7 +122,7 @@ export default class Chart {
         this._range = Kline.instance.periodMap[period];
         if (Kline.instance.type === "socket" && Kline.instance.socketClient.ws.readyState === 1) {
             Kline.instance.subscribed.unsubscribe();
-            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + this._range, subscribeCallback);
+            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + this._range, Control.subscribeCallback);
         }
         this.updateDataAndDisplay();
         Kline.instance.onRangeChange(this._range);

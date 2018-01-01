@@ -7,22 +7,22 @@ export default class MEvent {
     addHandler(o, f) {
         if (this.indexOf(o, f) < 0)
             this._handlers.push({obj: o, func: f});
-    };
+    }
 
     removeHandler(o, f) {
         let i = this._indexOf(o, f);
         if (i >= 0)
             this._handlers.splice(i, 1);
-    };
+    }
 
     raise(s, g) {
         let a = this._handlers;
         let e, i, c = a.length;
         for (i = 0; i < c; i++) {
             e = a[i];
-            e.func.call(e.obj, s, g);
+            e.func(s, g);
         }
-    };
+    }
 
     indexOf(o, f) {
         let a = this._handlers;
@@ -33,6 +33,6 @@ export default class MEvent {
                 return i;
         }
         return -1;
-    };
+    }
 
 }

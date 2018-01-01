@@ -81,8 +81,9 @@ export class Indicator {
             for (i = 0; i < cnt; i++) {
                 this._outputs[i].assign(index);
             }
-            if (this._exprEnv.getFirstIndex() < 0)
+            if (this._exprEnv.getFirstIndex() < 0) {
                 this._exprEnv.setFirstIndex(index);
+            }
         } catch (e) {
             if (this._exprEnv.getFirstIndex() >= 0) {
                 alert(e);
@@ -430,7 +431,7 @@ export class DMAIndicator extends Indicator {
             new exprs.MaExpr(DIF, M)
         );
         this.addOutput(DIFMA);
-    };
+    }
 
     getName() {
         return "DMA";
@@ -475,7 +476,7 @@ export class TRIXIndicator extends Indicator {
             new exprs.MaExpr(TRIX, M)
         );
         this.addOutput(MATRIX);
-    };
+    }
 
     getName() {
         return "TRIX";
@@ -544,7 +545,7 @@ export class BRARIndicator extends Indicator {
             )
         );
         this.addOutput(AR);
-    };
+    }
 
     getName() {
         return "BRAR";
@@ -632,7 +633,7 @@ export class VRIndicator extends Indicator {
             new exprs.MaExpr(VR, M)
         );
         this.addOutput(MAVR);
-    };
+    }
 
     getName() {
         return "VR";
@@ -678,6 +679,7 @@ export class OBVIndicator extends Indicator {
     getName() {
         return "OBV";
     }
+
 }
 
 
@@ -685,7 +687,6 @@ export class EMVIndicator extends Indicator {
 
     constructor() {
         super();
-
         let N = new exprs.ParameterExpr("N", 2, 90, 14);
         let M = new exprs.ParameterExpr("M", 2, 60, 9);
         this.addParameter(N);
@@ -736,7 +737,7 @@ export class EMVIndicator extends Indicator {
             new exprs.MaExpr(EMV, M)
         );
         this.addOutput(MAEMV);
-    };
+    }
 
     getName() {
         return "EMV";
@@ -1001,7 +1002,7 @@ export class MTMIndicator extends Indicator {
             new exprs.MaExpr(MTM, M)
         );
         this.addOutput(MTMMA);
-    };
+    }
 
     getName() {
         return "MTM";
@@ -1044,7 +1045,7 @@ export class BOLLIndicator extends Indicator {
             )
         );
         this.addOutput(LB);
-    };
+    }
 
     getName() {
         return "BOLL";

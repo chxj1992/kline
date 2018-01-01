@@ -12,7 +12,7 @@ import * as ranges from './ranges'
 
 export class Template {
 
-    displayVolume = true;
+    static displayVolume = true;
 
     static createCandlestickDataSource(dsAlias) {
         return new data_sources.MainDataSource(dsAlias);
@@ -28,8 +28,9 @@ export class Template {
 
     static createTableComps(dsName) {
         this.createMainChartComps(dsName);
-        if (this.displayVolume)
+        if (this.displayVolume) {
             this.createIndicatorChartComps(dsName, "VOLUME");
+        }
         this.createTimelineComps(dsName);
     }
 

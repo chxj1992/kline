@@ -31,6 +31,10 @@ export class DataSource extends NamedObject {
         return 0;
     }
 
+    getDataAt(index) {
+        return this._dataItems[index];
+    }
+
 }
 
 

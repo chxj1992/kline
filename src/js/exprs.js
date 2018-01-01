@@ -420,17 +420,20 @@ export class RefExpr extends OpABExpr {
     }
 
     execute(index) {
-        if (this._offset < 0) {
+        if (this._offset === undefined || this._offset < 0) {
             this._offset = this._exprB.execute(index);
-            if (this._offset < 0)
+            if (this._offset < 0) {
                 throw "offset < 0";
+            }
         }
         index -= this._offset;
-        if (index < 0)
+        if (index < 0) {
             throw "index < 0";
+        }
         let result = this._exprA.execute(index);
-        if (isNaN(result))
+        if (isNaN(result)) {
             throw "NaN";
+        }
         return result;
     }
 
@@ -494,21 +497,24 @@ export class AssignExpr extends OpAExpr {
 
     assign(index) {
         this._buf[index] = this._exprA.execute(index);
-        if (ExprEnv.get()._firstIndex >= 0)
-            if (isNaN(this._buf[index]) && !isNaN(this._buf[index - 1]))
+        if (ExprEnv.get()._firstIndex >= 0) {
+            if (isNaN(this._buf[index]) && !isNaN(this._buf[index - 1])) {
                 throw this._name + ".assign(" + index + "): NaN";
+            }
+        }
     }
 
     reserve(rid, count) {
         if (this._rid < rid) {
-            for (let c = count; c > 0; c--)
+            for (let c = count; c > 0; c--) {
                 this._buf.push(NaN);
+            }
         }
-        super.reserve.call(this, rid, count);
+        super.reserve(rid, count);
     }
 
     clear() {
-        super.clear.call(this);
+        super.clear();
         this._buf = [];
     }
 
@@ -573,22 +579,24 @@ export class RangeExpr extends OpABExpr {
     }
 
     execute(index) {
-        if (this._range < 0)
+        if (this._range < 0) {
             this.initRange();
+        }
         let rA = this._buf[index].resultA = this._exprA.execute(index);
         return this._buf[index].result = this.calcResult(index, rA);
     }
 
     reserve(rid, count) {
         if (this._rid < rid) {
-            for (let c = count; c > 0; c--)
+            for (let c = count; c > 0; c--) {
                 this._buf.push({resultA: NaN, result: NaN});
+            }
         }
-        super.reserve.call(this, rid, count);
+        super.reserve(rid, count);
     }
 
     clear() {
-        super.clear.call(this);
+        super.clear();
         this._range = -1;
         this._buf = [];
     }
@@ -603,11 +611,13 @@ export class HhvExpr extends RangeExpr {
     }
 
     calcResult(index, resultA) {
-        if (this._range === 0)
+        if (this._range === 0) {
             return NaN;
+        }
         let first = ExprEnv.get()._firstIndex;
-        if (first < 0)
+        if (first < 0) {
             return resultA;
+        }
         if (index > first) {
             let n = this._range;
             let result = resultA;
@@ -615,8 +625,9 @@ export class HhvExpr extends RangeExpr {
             let i = Math.max(first, start);
             for (; i < index; i++) {
                 let p = this._buf[i];
-                if (result < p.resultA)
+                if (result < p.resultA) {
                     result = p.resultA;
+                }
             }
             return result;
         } else {

@@ -1198,7 +1198,10 @@ function () {
           return null;
       }
 
-      if (!notLoadSettings) indic.setParameters(_chart_settings.default.get().indics[indicName]);
+      if (!notLoadSettings) {
+        indic.setParameters(_chart_settings.default.get().indics[indicName]);
+      }
+
       return {
         "indic": indic,
         "range": range
@@ -1702,10 +1705,11 @@ function () {
   }, {
     key: "setSymbol",
     value: function setSymbol(symbol, symbolName) {
-      _control.default.switchSymbol(symbol);
-
       this.symbol = symbol;
       this.symbolName = symbolName;
+
+      _control.default.switchSymbol(symbol);
+
       this.onSymbolChange(symbol, symbolName);
     }
   }, {
@@ -2420,6 +2424,11 @@ function (_NamedObject) {
     key: "getDataCount",
     value: function getDataCount() {
       return 0;
+    }
+  }, {
+    key: "getDataAt",
+    value: function getDataAt(index) {
+      return this._dataItems[index];
     }
   }]);
 
@@ -7692,7 +7701,7 @@ function () {
       if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient.ws.readyState === 1) {
         _kline.default.instance.subscribed.unsubscribe();
 
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + symbol + '/' + _kline.default.instance.range, subscribeCallback);
+        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
       }
 
       Control.switchSymbolSelected(symbol);
@@ -7768,7 +7777,7 @@ function () {
       _kline.default.instance.socketClient.connect({}, function () {
         _kline.default.instance.socketClient.subscribe('/user' + _kline.default.instance.subscribePath, Control.subscribeCallback);
 
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + _kline.default.instance.range, subscribeCallback);
+        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
         Control.RequestData(true);
       }, function () {
         _kline.default.instance.socketClient.disconnect();
@@ -9066,17 +9075,26 @@ function (_OpABExpr11) {
   _createClass(RefExpr, [{
     key: "execute",
     value: function execute(index) {
-      if (this._offset < 0) {
+      if (this._offset === undefined || this._offset < 0) {
         this._offset = this._exprB.execute(index);
-        if (this._offset < 0) throw "offset < 0";
+
+        if (this._offset < 0) {
+          throw "offset < 0";
+        }
       }
 
       index -= this._offset;
-      if (index < 0) throw "index < 0";
+
+      if (index < 0) {
+        throw "index < 0";
+      }
 
       var result = this._exprA.execute(index);
 
-      if (isNaN(result)) throw "NaN";
+      if (isNaN(result)) {
+        throw "NaN";
+      }
+
       return result;
     }
   }]);
@@ -9185,7 +9203,12 @@ function (_OpAExpr3) {
     key: "assign",
     value: function assign(index) {
       this._buf[index] = this._exprA.execute(index);
-      if (ExprEnv.get()._firstIndex >= 0) if (isNaN(this._buf[index]) && !isNaN(this._buf[index - 1])) throw this._name + ".assign(" + index + "): NaN";
+
+      if (ExprEnv.get()._firstIndex >= 0) {
+        if (isNaN(this._buf[index]) && !isNaN(this._buf[index - 1])) {
+          throw this._name + ".assign(" + index + "): NaN";
+        }
+      }
     }
   }, {
     key: "reserve",
@@ -9304,7 +9327,9 @@ function (_OpABExpr14) {
   }, {
     key: "execute",
     value: function execute(index) {
-      if (this._range < 0) this.initRange();
+      if (this._range < 0) {
+        this.initRange();
+      }
 
       var rA = this._buf[index].resultA = this._exprA.execute(index);
 
@@ -9353,11 +9378,15 @@ function (_RangeExpr) {
   _createClass(HhvExpr, [{
     key: "calcResult",
     value: function calcResult(index, resultA) {
-      if (this._range === 0) return NaN;
+      if (this._range === 0) {
+        return NaN;
+      }
 
       var first = ExprEnv.get()._firstIndex;
 
-      if (first < 0) return resultA;
+      if (first < 0) {
+        return resultA;
+      }
 
       if (index > first) {
         var n = this._range;
@@ -9367,7 +9396,10 @@ function (_RangeExpr) {
 
         for (; i < index; i++) {
           var p = this._buf[i];
-          if (result < p.resultA) result = p.resultA;
+
+          if (result < p.resultA) {
+            result = p.resultA;
+          }
         }
 
         return result;
@@ -10004,8 +10036,6 @@ var Template =
 function () {
   function Template() {
     _classCallCheck(this, Template);
-
-    this.displayVolume = true;
   }
 
   _createClass(Template, null, [{
@@ -10025,7 +10055,11 @@ function () {
     key: "createTableComps",
     value: function createTableComps(dsName) {
       this.createMainChartComps(dsName);
-      if (this.displayVolume) this.createIndicatorChartComps(dsName, "VOLUME");
+
+      if (this.displayVolume) {
+        this.createIndicatorChartComps(dsName, "VOLUME");
+      }
+
       this.createTimelineComps(dsName);
     }
   }, {
@@ -10168,6 +10202,7 @@ function () {
 }();
 
 exports.Template = Template;
+Template.displayVolume = true;
 
 var DefaultTemplate =
 /*#__PURE__*/
@@ -10583,7 +10618,7 @@ function (_NamedObject) {
         this.setAfterDrawPos(x, y);
         if (this.step === 0) this.setState(CToolObject.state.AfterDraw);
       } else if (this.state === CToolObject.state.AfterDraw) {
-        if (CToolObject.prototype.isSelected.call(this, x, y)) {
+        if (CToolObject.prototype.isSelected(x, y)) {
           this.setDrawPos(x, y);
           this.setState(CToolObject.state.Draw);
         } else {
@@ -11835,6 +11870,11 @@ function (_NamedObject) {
       return this._maxValueIndex;
     }
   }, {
+    key: "getMinMaxAt",
+    value: function getMinMaxAt(index, minmax) {
+      return true;
+    }
+  }, {
     key: "calcRange",
     value: function calcRange(firstIndexes, lastIndex, minmaxes, indexes) {
       var min = Number.MAX_VALUE;
@@ -11855,7 +11895,9 @@ function (_NamedObject) {
           };
         } else {
           for (; i >= first; i--) {
-            if (this.getMinMaxAt(i, minmax) === false) continue;
+            if (this.getMinMaxAt(i, minmax) === false) {
+              continue;
+            }
 
             if (min > minmax.min) {
               min = minmax.min;
@@ -11874,7 +11916,7 @@ function (_NamedObject) {
           };
         }
 
-        if (indexes !== null) {
+        if (indexes !== null && indexes !== undefined) {
           indexes[n] = {
             "minIndex": minIndex,
             "maxIndex": maxIndex
@@ -11923,7 +11965,11 @@ function (_DataProvider) {
     value: function updateData() {
       var mgr = new _chart_manager.default();
       var ds = mgr.getDataSource(this.getDataSourceName());
-      if (!_util.default.isInstance(ds, data_sources.MainDataSource)) return;
+
+      if (!_util.default.isInstance(ds, data_sources.MainDataSource)) {
+        return;
+      }
+
       this._candlestickDS = ds;
     }
   }, {
@@ -11969,7 +12015,11 @@ function (_DataProvider2) {
     value: function refresh() {
       var mgr = new _chart_manager.default();
       var ds = mgr.getDataSource(this.getDataSourceName());
-      if (ds.getDataCount() < 1) return;
+
+      if (ds.getDataCount() < 1) {
+        return;
+      }
+
       var indic = this._indicator;
       var i,
           last = ds.getDataCount();
@@ -11985,7 +12035,11 @@ function (_DataProvider2) {
     value: function updateData() {
       var mgr = new _chart_manager.default();
       var ds = mgr.getDataSource(this.getDataSourceName());
-      if (ds.getDataCount() < 1) return;
+
+      if (ds.getDataCount() < 1) {
+        return;
+      }
+
       var indic = this._indicator;
       var mode = ds.getUpdateMode();
 
@@ -12031,8 +12085,14 @@ function (_DataProvider2) {
 
         if (isNaN(result) === false) {
           valid = true;
-          if (minmax.min > result) minmax.min = result;
-          if (minmax.max < result) minmax.max = result;
+
+          if (minmax.min > result) {
+            minmax.min = result;
+          }
+
+          if (minmax.max < result) {
+            minmax.max = result;
+          }
         }
       }
 
@@ -12205,7 +12265,7 @@ function () {
       if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient.ws.readyState === 1) {
         _kline.default.instance.subscribed.unsubscribe();
 
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + this._range, subscribeCallback);
+        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + this._range, _control.default.subscribeCallback);
       }
 
       this.updateDataAndDisplay();
@@ -12516,7 +12576,9 @@ function () {
           this._outputs[i].assign(index);
         }
 
-        if (this._exprEnv.getFirstIndex() < 0) this._exprEnv.setFirstIndex(index);
+        if (this._exprEnv.getFirstIndex() < 0) {
+          this._exprEnv.setFirstIndex(index);
+        }
       } catch (e) {
         if (this._exprEnv.getFirstIndex() >= 0) {
           alert(e);
@@ -15208,7 +15270,7 @@ function () {
 
       for (i = 0; i < c; i++) {
         e = a[i];
-        e.func.call(e.obj, s, g);
+        e.func(s, g);
       }
     }
   }, {

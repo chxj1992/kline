@@ -158,9 +158,9 @@ export default class Kline {
     }
 
     setSymbol(symbol, symbolName) {
-        Control.switchSymbol(symbol);
         this.symbol = symbol;
         this.symbolName = symbolName;
+        Control.switchSymbol(symbol);
         this.onSymbolChange(symbol, symbolName);
     }
 

@@ -88,7 +88,7 @@ export default class ChartManager {
                 0, 0, this._overlayCanvas.width, this._overlayCanvas.height);
             this.drawOverlay("frame0", this._overlayContext);
         }
-    };
+    }
 
 
     bindCanvas(layer, canvas) {
@@ -101,11 +101,11 @@ export default class ChartManager {
             if (this._captureMouseWheelDirectly)
                 $(this._overlayCanvas).bind('mousewheel', Control.mouseWheel);
         }
-    };
+    }
 
     getCaptureMouseWheelDirectly() {
         return this._captureMouseWheelDirectly;
-    };
+    }
 
     setCaptureMouseWheelDirectly(v) {
         this._captureMouseWheelDirectly = v;
@@ -113,11 +113,11 @@ export default class ChartManager {
             $(this._overlayCanvas).bind('mousewheel', Control.mouseWheel);
         else
             $(this._overlayCanvas).unbind('mousewheel');
-    };
+    }
 
     getChart(nouseParam) {
         return this._chart["defaultFrame"];
-    };
+    }
 
     init() {
         delete this._ranges['frame0.k0.indic1'];
@@ -126,20 +126,20 @@ export default class ChartManager {
         delete this._areas['frame0.k0.indic1Range'];
         new templates.DefaultTemplate().loadTemplate("frame0.k0", "");
         this.redraw('All', true);
-    };
+    }
 
     setCurrentDrawingTool(paramTool) {
         this._drawingTool = ChartManager.DrawingTool[paramTool];
         this.setRunningMode(this._drawingTool);
-    };
+    }
 
     getLanguage() {
         return this._language;
-    };
+    }
 
     setLanguage(lang) {
         this._language = lang;
-    };
+    }
 
     setThemeName(frameName, themeName) {
         if (themeName === undefined)
@@ -157,14 +157,14 @@ export default class ChartManager {
         this._themeName = themeName;
         this.setTheme(frameName, theme);
         this.getFrame(frameName).setChanged(true);
-    };
+    }
 
     getChartStyle(dsName) {
         let chartStyle = this._dsChartStyle[dsName];
         if (chartStyle === undefined)
             return "CandleStick";
         return chartStyle;
-    };
+    }
 
     setChartStyle(dsName, style) {
         if (this._dsChartStyle[dsName] === style)
@@ -211,7 +211,7 @@ export default class ChartManager {
         }
         this.getArea(plotter.getAreaName()).setChanged(true);
         this._dsChartStyle[dsName] = style;
-    };
+    }
 
     setNormalMode() {
         this._drawingTool = this._beforeDrawingTool;
@@ -226,7 +226,7 @@ export default class ChartManager {
         } else {
             this.hideCursor();
         }
-    };
+    }
 
     setRunningMode(mode) {
         let pds = this.getDataSource("frame0.k0");
@@ -317,15 +317,15 @@ export default class ChartManager {
                 break;
             }
         }
-    };
+    }
 
     getTitle(dsName) {
         return this._titles[dsName];
-    };
+    }
 
     setTitle(dsName, title) {
         this._titles[dsName] = title;
-    };
+    }
 
     setCurrentDataSource(dsName, dsAlias) {
         let cached = this.getCachedDataSource(dsAlias);
@@ -341,106 +341,106 @@ export default class ChartManager {
                 this.setCachedDataSource(dsAlias, cached);
             }
         }
-    };
+    }
 
     getDataSource(name) {
         return this._dataSources[name];
-    };
+    }
 
     setDataSource(name, ds, forceRefresh) {
         this._dataSources[name] = ds;
         if (forceRefresh) {
             this.updateData(name, null);
         }
-    };
+    }
 
     getCachedDataSource(name) {
         return this._dataSourceCache[name];
-    };
+    }
 
     setCachedDataSource(name, ds) {
         this._dataSourceCache[name] = ds;
-    };
+    }
 
     getDataProvider(name) {
         return this._dataProviders[name];
-    };
+    }
 
     setDataProvider(name, dp) {
         this._dataProviders[name] = dp;
-    };
+    }
 
     removeDataProvider(name) {
         delete this._dataProviders[name];
-    };
+    }
 
     getFrame(name) {
         return this._frames[name];
-    };
+    }
 
     setFrame(name, frame) {
         this._frames[name] = frame;
-    };
+    }
 
     removeFrame(name) {
         delete this._frames[name];
-    };
+    }
 
     getArea(name) {
         return this._areas[name];
-    };
+    }
 
     setArea(name, area) {
         this._areas[name] = area;
-    };
+    }
 
     removeArea(name) {
         delete this._areas[name];
-    };
+    }
 
     getTimeline(name) {
         return this._timelines[name];
-    };
+    }
 
     setTimeline(name, timeline) {
         this._timelines[name] = timeline;
-    };
+    }
 
     removeTimeline(name) {
         delete this._timelines[name];
-    };
+    }
 
     getRange(name) {
         return this._ranges[name];
-    };
+    }
 
     setRange(name, range) {
         this._ranges[name] = range;
-    };
+    }
 
     removeRange(name) {
         delete this._ranges[name];
-    };
+    }
 
     getPlotter(name) {
         return this._plotters[name];
-    };
+    }
 
     setPlotter(name, plotter) {
         this._plotters[name] = plotter;
-    };
+    }
 
     removePlotter(name) {
         delete this._plotters[name];
-    };
+    }
 
     getTheme(name) {
         return this._themes[name];
-    };
+    }
 
     setTheme(name, theme) {
         this._themes[name] = theme;
-    };
+    }
 
     getFrameMousePos(name, point) {
         if (this._frameMousePos[name] !== undefined) {
@@ -450,11 +450,11 @@ export default class ChartManager {
             point.x = -1;
             point.y = -1;
         }
-    };
+    }
 
     setFrameMousePos(name, px, py) {
         this._frameMousePos[name] = {x: px, y: py};
-    };
+    }
 
     drawArea(context, area, plotterNames) {
         let areaName = area.getNameObject().getCompAt(2);
@@ -475,7 +475,7 @@ export default class ChartManager {
             if (plotter !== undefined)
                 plotter.Draw(context);
         }
-    };
+    }
 
     drawAreaMain(context, area) {
         let ds = this._dataSources[area.getDataSourceName()];
@@ -486,7 +486,7 @@ export default class ChartManager {
             plotterNames = [".background", ".grid", ".main", ".secondary"];
         this.drawArea(context, area, plotterNames);
         area.setChanged(false);
-    };
+    }
 
     drawAreaOverlay(context, area) {
         let ds = this._dataSources[area.getDataSourceName()];
@@ -496,7 +496,7 @@ export default class ChartManager {
         else
             plotterNames = [".decoration", ".selection", ".info", ".tool"];
         this.drawArea(context, area, plotterNames);
-    };
+    }
 
     drawMain(frameName, context) {
         let drawn = false;
@@ -523,7 +523,7 @@ export default class ChartManager {
             if (e.getFrameName() === frameName)
                 e.setChanged(false);
         }
-    };
+    }
 
     drawOverlay(frameName, context) {
         for (let n in this._areas) {
@@ -540,7 +540,7 @@ export default class ChartManager {
                     this.drawAreaOverlay(context, area);
                 }
         }
-    };
+    }
 
     updateData(dsName, data) {
         let ds = this.getDataSource(dsName);
@@ -575,7 +575,7 @@ export default class ChartManager {
             }
         }
         return true;
-    };
+    }
 
     updateRange(dsName) {
         let ds = this.getDataSource(dsName);
@@ -604,7 +604,7 @@ export default class ChartManager {
                 }
             }
         }
-    };
+    }
 
     layout(context, frameName, left, top, right, bottom) {
         let frame = this.getFrame(frameName);
@@ -619,7 +619,7 @@ export default class ChartManager {
             if (n.substring(0, frameName.length) === frameName)
                 this.updateRange(n);
         }
-    };
+    }
 
     SelectRange(pArea, y) {
         let it;
@@ -631,7 +631,7 @@ export default class ChartManager {
             else
                 this._ranges[ee].unselect();
         }
-    };
+    }
 
     scale(s) {
         if (this._highlightedFrame === null)
@@ -645,19 +645,19 @@ export default class ChartManager {
                 this.updateRange(dsName);
             }
         }
-    };
+    }
 
     showCursor(cursor) {
         if (cursor === undefined)
             cursor = 'default';
         this._mainCanvas.style.cursor = cursor;
         this._overlayCanvas.style.cursor = cursor;
-    };
+    }
 
     hideCursor() {
         this._mainCanvas.style.cursor = 'none';
         this._overlayCanvas.style.cursor = 'none';
-    };
+    }
 
     showCrossCursor(area, x, y) {
         let e = this.getRange(area.getName());
@@ -669,7 +669,7 @@ export default class ChartManager {
                     return true;
         }
         return false;
-    };
+    }
 
     hideCrossCursor(exceptTimeline) {
         if (exceptTimeline !== null && exceptTimeline !== undefined) {
@@ -685,14 +685,14 @@ export default class ChartManager {
         }
         for (let n in this._ranges)
             this._ranges[n].unselect();
-    };
+    }
 
     clearHighlight() {
         if (this._highlightedFrame !== null && this._highlightedFrame !== undefined) {
             this._highlightedFrame.highlight(null);
             this._highlightedFrame = null;
         }
-    };
+    }
 
     onToolMouseMove(frameName, x, y) {
         let ret = false;
@@ -706,7 +706,7 @@ export default class ChartManager {
             }
         }
         return ret;
-    };
+    }
 
     onToolMouseDown(frameName, x, y) {
         let ret = false;
@@ -720,7 +720,7 @@ export default class ChartManager {
             }
         }
         return ret;
-    };
+    }
 
     onToolMouseUp(frameName, x, y) {
         let ret = false;
@@ -734,7 +734,7 @@ export default class ChartManager {
             }
         }
         return ret;
-    };
+    }
 
     onToolMouseDrag(frameName, x, y) {
         let ret = false;
@@ -748,7 +748,7 @@ export default class ChartManager {
             }
         }
         return ret;
-    };
+    }
 
     onMouseMove(frameName, x, y, drag) {
         let frame = this.getFrame(frameName);
@@ -777,7 +777,7 @@ export default class ChartManager {
                 return;
             }
         }
-    };
+    }
 
     onMouseLeave(frameName, x, y, move) {
         let frame = this.getFrame(frameName);
@@ -791,7 +791,7 @@ export default class ChartManager {
             this._capturingMouseArea = null;
         }
         this._dragStarted = false;
-    };
+    }
 
     onMouseDown(frameName, x, y) {
         let frame = this.getFrame(frameName);
@@ -809,7 +809,7 @@ export default class ChartManager {
                 return;
             }
         }
-    };
+    }
 
     onMouseUp(frameName, x, y) {
         let frame = this.getFrame(frameName);
@@ -835,7 +835,7 @@ export default class ChartManager {
             this._capturingMouseArea = null;
             this._dragStarted = false;
         }
-    };
+    }
 
     deleteToolObject() {
         let pDPTool = this.getDataSource("frame0.k0");
@@ -847,7 +847,7 @@ export default class ChartManager {
             pDPTool.delToolObject();
         }
         this.setNormalMode();
-    };
+    }
 
     unloadTemplate(frameName) {
         let frame = this.getFrame(frameName);
@@ -880,7 +880,7 @@ export default class ChartManager {
         }
         delete this._themes[frameName];
         delete this._frameMousePos[frameName];
-    };
+    }
 
     createIndicatorAndRange(areaName, indicName, notLoadSettings) {
         let indic, range;
@@ -968,10 +968,11 @@ export default class ChartManager {
             default:
                 return null;
         }
-        if (!notLoadSettings)
+        if (!notLoadSettings) {
             indic.setParameters(ChartSettings.get().indics[indicName]);
+        }
         return {"indic": indic, "range": range};
-    };
+    }
 
     setMainIndicator(dsName, indicName) {
         let areaName = dsName + ".main";
@@ -1010,7 +1011,7 @@ export default class ChartManager {
         }
         this.getArea(areaName).setChanged(true);
         return true;
-    };
+    }
 
     setIndicator(areaName, indicName) {
         let area = this.getArea(areaName);
@@ -1047,7 +1048,7 @@ export default class ChartManager {
             this.setPlotter(plotter.getName(), plotter);
         }
         return true;
-    };
+    }
 
     removeMainIndicator(dsName) {
         let areaName = dsName + ".main";
@@ -1058,7 +1059,7 @@ export default class ChartManager {
         this.removeDataProvider(indicDpName);
         this.removePlotter(indicDpName);
         this.getArea(areaName).setChanged(true);
-    };
+    }
 
     removeIndicator(areaName) {
         let area = this.getArea(areaName);
@@ -1094,7 +1095,7 @@ export default class ChartManager {
             if (this._plotters[n].getAreaName() === rangeAreaName)
                 this.removePlotter(n);
         }
-    };
+    }
 
     getIndicatorParameters(indicName) {
         let indic = this._fakeIndicators[indicName];
@@ -1109,7 +1110,7 @@ export default class ChartManager {
         for (i = 0; i < cnt; i++)
             params.push(indic.getParameterAt(i));
         return params;
-    };
+    }
 
     setIndicatorParameters(indicName, params) {
         let n, indic;
@@ -1132,7 +1133,7 @@ export default class ChartManager {
             this._fakeIndicators[indicName] = indic = ret.indic;
         }
         indic.setParameters(params);
-    };
+    }
 
     getIndicatorAreaName(dsName, index) {
         let tableLayout = this.getArea(dsName + ".charts");
@@ -1140,6 +1141,6 @@ export default class ChartManager {
         if (index < 0 || index >= cnt)
             return "";
         return tableLayout.getAreaAt(index << 1).getName();
-    };
+    }
 
 }

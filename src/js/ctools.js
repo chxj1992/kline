@@ -96,7 +96,7 @@ export class CToolObject extends NamedObject {
             if (this.step === 0)
                 this.setState(CToolObject.state.AfterDraw);
         } else if (this.state === CToolObject.state.AfterDraw) {
-            if (CToolObject.prototype.isSelected.call(this, x, y)) {
+            if (CToolObject.prototype.isSelected(x, y)) {
                 this.setDrawPos(x, y);
                 this.setState(CToolObject.state.Draw);
             } else {

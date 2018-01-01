@@ -30,6 +30,10 @@ export class DataProvider extends NamedObject {
         return this._maxValueIndex;
     }
 
+    getMinMaxAt(index, minmax) {
+        return true;
+    }
+
     calcRange(firstIndexes, lastIndex, minmaxes, indexes) {
         let min = Number.MAX_VALUE;
         let max = -Number.MAX_VALUE;
@@ -44,8 +48,9 @@ export class DataProvider extends NamedObject {
                 minmaxes[n] = {"min": min, "max": max};
             } else {
                 for (; i >= first; i--) {
-                    if (this.getMinMaxAt(i, minmax) === false)
+                    if (this.getMinMaxAt(i, minmax) === false) {
                         continue;
+                    }
                     if (min > minmax.min) {
                         min = minmax.min;
                         minIndex = i;
@@ -57,7 +62,7 @@ export class DataProvider extends NamedObject {
                 }
                 minmaxes[n] = {"min": min, "max": max};
             }
-            if (indexes !== null) {
+            if (indexes !== null && indexes !== undefined) {
                 indexes[n] = {"minIndex": minIndex, "maxIndex": maxIndex};
             }
         }
@@ -89,8 +94,9 @@ export class MainDataProvider extends DataProvider {
     updateData() {
         let mgr = new ChartManager();
         let ds = mgr.getDataSource(this.getDataSourceName());
-        if (!Util.isInstance(ds, data_sources.MainDataSource))
+        if (!Util.isInstance(ds, data_sources.MainDataSource)) {
             return;
+        }
         this._candlestickDS = ds;
     }
 
@@ -118,21 +124,24 @@ export class IndicatorDataProvider extends DataProvider {
     refresh() {
         let mgr = new ChartManager();
         let ds = mgr.getDataSource(this.getDataSourceName());
-        if (ds.getDataCount() < 1)
+        if (ds.getDataCount() < 1) {
             return;
+        }
         let indic = this._indicator;
         let i, last = ds.getDataCount();
         indic.clear();
         indic.reserve(last);
-        for (i = 0; i < last; i++)
+        for (i = 0; i < last; i++) {
             indic.execute(ds, i);
+        }
     }
 
     updateData() {
         let mgr = new ChartManager();
         let ds = mgr.getDataSource(this.getDataSourceName());
-        if (ds.getDataCount() < 1)
+        if (ds.getDataCount() < 1) {
             return;
+        }
         let indic = this._indicator;
         let mode = ds.getUpdateMode();
         switch (mode) {
@@ -146,8 +155,9 @@ export class IndicatorDataProvider extends DataProvider {
             case data_sources.DataSource.UpdateMode.Update: {
                 let i, last = ds.getDataCount();
                 let cnt = ds.getUpdatedCount() + ds.getAppendedCount();
-                for (i = last - cnt; i < last; i++)
+                for (i = last - cnt; i < last; i++) {
                     indic.execute(ds, i);
+                }
                 break;
             }
         }
@@ -162,10 +172,12 @@ export class IndicatorDataProvider extends DataProvider {
             result = this._indicator.getOutputAt(i).execute(index);
             if (isNaN(result) === false) {
                 valid = true;
-                if (minmax.min > result)
+                if (minmax.min > result) {
                     minmax.min = result;
-                if (minmax.max < result)
+                }
+                if (minmax.max < result) {
                     minmax.max = result;
+                }
             }
         }
         return valid;
