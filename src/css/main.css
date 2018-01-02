@@ -7,11 +7,10 @@ body {
 
 .chart_container {
     cursor: default;
-    font-family: arial, sans;
+    font-family: arial, sans, serif;
     font-size: 12px;
     height: 100%;
     position: relative;
-    /*visibility: hidden;*/
     width: 100%
 }
 
@@ -45,8 +44,7 @@ body {
 }
 
 #chart_toolbar {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+    border-bottom: 1px solid;
     *font-weight: bold;
     height: 29px;
     position: absolute;
@@ -85,9 +83,8 @@ body {
 .chart_container .chart_dropdown_t {
     background-origin: content-box;
     background-repeat: no-repeat;
-    border-width: 1px;
-    border-style: solid;
-    border-bottom: 0;
+    border: 1px solid;
+    border-bottom-width: 0;
     margin-top: 3px;
     padding-right: 10px;
     z-index: 101;
@@ -100,8 +97,7 @@ body {
 }
 
 .chart_container .chart_dropdown_data {
-    border-width: 1px;
-    border-style: solid;
+    border: 1px solid;
     display: none;
     position: absolute;
     padding: 6px 8px 6px 8px;
@@ -116,8 +112,7 @@ body {
 }
 
 .chart_container .chart_dropdown_data td {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+    border-bottom: 1px solid;
     padding: 8px 6px;
     vertical-align: top
 }
@@ -127,9 +122,8 @@ body {
 }
 
 .market_chooser .chart_dropdown_data td {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    padding: .5px 6px !important;
+    border-bottom: 1px solid;
+    padding: 1px 6px !important;
     vertical-align: top;
     line-height: 24px
 }
@@ -277,8 +271,7 @@ body {
 }
 
 .chart_container .chart_toolbar_button {
-    border-width: 1px;
-    border-style: solid;
+    border: 1px solid;
     cursor: pointer;
     float: left;
     margin: 3px 2px;
@@ -381,8 +374,7 @@ body {
 }
 
 .chart_container a.chart_icon {
-    border-width: 1px;
-    border-style: solid;
+    border: 1px solid;
     height: 16px;
     padding: 0;
     width: 16px
@@ -463,8 +455,7 @@ body {
 }
 
 #chart_toolpanel {
-    border-right-width: 1px;
-    border-right-style: solid;
+    border-right: 1px solid;
     display: none;
     position: absolute;
     width: 32px;
@@ -484,8 +475,7 @@ body {
 #chart_toolpanel .chart_toolpanel_icon {
     background-origin: content-box;
     background-repeat: no-repeat;
-    border-width: 1px;
-    border-style: solid;
+    border: 1px solid;
     cursor: pointer;
     height: 16px;
     margin: 1px 4px 1px 4px;
@@ -496,9 +486,8 @@ body {
 }
 
 #chart_toolpanel .chart_toolpanel_tip {
-    border-width: 1px;
     border-radius: 4px;
-    border-style: solid;
+    border: 1px solid;
     display: none;
     *font-weight: bold;
     position: absolute;
@@ -654,8 +643,7 @@ body {
 }
 
 #chart_tabbar {
-    border-top-width: 1px;
-    border-top-style: solid;
+    border-top: 1px solid;
     cursor: default;
     display: none;
     *font-weight: bold;
@@ -744,8 +732,7 @@ body {
 }
 
 #chart_loading {
-    border-width: 1px;
-    border-style: solid;
+    border: 1px solid;
     border-radius: 4px;
     font-size: 18px;
     font-weight: bold;
@@ -776,8 +763,7 @@ body {
 
 #chart_parameter_settings {
     border-radius: 4px;
-    border-width: 1px;
-    border-style: solid;
+    border: 1px solid;
     width: 640px;
     position: absolute;
     overflow: hidden;
@@ -829,7 +815,7 @@ body {
 
 .chart_container.dark #chart_parameter_settings {
     background-color: rgba(0, 0, 0, 0.9);
-    border-color: rgba(0,0,0,0.9);
+    border-color: rgba(0, 0, 0, 0.9);
     color: #ccc;
 }
 
@@ -852,8 +838,7 @@ body {
 .chart_container input,
 .chart_container button {
     border-radius: 4px;
-    border-width: 1px;
-    border-style: solid;
+    border: 1px solid;
     padding: 4px
 }
 
@@ -864,7 +849,7 @@ body {
 .chart_container input[type=button],
 .chart_container input[type=submit],
 .chart_container button {
-    font-family: arial, sans;
+    font-family: arial, sans, serif;
     padding: 4px 8px;
     cursor: pointer
 }
@@ -924,8 +909,6 @@ body {
 }
 
 .m_rightbot {
-    /*position: fixed;*/
-    /*bottom: 0;*/
     height: 22px;
     line-height: 22px;
     border-top: 1px solid #404040;
@@ -972,7 +955,7 @@ body {
     text-align: center;
     height: 16px;
     line-height: 16px;
-    font-family: Arial, sans;
+    font-family: Arial, sans, serif;
     padding: 5px
 }
 
@@ -1229,10 +1212,9 @@ body {
 }
 
 .container .nav {
-    padding: 0;
     margin: 0;
     list-style: none;
-    padding-left: 3px;
+    padding: 0 0 0 3px;
     height: 41px
 }
 
@@ -1244,7 +1226,7 @@ body {
 .container a {
     text-decoration: none;
     color: #6BF;
-    font-family: Arial, sans
+    font-family: Arial, sans, serif
 }
 
 .container a:hover {
@@ -1268,10 +1250,10 @@ body {
 .light .container a {
     text-decoration: none;
     color: #1478c8;
-    font-family: Arial, sans
+    font-family: Arial, sans, serif
 }
 
 .chart_BoxSize {
     width: 20px;
-    height: 20px;
+    height: 20px
 }

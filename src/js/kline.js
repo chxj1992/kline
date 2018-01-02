@@ -1,10 +1,12 @@
-import View from "./view";
 import Control from './control'
 import KlineTrade from './kline_trade'
 import MEvent from './mevent'
 import ChartManager from './chart_manager'
 import ChartSettings from './chart_settings'
 import {Template} from './templates'
+import '../css/main.css'
+import tpl from '../view/tpl.html'
+
 
 export default class Kline {
 
@@ -96,14 +98,15 @@ export default class Kline {
     draw() {
         new KlineTrade();
 
-        let template = $.parseHTML(View.template());
+        let view = $.parseHTML(tpl);
         for (let k in this.ranges) {
-            let res = $(template).find('[name="' + this.ranges[k] + '"]');
+            let res = $(view).find('[name="' + this.ranges[k] + '"]');
             res.each(function (i, e) {
                 $(e).attr("style", "display:inline-block");
             });
         }
-        $(this.element).html(template);
+        $(this.element).html(view);
+
         setInterval(Control.refreshFunction, this.intervalTime);
         if (this.type === "socket") {
             socketConnect();
@@ -620,8 +623,8 @@ export default class Kline {
                 }
             });
 
-        });
-    }
+        })
 
+    }
 
 }

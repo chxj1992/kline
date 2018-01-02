@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -77,29 +77,29 @@ exports.default = void 0;
 
 var _control = _interopRequireDefault(__webpack_require__(8));
 
-var _chart = _interopRequireDefault(__webpack_require__(18));
+var _chart = _interopRequireDefault(__webpack_require__(20));
 
-var indicators = _interopRequireWildcard(__webpack_require__(19));
+var indicators = _interopRequireWildcard(__webpack_require__(24));
 
-var ranges = _interopRequireWildcard(__webpack_require__(20));
+var ranges = _interopRequireWildcard(__webpack_require__(18));
 
-var templates = _interopRequireWildcard(__webpack_require__(12));
+var templates = _interopRequireWildcard(__webpack_require__(6));
 
-var data_sources = _interopRequireWildcard(__webpack_require__(4));
+var data_sources = _interopRequireWildcard(__webpack_require__(2));
 
-var _chart_settings = _interopRequireDefault(__webpack_require__(3));
+var _chart_settings = _interopRequireDefault(__webpack_require__(4));
 
-var data_providers = _interopRequireWildcard(__webpack_require__(15));
+var data_providers = _interopRequireWildcard(__webpack_require__(10));
 
 var themes = _interopRequireWildcard(__webpack_require__(5));
 
-var plotters = _interopRequireWildcard(__webpack_require__(6));
+var plotters = _interopRequireWildcard(__webpack_require__(9));
 
-var ctools = _interopRequireWildcard(__webpack_require__(14));
+var ctools = _interopRequireWildcard(__webpack_require__(15));
 
-var areas = _interopRequireWildcard(__webpack_require__(7));
+var areas = _interopRequireWildcard(__webpack_require__(11));
 
-var _util = _interopRequireDefault(__webpack_require__(25));
+var _util = _interopRequireDefault(__webpack_require__(7));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -1447,7 +1447,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _cname = _interopRequireDefault(__webpack_require__(11));
+var _cname = _interopRequireDefault(__webpack_require__(13));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1509,21 +1509,324 @@ exports.default = NamedObject;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.MainDataSource = exports.DataSource = void 0;
 
-var _view = _interopRequireDefault(__webpack_require__(17));
+var _named_object = _interopRequireDefault(__webpack_require__(1));
+
+var _ctool_manager = _interopRequireDefault(__webpack_require__(21));
+
+var _kline = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DataSource =
+/*#__PURE__*/
+function (_NamedObject) {
+  _inherits(DataSource, _NamedObject);
+
+  function DataSource(name) {
+    _classCallCheck(this, DataSource);
+
+    return _possibleConstructorReturn(this, (DataSource.__proto__ || Object.getPrototypeOf(DataSource)).call(this, name));
+  }
+
+  _createClass(DataSource, [{
+    key: "getUpdateMode",
+    value: function getUpdateMode() {
+      return this._updateMode;
+    }
+  }, {
+    key: "setUpdateMode",
+    value: function setUpdateMode(mode) {
+      this._updateMode = mode;
+    }
+  }, {
+    key: "getCacheSize",
+    value: function getCacheSize() {
+      return 0;
+    }
+  }, {
+    key: "getDataCount",
+    value: function getDataCount() {
+      return 0;
+    }
+  }, {
+    key: "getDataAt",
+    value: function getDataAt(index) {
+      return this._dataItems[index];
+    }
+  }]);
+
+  return DataSource;
+}(_named_object.default);
+
+exports.DataSource = DataSource;
+DataSource.UpdateMode = {
+  DoNothing: 0,
+  Refresh: 1,
+  Update: 2,
+  Append: 3
+};
+
+var MainDataSource =
+/*#__PURE__*/
+function (_DataSource) {
+  _inherits(MainDataSource, _DataSource);
+
+  function MainDataSource(name) {
+    var _this;
+
+    _classCallCheck(this, MainDataSource);
+
+    _this = _possibleConstructorReturn(this, (MainDataSource.__proto__ || Object.getPrototypeOf(MainDataSource)).call(this, name));
+    _this._erasedCount = 0;
+    _this._dataItems = [];
+    _this._decimalDigits = 0;
+    _this.toolManager = new _ctool_manager.default(name);
+    return _this;
+  }
+
+  _createClass(MainDataSource, [{
+    key: "getCacheSize",
+    value: function getCacheSize() {
+      return this._dataItems.length;
+    }
+  }, {
+    key: "getDataCount",
+    value: function getDataCount() {
+      return this._dataItems.length;
+    }
+  }, {
+    key: "getUpdatedCount",
+    value: function getUpdatedCount() {
+      return this._updatedCount;
+    }
+  }, {
+    key: "getAppendedCount",
+    value: function getAppendedCount() {
+      return this._appendedCount;
+    }
+  }, {
+    key: "getErasedCount",
+    value: function getErasedCount() {
+      return this._erasedCount;
+    }
+  }, {
+    key: "getDecimalDigits",
+    value: function getDecimalDigits() {
+      return this._decimalDigits;
+    }
+  }, {
+    key: "calcDecimalDigits",
+    value: function calcDecimalDigits(v) {
+      var str = "" + v;
+      var i = str.indexOf('.');
+
+      if (i < 0) {
+        return 0;
+      }
+
+      return str.length - 1 - i;
+    }
+  }, {
+    key: "getLastDate",
+    value: function getLastDate() {
+      var count = this.getDataCount();
+
+      if (count < 1) {
+        return -1;
+      }
+
+      return this.getDataAt(count - 1).date;
+    }
+  }, {
+    key: "getDataAt",
+    value: function getDataAt(index) {
+      return this._dataItems[index];
+    }
+  }, {
+    key: "update",
+    value: function update(data) {
+      this._updatedCount = 0;
+      this._appendedCount = 0;
+      this._erasedCount = 0;
+      var len = this._dataItems.length;
+
+      if (len > 0) {
+        var lastIndex = len - 1;
+        var lastItem = this._dataItems[lastIndex];
+
+        var _e,
+            _i,
+            _cnt = data.length;
+
+        for (_i = 0; _i < _cnt; _i++) {
+          _e = data[_i];
+
+          if (_e[0] === lastItem.date) {
+            if (lastItem.open === _e[1] && lastItem.high === _e[2] && lastItem.low === _e[3] && lastItem.close === _e[4] && lastItem.volume === _e[5]) {
+              this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+            } else {
+              this.setUpdateMode(DataSource.UpdateMode.Update);
+              this._dataItems[lastIndex] = {
+                date: _e[0],
+                open: _e[1],
+                high: _e[2],
+                low: _e[3],
+                close: _e[4],
+                volume: _e[5]
+              };
+              this._updatedCount++;
+            }
+
+            _i++;
+
+            if (_i < _cnt) {
+              this.setUpdateMode(DataSource.UpdateMode.Append);
+
+              for (; _i < _cnt; _i++, this._appendedCount++) {
+                _e = data[_i];
+
+                this._dataItems.push({
+                  date: _e[0],
+                  open: _e[1],
+                  high: _e[2],
+                  low: _e[3],
+                  close: _e[4],
+                  volume: _e[5]
+                });
+              }
+            }
+
+            return true;
+          }
+        }
+
+        if (_cnt < _kline.default.instance.limit) {
+          this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+          return false;
+        }
+      }
+
+      this.setUpdateMode(DataSource.UpdateMode.Refresh);
+      this._dataItems = [];
+      var d,
+          n,
+          e,
+          i,
+          cnt = data.length;
+
+      for (i = 0; i < cnt; i++) {
+        e = data[i];
+
+        for (n = 1; n <= 4; n++) {
+          d = this.calcDecimalDigits(e[n]);
+          if (this._decimalDigits < d) this._decimalDigits = d;
+        }
+
+        this._dataItems.push({
+          date: e[0],
+          open: e[1],
+          high: e[2],
+          low: e[3],
+          close: e[4],
+          volume: e[5]
+        });
+      }
+
+      return true;
+    }
+  }, {
+    key: "select",
+    value: function select(id) {
+      this.toolManager.selecedObject = id;
+    }
+  }, {
+    key: "unselect",
+    value: function unselect() {
+      this.toolManager.selecedObject = -1;
+    }
+  }, {
+    key: "addToolObject",
+    value: function addToolObject(toolObject) {
+      this.toolManager.addToolObject(toolObject);
+    }
+  }, {
+    key: "delToolObject",
+    value: function delToolObject() {
+      this.toolManager.delCurrentObject();
+    }
+  }, {
+    key: "getToolObject",
+    value: function getToolObject(index) {
+      return this.toolManager.getToolObject(index);
+    }
+  }, {
+    key: "getToolObjectCount",
+    value: function getToolObjectCount() {
+      return this.toolManager.toolObjects.length;
+    }
+  }, {
+    key: "getCurrentToolObject",
+    value: function getCurrentToolObject() {
+      return this.toolManager.getCurrentObject();
+    }
+  }, {
+    key: "getSelectToolObjcet",
+    value: function getSelectToolObjcet() {
+      return this.toolManager.getSelectedObject();
+    }
+  }, {
+    key: "delSelectToolObject",
+    value: function delSelectToolObject() {
+      this.toolManager.delSelectedObject();
+    }
+  }]);
+
+  return MainDataSource;
+}(DataSource);
+
+exports.MainDataSource = MainDataSource;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
 var _control = _interopRequireDefault(__webpack_require__(8));
 
-var _kline_trade = _interopRequireDefault(__webpack_require__(9));
+var _kline_trade = _interopRequireDefault(__webpack_require__(12));
 
-var _mevent = _interopRequireDefault(__webpack_require__(24));
+var _mevent = _interopRequireDefault(__webpack_require__(17));
 
 var _chart_manager = _interopRequireDefault(__webpack_require__(0));
 
-var _chart_settings = _interopRequireDefault(__webpack_require__(3));
+var _chart_settings = _interopRequireDefault(__webpack_require__(4));
 
-var _templates = __webpack_require__(12);
+var _templates = __webpack_require__(6);
+
+__webpack_require__(25);
+
+var _tpl = _interopRequireDefault(__webpack_require__(40));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1621,16 +1924,16 @@ function () {
     key: "draw",
     value: function draw() {
       new _kline_trade.default();
-      var template = $.parseHTML(_view.default.template());
+      var view = $.parseHTML(_tpl.default);
 
       for (var k in this.ranges) {
-        var res = $(template).find('[name="' + this.ranges[k] + '"]');
+        var res = $(view).find('[name="' + this.ranges[k] + '"]');
         res.each(function (i, e) {
           $(e).attr("style", "display:inline-block");
         });
       }
 
-      $(this.element).html(template);
+      $(this.element).html(view);
       setInterval(_control.default.refreshFunction, this.intervalTime);
 
       if (this.type === "socket") {
@@ -2231,7 +2534,7 @@ Kline.created = false;
 Kline.instance = null;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2363,307 +2666,6 @@ function () {
 exports.default = ChartSettings;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.MainDataSource = exports.DataSource = void 0;
-
-var _named_object = _interopRequireDefault(__webpack_require__(1));
-
-var _ctool_manager = _interopRequireDefault(__webpack_require__(21));
-
-var _kline = _interopRequireDefault(__webpack_require__(2));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var DataSource =
-/*#__PURE__*/
-function (_NamedObject) {
-  _inherits(DataSource, _NamedObject);
-
-  function DataSource(name) {
-    _classCallCheck(this, DataSource);
-
-    return _possibleConstructorReturn(this, (DataSource.__proto__ || Object.getPrototypeOf(DataSource)).call(this, name));
-  }
-
-  _createClass(DataSource, [{
-    key: "getUpdateMode",
-    value: function getUpdateMode() {
-      return this._updateMode;
-    }
-  }, {
-    key: "setUpdateMode",
-    value: function setUpdateMode(mode) {
-      this._updateMode = mode;
-    }
-  }, {
-    key: "getCacheSize",
-    value: function getCacheSize() {
-      return 0;
-    }
-  }, {
-    key: "getDataCount",
-    value: function getDataCount() {
-      return 0;
-    }
-  }, {
-    key: "getDataAt",
-    value: function getDataAt(index) {
-      return this._dataItems[index];
-    }
-  }]);
-
-  return DataSource;
-}(_named_object.default);
-
-exports.DataSource = DataSource;
-DataSource.UpdateMode = {
-  DoNothing: 0,
-  Refresh: 1,
-  Update: 2,
-  Append: 3
-};
-
-var MainDataSource =
-/*#__PURE__*/
-function (_DataSource) {
-  _inherits(MainDataSource, _DataSource);
-
-  function MainDataSource(name) {
-    var _this;
-
-    _classCallCheck(this, MainDataSource);
-
-    _this = _possibleConstructorReturn(this, (MainDataSource.__proto__ || Object.getPrototypeOf(MainDataSource)).call(this, name));
-    _this._erasedCount = 0;
-    _this._dataItems = [];
-    _this._decimalDigits = 0;
-    _this.toolManager = new _ctool_manager.default(name);
-    return _this;
-  }
-
-  _createClass(MainDataSource, [{
-    key: "getCacheSize",
-    value: function getCacheSize() {
-      return this._dataItems.length;
-    }
-  }, {
-    key: "getDataCount",
-    value: function getDataCount() {
-      return this._dataItems.length;
-    }
-  }, {
-    key: "getUpdatedCount",
-    value: function getUpdatedCount() {
-      return this._updatedCount;
-    }
-  }, {
-    key: "getAppendedCount",
-    value: function getAppendedCount() {
-      return this._appendedCount;
-    }
-  }, {
-    key: "getErasedCount",
-    value: function getErasedCount() {
-      return this._erasedCount;
-    }
-  }, {
-    key: "getDecimalDigits",
-    value: function getDecimalDigits() {
-      return this._decimalDigits;
-    }
-  }, {
-    key: "calcDecimalDigits",
-    value: function calcDecimalDigits(v) {
-      var str = "" + v;
-      var i = str.indexOf('.');
-
-      if (i < 0) {
-        return 0;
-      }
-
-      return str.length - 1 - i;
-    }
-  }, {
-    key: "getLastDate",
-    value: function getLastDate() {
-      var count = this.getDataCount();
-
-      if (count < 1) {
-        return -1;
-      }
-
-      return this.getDataAt(count - 1).date;
-    }
-  }, {
-    key: "getDataAt",
-    value: function getDataAt(index) {
-      return this._dataItems[index];
-    }
-  }, {
-    key: "update",
-    value: function update(data) {
-      this._updatedCount = 0;
-      this._appendedCount = 0;
-      this._erasedCount = 0;
-      var len = this._dataItems.length;
-
-      if (len > 0) {
-        var lastIndex = len - 1;
-        var lastItem = this._dataItems[lastIndex];
-
-        var _e,
-            _i,
-            _cnt = data.length;
-
-        for (_i = 0; _i < _cnt; _i++) {
-          _e = data[_i];
-
-          if (_e[0] === lastItem.date) {
-            if (lastItem.open === _e[1] && lastItem.high === _e[2] && lastItem.low === _e[3] && lastItem.close === _e[4] && lastItem.volume === _e[5]) {
-              this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-            } else {
-              this.setUpdateMode(DataSource.UpdateMode.Update);
-              this._dataItems[lastIndex] = {
-                date: _e[0],
-                open: _e[1],
-                high: _e[2],
-                low: _e[3],
-                close: _e[4],
-                volume: _e[5]
-              };
-              this._updatedCount++;
-            }
-
-            _i++;
-
-            if (_i < _cnt) {
-              this.setUpdateMode(DataSource.UpdateMode.Append);
-
-              for (; _i < _cnt; _i++, this._appendedCount++) {
-                _e = data[_i];
-
-                this._dataItems.push({
-                  date: _e[0],
-                  open: _e[1],
-                  high: _e[2],
-                  low: _e[3],
-                  close: _e[4],
-                  volume: _e[5]
-                });
-              }
-            }
-
-            return true;
-          }
-        }
-
-        if (_cnt < _kline.default.instance.limit) {
-          this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-          return false;
-        }
-      }
-
-      this.setUpdateMode(DataSource.UpdateMode.Refresh);
-      this._dataItems = [];
-      var d,
-          n,
-          e,
-          i,
-          cnt = data.length;
-
-      for (i = 0; i < cnt; i++) {
-        e = data[i];
-
-        for (n = 1; n <= 4; n++) {
-          d = this.calcDecimalDigits(e[n]);
-          if (this._decimalDigits < d) this._decimalDigits = d;
-        }
-
-        this._dataItems.push({
-          date: e[0],
-          open: e[1],
-          high: e[2],
-          low: e[3],
-          close: e[4],
-          volume: e[5]
-        });
-      }
-
-      return true;
-    }
-  }, {
-    key: "select",
-    value: function select(id) {
-      this.toolManager.selecedObject = id;
-    }
-  }, {
-    key: "unselect",
-    value: function unselect() {
-      this.toolManager.selecedObject = -1;
-    }
-  }, {
-    key: "addToolObject",
-    value: function addToolObject(toolObject) {
-      this.toolManager.addToolObject(toolObject);
-    }
-  }, {
-    key: "delToolObject",
-    value: function delToolObject() {
-      this.toolManager.delCurrentObject();
-    }
-  }, {
-    key: "getToolObject",
-    value: function getToolObject(index) {
-      return this.toolManager.getToolObject(index);
-    }
-  }, {
-    key: "getToolObjectCount",
-    value: function getToolObjectCount() {
-      return this.toolManager.toolObjects.length;
-    }
-  }, {
-    key: "getCurrentToolObject",
-    value: function getCurrentToolObject() {
-      return this.toolManager.getCurrentObject();
-    }
-  }, {
-    key: "getSelectToolObjcet",
-    value: function getSelectToolObjcet() {
-      return this.toolManager.getSelectedObject();
-    }
-  }, {
-    key: "delSelectToolObject",
-    value: function delSelectToolObject() {
-      this.toolManager.delSelectedObject();
-    }
-  }]);
-
-  return MainDataSource;
-}(DataSource);
-
-exports.MainDataSource = MainDataSource;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2675,7 +2677,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LightTheme = exports.DarkTheme = exports.Theme = void 0;
 
-var _kline = _interopRequireDefault(__webpack_require__(2));
+var _kline = _interopRequireDefault(__webpack_require__(3));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2881,6 +2883,1187 @@ exports.LightTheme = LightTheme;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.TemplateMeasuringHandler = exports.DefaultTemplate = exports.Template = void 0;
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+var _chart_settings = _interopRequireDefault(__webpack_require__(4));
+
+var data_sources = _interopRequireWildcard(__webpack_require__(2));
+
+var data_providers = _interopRequireWildcard(__webpack_require__(10));
+
+var areas = _interopRequireWildcard(__webpack_require__(11));
+
+var plotters = _interopRequireWildcard(__webpack_require__(9));
+
+var _timeline = _interopRequireDefault(__webpack_require__(22));
+
+var _cname = _interopRequireDefault(__webpack_require__(13));
+
+var layouts = _interopRequireWildcard(__webpack_require__(23));
+
+var themes = _interopRequireWildcard(__webpack_require__(5));
+
+var ranges = _interopRequireWildcard(__webpack_require__(18));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Template =
+/*#__PURE__*/
+function () {
+  function Template() {
+    _classCallCheck(this, Template);
+  }
+
+  _createClass(Template, null, [{
+    key: "createCandlestickDataSource",
+    value: function createCandlestickDataSource(dsAlias) {
+      return new data_sources.MainDataSource(dsAlias);
+    }
+  }, {
+    key: "createDataSource",
+    value: function createDataSource(dsName, dsAlias, createFunc) {
+      var mgr = new _chart_manager.default();
+      if (mgr.getCachedDataSource(dsAlias) === null) mgr.setCachedDataSource(dsAlias, createFunc(dsAlias));
+      mgr.setCurrentDataSource(dsName, dsAlias);
+      mgr.updateData(dsName, null);
+    }
+  }, {
+    key: "createTableComps",
+    value: function createTableComps(dsName) {
+      this.createMainChartComps(dsName);
+
+      if (this.displayVolume) {
+        this.createIndicatorChartComps(dsName, "VOLUME");
+      }
+
+      this.createTimelineComps(dsName);
+    }
+  }, {
+    key: "createMainChartComps",
+    value: function createMainChartComps(dsName) {
+      var mgr = new _chart_manager.default();
+      var tableLayout = mgr.getArea(dsName + ".charts");
+      var areaName = dsName + ".main";
+      var rangeAreaName = areaName + "Range";
+      var area = new areas.MainArea(areaName);
+      mgr.setArea(areaName, area);
+      tableLayout.addArea(area);
+      var rangeArea = new areas.MainRangeArea(rangeAreaName);
+      mgr.setArea(rangeAreaName, rangeArea);
+      tableLayout.addArea(rangeArea);
+      var dp = new data_providers.MainDataProvider(areaName + ".main");
+      mgr.setDataProvider(dp.getName(), dp);
+      mgr.setMainIndicator(dsName, "MA");
+      var range = new ranges.MainRange(areaName);
+      mgr.setRange(range.getName(), range);
+      range.setPaddingTop(28);
+      range.setPaddingBottom(12);
+      var plotter = new plotters.MainAreaBackgroundPlotter(areaName + ".background");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.CGridPlotter(areaName + ".grid");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.CandlestickPlotter(areaName + ".main");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.MinMaxPlotter(areaName + ".decoration");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.MainInfoPlotter(areaName + ".info");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.SelectionPlotter(areaName + ".selection");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.CDynamicLinePlotter(areaName + ".tool");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.RangeAreaBackgroundPlotter(areaName + "Range.background");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.COrderGraphPlotter(areaName + "Range.grid");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.RangePlotter(areaName + "Range.main");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.RangeSelectionPlotter(areaName + "Range.selection");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.LastClosePlotter(areaName + "Range.decoration");
+      mgr.setPlotter(plotter.getName(), plotter);
+    }
+  }, {
+    key: "createIndicatorChartComps",
+    value: function createIndicatorChartComps(dsName, indicName) {
+      var mgr = new _chart_manager.default();
+      var tableLayout = mgr.getArea(dsName + ".charts");
+      var areaName = dsName + ".indic" + tableLayout.getNextRowId();
+      var rangeAreaName = areaName + "Range";
+      var area = new areas.IndicatorArea(areaName);
+      mgr.setArea(areaName, area);
+      tableLayout.addArea(area);
+      var rowIndex = tableLayout.getAreaCount() >> 1;
+
+      var heights = _chart_settings.default.get().charts.areaHeight;
+
+      if (heights.length > rowIndex) {
+        var a, i;
+
+        for (i = 0; i < rowIndex; i++) {
+          a = tableLayout.getAreaAt(i << 1);
+          a.setTop(0);
+          a.setBottom(heights[i]);
+        }
+
+        area.setTop(0);
+        area.setBottom(heights[rowIndex]);
+      }
+
+      var rangeArea = new areas.IndicatorRangeArea(rangeAreaName);
+      mgr.setArea(rangeAreaName, rangeArea);
+      tableLayout.addArea(rangeArea);
+      var dp = new data_providers.IndicatorDataProvider(areaName + ".secondary");
+      mgr.setDataProvider(dp.getName(), dp);
+
+      if (mgr.setIndicator(areaName, indicName) === false) {
+        mgr.removeIndicator(areaName);
+        return;
+      }
+
+      var plotter = new plotters.MainAreaBackgroundPlotter(areaName + ".background");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.CGridPlotter(areaName + ".grid");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.IndicatorPlotter(areaName + ".secondary");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.IndicatorInfoPlotter(areaName + ".info");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.SelectionPlotter(areaName + ".selection");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.RangeAreaBackgroundPlotter(areaName + "Range.background");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.RangePlotter(areaName + "Range.main");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.RangeSelectionPlotter(areaName + "Range.selection");
+      mgr.setPlotter(plotter.getName(), plotter);
+    }
+  }, {
+    key: "createTimelineComps",
+    value: function createTimelineComps(dsName) {
+      var mgr = new _chart_manager.default();
+      var plotter;
+      var timeline = new _timeline.default(dsName);
+      mgr.setTimeline(timeline.getName(), timeline);
+      plotter = new plotters.TimelineAreaBackgroundPlotter(dsName + ".timeline.background");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.TimelinePlotter(dsName + ".timeline.main");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.TimelineSelectionPlotter(dsName + ".timeline.selection");
+      mgr.setPlotter(plotter.getName(), plotter);
+    }
+  }, {
+    key: "createLiveOrderComps",
+    value: function createLiveOrderComps(dsName) {
+      var mgr = new _chart_manager.default();
+      var plotter;
+      plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.CLiveOrderPlotter(dsName + ".main.main");
+      mgr.setPlotter(plotter.getName(), plotter);
+    }
+  }, {
+    key: "createLiveTradeComps",
+    value: function createLiveTradeComps(dsName) {
+      var mgr = new _chart_manager.default();
+      var plotter;
+      plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
+      mgr.setPlotter(plotter.getName(), plotter);
+      plotter = new plotters.CLiveTradePlotter(dsName + ".main.main");
+      mgr.setPlotter(plotter.getName(), plotter);
+    }
+  }]);
+
+  return Template;
+}();
+
+exports.Template = Template;
+Template.displayVolume = true;
+
+var DefaultTemplate =
+/*#__PURE__*/
+function (_Template) {
+  _inherits(DefaultTemplate, _Template);
+
+  function DefaultTemplate() {
+    _classCallCheck(this, DefaultTemplate);
+
+    return _possibleConstructorReturn(this, (DefaultTemplate.__proto__ || Object.getPrototypeOf(DefaultTemplate)).apply(this, arguments));
+  }
+
+  _createClass(DefaultTemplate, null, [{
+    key: "loadTemplate",
+    value: function loadTemplate(dsName, dsAlias) {
+      var mgr = new _chart_manager.default();
+
+      var settings = _chart_settings.default.get();
+
+      var frameName = new _cname.default(dsName).getCompAt(0);
+      mgr.unloadTemplate(frameName);
+      this.createDataSource(dsName, dsAlias, this.createCandlestickDataSource);
+      var frame = new layouts.DockableLayout(frameName);
+      mgr.setFrame(frame.getName(), frame);
+      mgr.setArea(frame.getName(), frame);
+      frame.setGridColor(themes.Theme.Color.Grid1);
+      var area = new areas.TimelineArea(dsName + ".timeline");
+      mgr.setArea(area.getName(), area);
+      frame.addArea(area);
+      area.setDockStyle(areas.ChartArea.DockStyle.Bottom);
+      area.Measuring.addHandler(area, TemplateMeasuringHandler.onMeasuring);
+      var tableLayout = new layouts.TableLayout(dsName + ".charts");
+      mgr.setArea(tableLayout.getName(), tableLayout);
+      tableLayout.setDockStyle(areas.ChartArea.DockStyle.Fill);
+      frame.addArea(tableLayout);
+      this.createTableComps(dsName);
+      mgr.setThemeName(frameName, settings.theme);
+      return mgr;
+    }
+  }]);
+
+  return DefaultTemplate;
+}(Template);
+
+exports.DefaultTemplate = DefaultTemplate;
+
+var TemplateMeasuringHandler =
+/*#__PURE__*/
+function () {
+  function TemplateMeasuringHandler() {
+    _classCallCheck(this, TemplateMeasuringHandler);
+  }
+
+  _createClass(TemplateMeasuringHandler, null, [{
+    key: "onMeasuring",
+    value: function onMeasuring(sender, args) {
+      var width = args.Width;
+      var height = args.Height;
+      var areaName = sender.getNameObject().getCompAt(2);
+
+      if (areaName === "timeline") {
+        sender.setMeasuredDimension(width, 22);
+      }
+    }
+  }]);
+
+  return TemplateMeasuringHandler;
+}();
+
+exports.TemplateMeasuringHandler = TemplateMeasuringHandler;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Util =
+/*#__PURE__*/
+function () {
+  function Util() {
+    _classCallCheck(this, Util);
+  }
+
+  _createClass(Util, null, [{
+    key: "fromFloat",
+    value: function fromFloat(v, fractionDigits) {
+      var text = v.toFixed(fractionDigits);
+
+      for (var i = text.length - 1; i >= 0; i--) {
+        if (text[i] === '.') return text.substring(0, i);
+        if (text[i] !== '0') return text.substring(0, i + 1);
+      }
+    }
+  }, {
+    key: "formatTime",
+    value: function formatTime(v) {
+      return v < 10 ? "0" + v.toString() : v.toString();
+    }
+  }, {
+    key: "isInstance",
+    value: function isInstance(obj, clazz) {
+      if (obj === null || obj === undefined) {
+        return false;
+      }
+
+      return obj instanceof clazz;
+    }
+  }]);
+
+  return Util;
+}();
+
+exports.default = Util;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _kline = _interopRequireDefault(__webpack_require__(3));
+
+var _kline_trade = _interopRequireDefault(__webpack_require__(12));
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+var _chart_settings = _interopRequireDefault(__webpack_require__(4));
+
+var _templates = __webpack_require__(6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Control =
+/*#__PURE__*/
+function () {
+  function Control() {
+    _classCallCheck(this, Control);
+  }
+
+  _createClass(Control, null, [{
+    key: "refreshFunction",
+    value: function refreshFunction() {
+      Control.refreshCounter++;
+      var lang = new _chart_manager.default().getLanguage();
+
+      if (Control.refreshCounter > 3600) {
+        var num = Number(Control.refreshCounter / 3600);
+
+        if (lang === "en-us") {
+          $("#chart_updated_time_text").html(num.toFixed(0) + "h");
+        } else if (lang === "zh-tw") {
+          $("#chart_updated_time_text").html(num.toFixed(0) + "小時");
+        } else {
+          $("#chart_updated_time_text").html(num.toFixed(0) + "小时");
+        }
+      } else if (Control.refreshCounter > 60 && Control.refreshCounter <= 3600) {
+        var _num = Number(Control.refreshCounter / 60);
+
+        if (lang === "en-us") {
+          $("#chart_updated_time_text").html(_num.toFixed(0) + "m");
+        } else if (lang === "zh-tw") {
+          $("#chart_updated_time_text").html(_num.toFixed(0) + "分鐘");
+        } else {
+          $("#chart_updated_time_text").html(_num.toFixed(0) + "分钟");
+        }
+      } else if (Control.refreshCounter <= 60) {
+        if (lang === "en-us") {
+          $("#chart_updated_time_text").html(Control.refreshCounter + "s");
+        } else {
+          $("#chart_updated_time_text").html(Control.refreshCounter + "秒");
+        }
+      }
+    }
+  }, {
+    key: "clearRefreshCounter",
+    value: function clearRefreshCounter() {
+      window.clearInterval(Control.refreshHandler);
+      Control.refreshCounter = 0;
+      var lang = new _chart_manager.default().getLanguage();
+
+      if (lang === "en-us") {
+        $("#chart_updated_time_text").html(Control.refreshCounter + "s");
+      } else {
+        $("#chart_updated_time_text").html(Control.refreshCounter + "秒");
+      }
+
+      Control.refreshHandler = setInterval(this.refreshFunction, _kline.default.instance.intervalTime);
+    }
+  }, {
+    key: "RequestData",
+    value: function RequestData(showLoading) {
+      this.AbortRequest();
+      window.clearTimeout(_kline.default.instance.timer);
+
+      if (_kline.default.instance.paused) {
+        return;
+      }
+
+      if (showLoading === true) {
+        $("#chart_loading").addClass("activated");
+      }
+
+      if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient) {
+        this.requestOverSocket();
+      } else {
+        this.requestOverHttp();
+      }
+    }
+  }, {
+    key: "parseRequestParam",
+    value: function parseRequestParam(str) {
+      return JSON.parse('{"' + decodeURI(str.replace(/&/g, "\",\"").replace(/=/g, "\":\"")) + '"}');
+    }
+  }, {
+    key: "requestOverSocket",
+    value: function requestOverSocket() {
+      if (!_kline.default.instance.socketConnected) {
+        if (_kline.default.instance.debug) {
+          console.log("DEBUG: socket is not coonnected");
+        }
+
+        return;
+      }
+
+      if (_kline.default.instance.socketClient && _kline.default.instance.socketClient.ws.readyState === 1) {
+        _kline.default.instance.socketClient.send(_kline.default.instance.sendPath, {}, JSON.stringify(Control.parseRequestParam(_kline.default.instance.requestParam)));
+
+        return;
+      }
+
+      if (_kline.default.instance.debug) {
+        console.log("DEBUG: socket client is not ready yet ...");
+      }
+
+      _kline.default.instance.timer = setTimeout(function () {
+        this.RequestData(true);
+      }, 1000);
+    }
+  }, {
+    key: "requestOverHttp",
+    value: function requestOverHttp() {
+      if (_kline.default.instance.debug) {
+        console.log("DEBUG: " + _kline.default.instance.requestParam);
+      }
+
+      $(document).ready(_kline.default.instance.G_HTTP_REQUEST = $.ajax({
+        type: "GET",
+        url: _kline.default.instance.url,
+        dataType: 'json',
+        data: _kline.default.instance.requestParam,
+        timeout: 30000,
+        created: Date.now(),
+        beforeSend: function beforeSend() {
+          this.range = _kline.default.instance.range;
+          this.symbol = _kline.default.instance.symbol;
+        },
+        success: function success(res) {
+          if (_kline.default.instance.G_HTTP_REQUEST) {
+            Control.requestSuccessHandler(res);
+          }
+        },
+        error: function error(xhr, textStatus, errorThrown) {
+          if (_kline.default.instance.debug) {
+            console.log(xhr);
+          }
+
+          if (xhr.status === 200 && xhr.readyState === 4) {
+            return;
+          }
+
+          _kline.default.instance.timer = setTimeout(function () {
+            RequestData(true);
+          }, _kline.default.instance.intervalTime);
+        },
+        complete: function complete() {
+          _kline.default.instance.G_HTTP_REQUEST = null;
+        }
+      }));
+    }
+  }, {
+    key: "requestSuccessHandler",
+    value: function requestSuccessHandler(res) {
+      if (_kline.default.instance.debug) {
+        console.log(res);
+      }
+
+      if (!res || !res.success) {
+        if (_kline.default.instance.type === 'poll') {
+          _kline.default.instance.timer = setTimeout(function () {
+            Control.RequestData(true);
+          }, _kline.default.instance.intervalTime);
+        }
+
+        return;
+      }
+
+      $("#chart_loading").removeClass("activated");
+      var chart = new _chart_manager.default().getChart();
+      chart.setTitle();
+      _kline.default.instance.data = eval(res.data);
+
+      var updateDataRes = _kline.default.instance.chartMgr.updateData("frame0.k0", _kline.default.instance.data.lines);
+
+      _kline.default.instance.requestParam = Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, null, _kline.default.instance.chartMgr.getDataSource("frame0.k0").getLastDate());
+      var intervalTime = _kline.default.instance.intervalTime < _kline.default.instance.range ? _kline.default.instance.intervalTime : _kline.default.instance.range;
+
+      if (!updateDataRes) {
+        if (_kline.default.instance.type === 'poll') {
+          _kline.default.instance.timer = setTimeout(RequestData, intervalTime);
+        }
+
+        return;
+      }
+
+      if (_kline.default.instance.data.trades && _kline.default.instance.data.trades.length > 0) {
+        _kline_trade.default.instance.pushTrades(_kline.default.instance.data.trades);
+
+        _kline_trade.default.instance.klineTradeInit = true;
+      }
+
+      if (_kline.default.instance.data.depths) {
+        _kline_trade.default.instance.updateDepth(_kline.default.instance.data.depths);
+      }
+
+      Control.clearRefreshCounter();
+
+      if (_kline.default.instance.type === 'poll') {
+        _kline.default.instance.timer = setTimeout(Control.TwoSecondThread, intervalTime);
+      }
+
+      new _chart_manager.default().redraw('All', false);
+    }
+  }, {
+    key: "AbortRequest",
+    value: function AbortRequest() {
+      if (_kline.default.instance.type !== "socket" || !_kline.default.instance.socketClient) {
+        if (_kline.default.instance.G_HTTP_REQUEST && _kline.default.instance.G_HTTP_REQUEST.readyState !== 4) {
+          _kline.default.instance.G_HTTP_REQUEST.abort();
+        }
+      }
+    }
+  }, {
+    key: "TwoSecondThread",
+    value: function TwoSecondThread() {
+      var f = _kline.default.instance.chartMgr.getDataSource("frame0.k0").getLastDate();
+
+      if (f === -1) {
+        _kline.default.instance.requestParam = Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, _kline.default.instance.limit, null);
+      } else {
+        _kline.default.instance.requestParam = Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, null, f.toString());
+      }
+
+      Control.RequestData();
+    }
+  }, {
+    key: "readCookie",
+    value: function readCookie() {
+      _chart_settings.default.get();
+
+      _chart_settings.default.save();
+
+      var tmp = _chart_settings.default.get();
+
+      new _chart_manager.default().setChartStyle('frame0.k0', tmp.charts.chartStyle);
+      var symbol = tmp.charts.symbol;
+
+      if (!_kline.default.instance.init) {
+        symbol = _kline.default.instance.symbol;
+        _kline.default.instance.init = true;
+      }
+
+      _kline.default.instance.symbol = symbol;
+      this.switchSymbolSelected(symbol);
+      var period = tmp.charts.period;
+      this.switchPeriod(period);
+      $('#chart_period_' + period + '_v a').addClass('selected');
+      $('#chart_period_' + period + '_h a').addClass('selected');
+
+      if (tmp.charts.indicsStatus === 'close') {
+        this.switchIndic('off');
+      } else if (tmp.charts.indicsStatus === 'open') {
+        this.switchIndic('on');
+      }
+
+      var mainIndic = $('#chart_select_main_indicator');
+      mainIndic.find('a').each(function () {
+        if ($(this).attr('name') === tmp.charts.mIndic) {
+          $(this).addClass('selected');
+        }
+      });
+      var chart_style = $('#chart_select_chart_style');
+      chart_style.find('a').each(function () {
+        if ($(this)[0].innerHTML === tmp.charts.chartStyle) {
+          $(this).addClass('selected');
+        }
+      });
+      new _chart_manager.default().getChart().setMainIndicator(tmp.charts.mIndic);
+      new _chart_manager.default().setThemeName('frame0', tmp.theme);
+      this.switchTools('off');
+
+      if (tmp.theme === 'Dark') {
+        this.switchTheme('dark');
+      } else if (tmp.theme === 'Light') {
+        this.switchTheme('light');
+      }
+
+      this.chartSwitchLanguage(tmp.language || "zh-cn");
+    }
+  }, {
+    key: "setHttpRequestParam",
+    value: function setHttpRequestParam(mark_from, range, limit, since) {
+      var str = "symbol=" + mark_from + "&range=" + range;
+      if (limit !== null) str += "&limit=" + limit;else str += "&since=" + since;
+
+      if (_kline_trade.default.instance.tradeDate.getTime() !== 0) {
+        str += "&prevTradeTime=" + _kline_trade.default.instance.tradeDate.getTime();
+      }
+
+      return str;
+    }
+  }, {
+    key: "refreshTemplate",
+    value: function refreshTemplate() {
+      _kline.default.instance.chartMgr = _templates.DefaultTemplate.loadTemplate("frame0.k0", "");
+      new _chart_manager.default().redraw('All', true);
+    }
+  }, {
+    key: "getRectCrossPt",
+    value: function getRectCrossPt(rect, startPt, endPt) {
+      var crossPt;
+      var firstPt = {
+        x: -1,
+        y: -1
+      };
+      var secondPt = {
+        x: -1,
+        y: -1
+      };
+      var xdiff = endPt.x - startPt.x;
+      var ydiff = endPt.y - startPt.y;
+
+      if (Math.abs(xdiff) < 2) {
+        firstPt = {
+          x: startPt.x,
+          y: rect.top
+        };
+        secondPt = {
+          x: endPt.x,
+          y: rect.bottom
+        };
+        crossPt = [firstPt, secondPt];
+        return crossPt;
+      }
+
+      var k = ydiff / xdiff;
+      secondPt.x = rect.right;
+      secondPt.y = startPt.y + (rect.right - startPt.x) * k;
+      firstPt.x = rect.left;
+      firstPt.y = startPt.y + (rect.left - startPt.x) * k;
+      crossPt = [firstPt, secondPt];
+      return crossPt;
+    }
+  }, {
+    key: "chartSwitchLanguage",
+    value: function chartSwitchLanguage(lang) {
+      var lang_tmp = lang.replace(/-/, '_');
+      $('#chart_language_switch_tmp').find('span').each(function () {
+        var name = $(this).attr('name');
+        var attr = $(this).attr(lang_tmp);
+        name = '.' + name;
+        var obj = $(name)[0];
+        if (!obj) return;
+        $(name).each(function () {
+          $(this)[0].innerHTML = attr;
+        });
+      });
+      $("#chart_language_setting_div li a[name='" + lang + "']").addClass("selected");
+      new _chart_manager.default().setLanguage(lang);
+      new _chart_manager.default().getChart().setTitle();
+
+      var tmp = _chart_settings.default.get();
+
+      tmp.language = lang;
+
+      _chart_settings.default.save();
+
+      _kline.default.instance.onLangChange(lang);
+    }
+  }, {
+    key: "onSize",
+    value: function onSize(w, h) {
+      var width = w || window.innerWidth;
+      var chartWidth = _kline.default.instance.showTrade ? width - _kline.default.instance.tradeWidth : width;
+      var height = h || window.innerHeight;
+      var container = $(_kline.default.instance.element);
+      container.css({
+        width: width + 'px',
+        height: height + 'px'
+      });
+      var toolBar = $('#chart_toolbar');
+      var toolPanel = $('#chart_toolpanel');
+      var canvasGroup = $('#chart_canvasGroup');
+      var tabBar = $('#chart_tabbar');
+      var toolPanelShown = toolPanel[0].style.display !== 'inline' ? false : true;
+      var tabBarShown = tabBar[0].style.display !== 'block' ? false : true;
+      var toolBarRect = {};
+      toolBarRect.x = 0;
+      toolBarRect.y = 0;
+      toolBarRect.w = chartWidth;
+      toolBarRect.h = 29;
+      var toolPanelRect = {};
+      toolPanelRect.x = 0;
+      toolPanelRect.y = toolBarRect.h + 1;
+      toolPanelRect.w = toolPanelShown ? 32 : 0;
+      toolPanelRect.h = height - toolPanelRect.y;
+      var tabBarRect = {};
+      tabBarRect.w = toolPanelShown ? chartWidth - (toolPanelRect.w + 1) : chartWidth;
+      tabBarRect.h = tabBarShown ? 22 : -1;
+      tabBarRect.x = chartWidth - tabBarRect.w;
+      tabBarRect.y = height - (tabBarRect.h + 1);
+      var canvasGroupRect = {};
+      canvasGroupRect.x = tabBarRect.x;
+      canvasGroupRect.y = toolPanelRect.y;
+      canvasGroupRect.w = tabBarRect.w;
+      canvasGroupRect.h = tabBarRect.y - toolPanelRect.y;
+      toolBar.css({
+        left: toolBarRect.x + 'px',
+        top: toolBarRect.y + 'px',
+        width: toolBarRect.w + 'px',
+        height: toolBarRect.h + 'px'
+      });
+
+      if (toolPanelShown) {
+        toolPanel.css({
+          left: toolPanelRect.x + 'px',
+          top: toolPanelRect.y + 'px',
+          width: toolPanelRect.w + 'px',
+          height: toolPanelRect.h + 'px'
+        });
+      }
+
+      canvasGroup.css({
+        left: canvasGroupRect.x + 'px',
+        top: canvasGroupRect.y + 'px',
+        width: canvasGroupRect.w + 'px',
+        height: canvasGroupRect.h + 'px'
+      });
+      var mainCanvas = $('#chart_mainCanvas')[0];
+      var overlayCanvas = $('#chart_overlayCanvas')[0];
+      mainCanvas.width = canvasGroupRect.w;
+      mainCanvas.height = canvasGroupRect.h;
+      overlayCanvas.width = canvasGroupRect.w;
+      overlayCanvas.height = canvasGroupRect.h;
+
+      if (tabBarShown) {
+        tabBar.css({
+          left: tabBarRect.x + 'px',
+          top: tabBarRect.y + 'px',
+          width: tabBarRect.w + 'px',
+          height: tabBarRect.h + 'px'
+        });
+      }
+
+      var dlgSettings = $("#chart_parameter_settings");
+      dlgSettings.css({
+        left: chartWidth - dlgSettings.width() >> 1,
+        top: height - dlgSettings.height() >> 1
+      });
+      var dlgLoading = $("#chart_loading");
+      dlgLoading.css({
+        left: chartWidth - dlgLoading.width() >> 1,
+        top: height - dlgLoading.height() >> 2
+      });
+      var domElemCache = $('#chart_dom_elem_cache');
+      var rowTheme = $('#chart_select_theme')[0];
+      var rowTools = $('#chart_enable_tools')[0];
+      var rowIndic = $('#chart_enable_indicator')[0];
+      var periodsVert = $('#chart_toolbar_periods_vert');
+      var periodsHorz = $('#chart_toolbar_periods_horz')[0];
+      var showIndic = $('#chart_show_indicator')[0];
+      var showTools = $('#chart_show_tools')[0];
+      var selectTheme = $('#chart_toolbar_theme')[0];
+      var dropDownSettings = $('#chart_dropdown_settings');
+      var periodsVertNW = periodsVert[0].offsetWidth;
+      var periodsHorzNW = periodsVertNW + periodsHorz.offsetWidth;
+      var showIndicNW = periodsHorzNW + showIndic.offsetWidth + 4;
+      var showToolsNW = showIndicNW + showTools.offsetWidth + 4;
+      var selectThemeNW = showToolsNW + selectTheme.offsetWidth;
+      var dropDownSettingsW = dropDownSettings.find(".chart_dropdown_t")[0].offsetWidth + 150;
+      periodsVertNW += dropDownSettingsW;
+      periodsHorzNW += dropDownSettingsW;
+      showIndicNW += dropDownSettingsW;
+      showToolsNW += dropDownSettingsW;
+      selectThemeNW += dropDownSettingsW;
+
+      if (chartWidth < periodsHorzNW) {
+        domElemCache.append(periodsHorz);
+      } else {
+        periodsVert.after(periodsHorz);
+      }
+
+      if (chartWidth < showIndicNW) {
+        domElemCache.append(showIndic);
+        rowIndic.style.display = "";
+      } else {
+        dropDownSettings.before(showIndic);
+        rowIndic.style.display = "none";
+      }
+
+      if (chartWidth < showToolsNW) {
+        domElemCache.append(showTools);
+        rowTools.style.display = "";
+      } else {
+        dropDownSettings.before(showTools);
+        rowTools.style.display = "none";
+      }
+
+      if (chartWidth < selectThemeNW) {
+        domElemCache.append(selectTheme);
+        rowTheme.style.display = "";
+      } else {
+        dropDownSettings.before(selectTheme);
+        rowTheme.style.display = "none";
+      }
+
+      new _chart_manager.default().redraw('All', true);
+
+      _kline.default.instance.onResize(width, height);
+    }
+  }, {
+    key: "mouseWheel",
+    value: function mouseWheel(e, delta) {
+      new _chart_manager.default().scale(delta > 0 ? 1 : -1);
+      new _chart_manager.default().redraw("All", true);
+      return false;
+    }
+  }, {
+    key: "switchTheme",
+    value: function switchTheme(name) {
+      $('#chart_toolbar_theme a').removeClass('selected');
+      $('#chart_select_theme a').removeClass('selected');
+      $('#chart_toolbar_theme').find('a').each(function () {
+        if ($(this).attr('name') === name) {
+          $(this).addClass('selected');
+        }
+      });
+      $('#chart_select_theme a').each(function () {
+        if ($(this).attr('name') === name) {
+          $(this).addClass('selected');
+        }
+      });
+      $(".chart_container").attr('class', "chart_container " + name);
+      $(".marketName_ a").attr('class', name);
+
+      if (name === 'dark') {
+        $(".trade_container").addClass("dark").removeClass("light");
+        new _chart_manager.default().setThemeName('frame0', 'Dark');
+
+        var tmp = _chart_settings.default.get();
+
+        tmp.theme = 'Dark';
+
+        _chart_settings.default.save();
+      } else if (name === 'light') {
+        $(".trade_container").addClass("light").removeClass("dark");
+        new _chart_manager.default().setThemeName('frame0', 'Light');
+
+        var _tmp = _chart_settings.default.get();
+
+        _tmp.theme = 'Light';
+
+        _chart_settings.default.save();
+      }
+
+      var a = {};
+      a.command = "set current themes";
+      a.content = name;
+      $('#chart_output_interface_text').val(JSON.stringify(a));
+      $('#chart_output_interface_submit').submit();
+
+      window._current_theme_change.raise(name);
+
+      new _chart_manager.default().redraw();
+
+      _kline.default.instance.onThemeChange(name);
+    }
+  }, {
+    key: "switchTools",
+    value: function switchTools(name) {
+      $(".chart_dropdown_data").removeClass("chart_dropdown-hover");
+      $("#chart_toolpanel .chart_toolpanel_button").removeClass("selected");
+      $('#chart_enable_tools a').removeClass('selected');
+
+      if (name === 'on') {
+        $('#chart_show_tools').addClass('selected');
+        $('#chart_enable_tools a').each(function () {
+          if ($(this).attr('name') === 'on') {
+            $(this).addClass('selected');
+          }
+        });
+        $('#chart_toolpanel')[0].style.display = 'inline';
+
+        if (new _chart_manager.default()._drawingTool === _chart_manager.default.DrawingTool.Cursor) {
+          $('#chart_Cursor').parent().addClass('selected');
+        } else if (new _chart_manager.default()._drawingTool === _chart_manager.default.DrawingTool.CrossCursor) {
+          $('#chart_CrossCursor').parent().addClass('selected');
+        }
+      } else if (name === 'off') {
+        $('#chart_show_tools').removeClass('selected');
+        $('#chart_enable_tools a').each(function () {
+          if ($(this).attr('name') === 'off') {
+            $(this).addClass('selected');
+          }
+        });
+        $('#chart_toolpanel')[0].style.display = 'none';
+        new _chart_manager.default().setRunningMode(new _chart_manager.default()._beforeDrawingTool);
+        new _chart_manager.default().redraw("All", true);
+      }
+
+      if (_kline.default.instance.isSized) {
+        Control.onSize();
+      } else {
+        Control.onSize(_kline.default.instance.width, _kline.default.instance.height);
+      }
+    }
+  }, {
+    key: "switchIndic",
+    value: function switchIndic(name) {
+      $('#chart_enable_indicator a').removeClass('selected');
+      $("#chart_enable_indicator a[name='" + name + "']").addClass('selected');
+
+      if (name === 'on') {
+        $('#chart_show_indicator').addClass('selected');
+
+        var tmp = _chart_settings.default.get();
+
+        tmp.charts.indicsStatus = 'open';
+
+        _chart_settings.default.save();
+
+        var value = tmp.charts.indics[1];
+        if (_templates.Template.displayVolume === false) new _chart_manager.default().getChart().setIndicator(2, value);else new _chart_manager.default().getChart().setIndicator(2, value);
+        $("#chart_tabbar").find('a').each(function () {
+          if ($(this).attr('name') === value) $(this).addClass('selected');
+        });
+        $('#chart_tabbar')[0].style.display = 'block';
+      } else if (name === 'off') {
+        $('#chart_show_indicator').removeClass('selected');
+        new _chart_manager.default().getChart().setIndicator(2, 'NONE');
+
+        var _tmp2 = _chart_settings.default.get();
+
+        _tmp2.charts.indicsStatus = 'close';
+
+        _chart_settings.default.save();
+
+        $('#chart_tabbar')[0].style.display = 'none';
+        $("#chart_tabbar a").removeClass("selected");
+      }
+
+      if (_kline.default.instance.isSized) {
+        Control.onSize();
+      } else {
+        Control.onSize(_kline.default.instance.width, _kline.default.instance.height);
+      }
+    }
+  }, {
+    key: "switchPeriod",
+    value: function switchPeriod(name) {
+      $(".chart_container .chart_toolbar_tabgroup a").removeClass("selected");
+      $("#chart_toolbar_periods_vert ul a").removeClass("selected");
+      $(".chart_container .chart_toolbar_tabgroup a").each(function () {
+        if ($(this).parent().attr('name') === name) {
+          $(this).addClass('selected');
+        }
+      });
+      $("#chart_toolbar_periods_vert ul a").each(function () {
+        if ($(this).parent().attr('name') === name) {
+          $(this).addClass('selected');
+        }
+      });
+      new _chart_manager.default().showCursor();
+      Control.calcPeriodWeight(name);
+
+      if (name === 'line') {
+        new _chart_manager.default().getChart().strIsLine = true;
+        new _chart_manager.default().setChartStyle('frame0.k0', 'Line');
+        new _chart_manager.default().getChart().setCurrentPeriod('line');
+
+        var _settings = _chart_settings.default.get();
+
+        _settings.charts.period = name;
+
+        _chart_settings.default.save();
+
+        return;
+      }
+
+      new _chart_manager.default().getChart().strIsLine = false;
+      var p = _kline.default.instance.tagMapPeriod[name];
+      new _chart_manager.default().setChartStyle('frame0.k0', _chart_settings.default.get().charts.chartStyle);
+      new _chart_manager.default().getChart().setCurrentPeriod(p);
+
+      var settings = _chart_settings.default.get();
+
+      settings.charts.period = name;
+
+      _chart_settings.default.save();
+    }
+  }, {
+    key: "reset",
+    value: function reset(symbol) {
+      _kline.default.instance.symbol = symbol;
+
+      if (_kline.default.instance.showTrade) {
+        _kline_trade.default.instance.reset(symbol);
+      }
+    }
+  }, {
+    key: "switchSymbolSelected",
+    value: function switchSymbolSelected(symbol) {
+      Control.reset(symbol);
+      $(".market_chooser ul a").removeClass("selected");
+      $(".market_chooser ul a[name='" + symbol + "']").addClass("selected");
+      new _chart_manager.default().getChart()._symbol = symbol;
+
+      var settings = _chart_settings.default.get();
+
+      settings.charts.symbol = symbol;
+
+      _chart_settings.default.save();
+    }
+  }, {
+    key: "switchSymbol",
+    value: function switchSymbol(symbol) {
+      if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient.ws.readyState === 1) {
+        _kline.default.instance.subscribed.unsubscribe();
+
+        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
+      }
+
+      Control.switchSymbolSelected(symbol);
+
+      var settings = _chart_settings.default.get();
+
+      if (settings.charts.period === "line") {
+        new _chart_manager.default().getChart().strIsLine = true;
+        new _chart_manager.default().setChartStyle('frame0.k0', 'Line');
+      } else {
+        new _chart_manager.default().getChart().strIsLine = false;
+        new _chart_manager.default().setChartStyle('frame0.k0', _chart_settings.default.get().charts.chartStyle);
+      }
+
+      new _chart_manager.default().getChart().setSymbol(symbol);
+    }
+  }, {
+    key: "calcPeriodWeight",
+    value: function calcPeriodWeight(period) {
+      var index = period;
+      if (period !== 'line') index = _kline.default.instance.periodMap[_kline.default.instance.tagMapPeriod[period]];
+
+      var periodWeight = _chart_settings.default.get().charts.period_weight;
+
+      for (var i in periodWeight) {
+        if (periodWeight[i] > periodWeight[index]) {
+          periodWeight[i] -= 1;
+        }
+      }
+
+      periodWeight[index] = 8;
+
+      _chart_settings.default.save();
+    }
+  }, {
+    key: "subscribeCallback",
+    value: function subscribeCallback(res) {
+      this.requestSuccessHandler(JSON.parse(res.body));
+    }
+  }, {
+    key: "socketConnect",
+    value: function (_socketConnect) {
+      function socketConnect() {
+        return _socketConnect.apply(this, arguments);
+      }
+
+      socketConnect.toString = function () {
+        return _socketConnect.toString();
+      };
+
+      return socketConnect;
+    }(function () {
+      _kline.default.instance.socketConnected = true;
+
+      if (!_kline.default.instance.socketClient) {
+        if (_kline.default.instance.enableSockjs) {
+          var socket = new SockJS(_kline.default.instance.url);
+          _kline.default.instance.socketClient = Stomp.over(socket);
+        } else {
+          _kline.default.instance.socketClient = Stomp.client(_kline.default.instance.url);
+        }
+      }
+
+      if (_kline.default.instance.socketClient.ws.readyState === 1) {
+        console.log('DEBUG: already connected');
+        return;
+      }
+
+      if (!_kline.default.instance.debug) {
+        _kline.default.instance.socketClient.debug = null;
+      }
+
+      _kline.default.instance.socketClient.connect({}, function () {
+        _kline.default.instance.socketClient.subscribe('/user' + _kline.default.instance.subscribePath, Control.subscribeCallback);
+
+        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
+        Control.RequestData(true);
+      }, function () {
+        _kline.default.instance.socketClient.disconnect();
+
+        console.log("DEBUG: reconnect in 5 seconds ...");
+        setTimeout(function () {
+          socketConnect();
+        }, 5000);
+      });
+    })
+  }]);
+
+  return Control;
+}();
+
+exports.default = Control;
+Control.refreshCounter = 0;
+Control.refreshHandler = null;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.CDynamicLinePlotter = exports.DrawFibFansPlotter = exports.DrawBandLinesPlotter = exports.DrawFibRetracePlotter = exports.BandLinesPlotter = exports.DrawTriParallelLinesPlotter = exports.DrawBiParallelRayLinesPlotter = exports.DrawBiParallelLinesPlotter = exports.ParallelLinesPlotter = exports.DrawPriceLinesPlotter = exports.DrawVertiStraightLinesPlotter = exports.DrawHoriSegLinesPlotter = exports.DrawHoriRayLinesPlotter = exports.DrawHoriStraightLinesPlotter = exports.DrawArrowLinesPlotter = exports.DrawRayLinesPlotter = exports.DrawSegLinesPlotter = exports.DrawStraightLinesPlotter = exports.CToolPlotter = exports.RangeSelectionPlotter = exports.TimelineSelectionPlotter = exports.SelectionPlotter = exports.LastClosePlotter = exports.LastVolumePlotter = exports.COrderGraphPlotter = exports.RangePlotter = exports.TimelinePlotter = exports.MinMaxPlotter = exports.IndicatorInfoPlotter = exports.IndicatorPlotter = exports.MainInfoPlotter = exports.OHLCPlotter = exports.CandlestickHLCPlotter = exports.CandlestickPlotter = exports.CGridPlotter = exports.TimelineAreaBackgroundPlotter = exports.RangeAreaBackgroundPlotter = exports.MainAreaBackgroundPlotter = exports.BackgroundPlotter = exports.Plotter = void 0;
 
 var _named_object = _interopRequireDefault(__webpack_require__(1));
@@ -2889,15 +4072,15 @@ var themes = _interopRequireWildcard(__webpack_require__(5));
 
 var _chart_manager = _interopRequireDefault(__webpack_require__(0));
 
-var _kline = _interopRequireDefault(__webpack_require__(2));
+var _kline = _interopRequireDefault(__webpack_require__(3));
 
-var exprs = _interopRequireWildcard(__webpack_require__(10));
+var exprs = _interopRequireWildcard(__webpack_require__(16));
 
-var _util = _interopRequireDefault(__webpack_require__(25));
+var _util = _interopRequireDefault(__webpack_require__(7));
 
-var data_providers = _interopRequireWildcard(__webpack_require__(15));
+var data_providers = _interopRequireWildcard(__webpack_require__(10));
 
-var data_sources = _interopRequireWildcard(__webpack_require__(4));
+var data_sources = _interopRequireWildcard(__webpack_require__(2));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -6272,7 +7455,317 @@ function (_NamedObject10) {
 exports.CDynamicLinePlotter = CDynamicLinePlotter;
 
 /***/ }),
-/* 7 */
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.IndicatorDataProvider = exports.MainDataProvider = exports.DataProvider = void 0;
+
+var _named_object = _interopRequireDefault(__webpack_require__(1));
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+var _util = _interopRequireDefault(__webpack_require__(7));
+
+var data_sources = _interopRequireWildcard(__webpack_require__(2));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DataProvider =
+/*#__PURE__*/
+function (_NamedObject) {
+  _inherits(DataProvider, _NamedObject);
+
+  function DataProvider(name) {
+    var _this;
+
+    _classCallCheck(this, DataProvider);
+
+    _this = _possibleConstructorReturn(this, (DataProvider.__proto__ || Object.getPrototypeOf(DataProvider)).call(this, name));
+    _this._minValue = 0;
+    _this._maxValue = 0;
+    _this._minValueIndex = -1;
+    _this._maxValueIndex = -1;
+    return _this;
+  }
+
+  _createClass(DataProvider, [{
+    key: "getMinValue",
+    value: function getMinValue() {
+      return this._minValue;
+    }
+  }, {
+    key: "getMaxValue",
+    value: function getMaxValue() {
+      return this._maxValue;
+    }
+  }, {
+    key: "getMinValueIndex",
+    value: function getMinValueIndex() {
+      return this._minValueIndex;
+    }
+  }, {
+    key: "getMaxValueIndex",
+    value: function getMaxValueIndex() {
+      return this._maxValueIndex;
+    }
+  }, {
+    key: "getMinMaxAt",
+    value: function getMinMaxAt(index, minmax) {
+      return true;
+    }
+  }, {
+    key: "calcRange",
+    value: function calcRange(firstIndexes, lastIndex, minmaxes, indexes) {
+      var min = Number.MAX_VALUE;
+      var max = -Number.MAX_VALUE;
+      var minIndex = -1;
+      var maxIndex = -1;
+      var minmax = {};
+      var i = lastIndex - 1;
+      var n = firstIndexes.length - 1;
+
+      for (; n >= 0; n--) {
+        var first = firstIndexes[n];
+
+        if (i < first) {
+          minmaxes[n] = {
+            "min": min,
+            "max": max
+          };
+        } else {
+          for (; i >= first; i--) {
+            if (this.getMinMaxAt(i, minmax) === false) {
+              continue;
+            }
+
+            if (min > minmax.min) {
+              min = minmax.min;
+              minIndex = i;
+            }
+
+            if (max < minmax.max) {
+              max = minmax.max;
+              maxIndex = i;
+            }
+          }
+
+          minmaxes[n] = {
+            "min": min,
+            "max": max
+          };
+        }
+
+        if (indexes !== null && indexes !== undefined) {
+          indexes[n] = {
+            "minIndex": minIndex,
+            "maxIndex": maxIndex
+          };
+        }
+      }
+    }
+  }, {
+    key: "updateRange",
+    value: function updateRange() {
+      var mgr = new _chart_manager.default();
+      var timeline = mgr.getTimeline(this.getDataSourceName());
+      var firstIndexes = [timeline.getFirstIndex()];
+      var minmaxes = [{}];
+      var indexes = [{}];
+      this.calcRange(firstIndexes, timeline.getLastIndex(), minmaxes, indexes);
+      this._minValue = minmaxes[0].min;
+      this._maxValue = minmaxes[0].max;
+      this._minValueIndex = indexes[0].minIndex;
+      this._maxValueIndex = indexes[0].maxIndex;
+    }
+  }]);
+
+  return DataProvider;
+}(_named_object.default);
+
+exports.DataProvider = DataProvider;
+
+var MainDataProvider =
+/*#__PURE__*/
+function (_DataProvider) {
+  _inherits(MainDataProvider, _DataProvider);
+
+  function MainDataProvider(name) {
+    var _this2;
+
+    _classCallCheck(this, MainDataProvider);
+
+    _this2 = _possibleConstructorReturn(this, (MainDataProvider.__proto__ || Object.getPrototypeOf(MainDataProvider)).call(this, name));
+    _this2._candlestickDS = null;
+    return _this2;
+  }
+
+  _createClass(MainDataProvider, [{
+    key: "updateData",
+    value: function updateData() {
+      var mgr = new _chart_manager.default();
+      var ds = mgr.getDataSource(this.getDataSourceName());
+
+      if (!_util.default.isInstance(ds, data_sources.MainDataSource)) {
+        return;
+      }
+
+      this._candlestickDS = ds;
+    }
+  }, {
+    key: "getMinMaxAt",
+    value: function getMinMaxAt(index, minmax) {
+      var data = this._candlestickDS.getDataAt(index);
+
+      minmax.min = data.low;
+      minmax.max = data.high;
+      return true;
+    }
+  }]);
+
+  return MainDataProvider;
+}(DataProvider);
+
+exports.MainDataProvider = MainDataProvider;
+
+var IndicatorDataProvider =
+/*#__PURE__*/
+function (_DataProvider2) {
+  _inherits(IndicatorDataProvider, _DataProvider2);
+
+  function IndicatorDataProvider() {
+    _classCallCheck(this, IndicatorDataProvider);
+
+    return _possibleConstructorReturn(this, (IndicatorDataProvider.__proto__ || Object.getPrototypeOf(IndicatorDataProvider)).apply(this, arguments));
+  }
+
+  _createClass(IndicatorDataProvider, [{
+    key: "getIndicator",
+    value: function getIndicator() {
+      return this._indicator;
+    }
+  }, {
+    key: "setIndicator",
+    value: function setIndicator(v) {
+      this._indicator = v;
+      this.refresh();
+    }
+  }, {
+    key: "refresh",
+    value: function refresh() {
+      var mgr = new _chart_manager.default();
+      var ds = mgr.getDataSource(this.getDataSourceName());
+
+      if (ds.getDataCount() < 1) {
+        return;
+      }
+
+      var indic = this._indicator;
+      var i,
+          last = ds.getDataCount();
+      indic.clear();
+      indic.reserve(last);
+
+      for (i = 0; i < last; i++) {
+        indic.execute(ds, i);
+      }
+    }
+  }, {
+    key: "updateData",
+    value: function updateData() {
+      var mgr = new _chart_manager.default();
+      var ds = mgr.getDataSource(this.getDataSourceName());
+
+      if (ds.getDataCount() < 1) {
+        return;
+      }
+
+      var indic = this._indicator;
+      var mode = ds.getUpdateMode();
+
+      switch (mode) {
+        case data_sources.DataSource.UpdateMode.Refresh:
+          {
+            this.refresh();
+            break;
+          }
+
+        case data_sources.DataSource.UpdateMode.Append:
+          {
+            indic.reserve(ds.getAppendedCount());
+          }
+
+        case data_sources.DataSource.UpdateMode.Update:
+          {
+            var i,
+                last = ds.getDataCount();
+            var cnt = ds.getUpdatedCount() + ds.getAppendedCount();
+
+            for (i = last - cnt; i < last; i++) {
+              indic.execute(ds, i);
+            }
+
+            break;
+          }
+      }
+    }
+  }, {
+    key: "getMinMaxAt",
+    value: function getMinMaxAt(index, minmax) {
+      minmax.min = Number.MAX_VALUE;
+      minmax.max = -Number.MAX_VALUE;
+      var result,
+          valid = false;
+
+      var i,
+          cnt = this._indicator.getOutputCount();
+
+      for (i = 0; i < cnt; i++) {
+        result = this._indicator.getOutputAt(i).execute(index);
+
+        if (isNaN(result) === false) {
+          valid = true;
+
+          if (minmax.min > result) {
+            minmax.min = result;
+          }
+
+          if (minmax.max < result) {
+            minmax.max = result;
+          }
+        }
+      }
+
+      return valid;
+    }
+  }]);
+
+  return IndicatorDataProvider;
+}(DataProvider);
+
+exports.IndicatorDataProvider = IndicatorDataProvider;
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6287,7 +7780,7 @@ var _named_object = _interopRequireDefault(__webpack_require__(1));
 
 var _chart_manager = _interopRequireDefault(__webpack_require__(0));
 
-var _mevent = _interopRequireDefault(__webpack_require__(24));
+var _mevent = _interopRequireDefault(__webpack_require__(17));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6966,839 +8459,7 @@ function (_ChartArea6) {
 exports.ChartAreaGroup = ChartAreaGroup;
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _kline = _interopRequireDefault(__webpack_require__(2));
-
-var _kline_trade = _interopRequireDefault(__webpack_require__(9));
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-var _chart_settings = _interopRequireDefault(__webpack_require__(3));
-
-var _templates = __webpack_require__(12);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Control =
-/*#__PURE__*/
-function () {
-  function Control() {
-    _classCallCheck(this, Control);
-  }
-
-  _createClass(Control, null, [{
-    key: "refreshFunction",
-    value: function refreshFunction() {
-      Control.refreshCounter++;
-      var lang = new _chart_manager.default().getLanguage();
-
-      if (Control.refreshCounter > 3600) {
-        var num = Number(Control.refreshCounter / 3600);
-
-        if (lang === "en-us") {
-          $("#chart_updated_time_text").html(num.toFixed(0) + "h");
-        } else if (lang === "zh-tw") {
-          $("#chart_updated_time_text").html(num.toFixed(0) + "小時");
-        } else {
-          $("#chart_updated_time_text").html(num.toFixed(0) + "小时");
-        }
-      } else if (Control.refreshCounter > 60 && Control.refreshCounter <= 3600) {
-        var _num = Number(Control.refreshCounter / 60);
-
-        if (lang === "en-us") {
-          $("#chart_updated_time_text").html(_num.toFixed(0) + "m");
-        } else if (lang === "zh-tw") {
-          $("#chart_updated_time_text").html(_num.toFixed(0) + "分鐘");
-        } else {
-          $("#chart_updated_time_text").html(_num.toFixed(0) + "分钟");
-        }
-      } else if (Control.refreshCounter <= 60) {
-        if (lang === "en-us") {
-          $("#chart_updated_time_text").html(Control.refreshCounter + "s");
-        } else {
-          $("#chart_updated_time_text").html(Control.refreshCounter + "秒");
-        }
-      }
-    }
-  }, {
-    key: "clearRefreshCounter",
-    value: function clearRefreshCounter() {
-      window.clearInterval(Control.refreshHandler);
-      Control.refreshCounter = 0;
-      var lang = new _chart_manager.default().getLanguage();
-
-      if (lang === "en-us") {
-        $("#chart_updated_time_text").html(Control.refreshCounter + "s");
-      } else {
-        $("#chart_updated_time_text").html(Control.refreshCounter + "秒");
-      }
-
-      Control.refreshHandler = setInterval(this.refreshFunction, _kline.default.instance.intervalTime);
-    }
-  }, {
-    key: "RequestData",
-    value: function RequestData(showLoading) {
-      this.AbortRequest();
-      window.clearTimeout(_kline.default.instance.timer);
-
-      if (_kline.default.instance.paused) {
-        return;
-      }
-
-      if (showLoading === true) {
-        $("#chart_loading").addClass("activated");
-      }
-
-      if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient) {
-        this.requestOverSocket();
-      } else {
-        this.requestOverHttp();
-      }
-    }
-  }, {
-    key: "parseRequestParam",
-    value: function parseRequestParam(str) {
-      return JSON.parse('{"' + decodeURI(str.replace(/&/g, "\",\"").replace(/=/g, "\":\"")) + '"}');
-    }
-  }, {
-    key: "requestOverSocket",
-    value: function requestOverSocket() {
-      if (!_kline.default.instance.socketConnected) {
-        if (_kline.default.instance.debug) {
-          console.log("DEBUG: socket is not coonnected");
-        }
-
-        return;
-      }
-
-      if (_kline.default.instance.socketClient && _kline.default.instance.socketClient.ws.readyState === 1) {
-        _kline.default.instance.socketClient.send(_kline.default.instance.sendPath, {}, JSON.stringify(Control.parseRequestParam(_kline.default.instance.requestParam)));
-
-        return;
-      }
-
-      if (_kline.default.instance.debug) {
-        console.log("DEBUG: socket client is not ready yet ...");
-      }
-
-      _kline.default.instance.timer = setTimeout(function () {
-        this.RequestData(true);
-      }, 1000);
-    }
-  }, {
-    key: "requestOverHttp",
-    value: function requestOverHttp() {
-      if (_kline.default.instance.debug) {
-        console.log("DEBUG: " + _kline.default.instance.requestParam);
-      }
-
-      $(document).ready(_kline.default.instance.G_HTTP_REQUEST = $.ajax({
-        type: "GET",
-        url: _kline.default.instance.url,
-        dataType: 'json',
-        data: _kline.default.instance.requestParam,
-        timeout: 30000,
-        created: Date.now(),
-        beforeSend: function beforeSend() {
-          this.range = _kline.default.instance.range;
-          this.symbol = _kline.default.instance.symbol;
-        },
-        success: function success(res) {
-          if (_kline.default.instance.G_HTTP_REQUEST) {
-            Control.requestSuccessHandler(res);
-          }
-        },
-        error: function error(xhr, textStatus, errorThrown) {
-          if (_kline.default.instance.debug) {
-            console.log(xhr);
-          }
-
-          if (xhr.status === 200 && xhr.readyState === 4) {
-            return;
-          }
-
-          _kline.default.instance.timer = setTimeout(function () {
-            RequestData(true);
-          }, _kline.default.instance.intervalTime);
-        },
-        complete: function complete() {
-          _kline.default.instance.G_HTTP_REQUEST = null;
-        }
-      }));
-    }
-  }, {
-    key: "requestSuccessHandler",
-    value: function requestSuccessHandler(res) {
-      if (_kline.default.instance.debug) {
-        console.log(res);
-      }
-
-      if (!res || !res.success) {
-        if (_kline.default.instance.type === 'poll') {
-          _kline.default.instance.timer = setTimeout(function () {
-            Control.RequestData(true);
-          }, _kline.default.instance.intervalTime);
-        }
-
-        return;
-      }
-
-      $("#chart_loading").removeClass("activated");
-      var chart = new _chart_manager.default().getChart();
-      chart.setTitle();
-      _kline.default.instance.data = eval(res.data);
-
-      var updateDataRes = _kline.default.instance.chartMgr.updateData("frame0.k0", _kline.default.instance.data.lines);
-
-      _kline.default.instance.requestParam = Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, null, _kline.default.instance.chartMgr.getDataSource("frame0.k0").getLastDate());
-      var intervalTime = _kline.default.instance.intervalTime < _kline.default.instance.range ? _kline.default.instance.intervalTime : _kline.default.instance.range;
-
-      if (!updateDataRes) {
-        if (_kline.default.instance.type === 'poll') {
-          _kline.default.instance.timer = setTimeout(RequestData, intervalTime);
-        }
-
-        return;
-      }
-
-      if (_kline.default.instance.data.trades && _kline.default.instance.data.trades.length > 0) {
-        _kline_trade.default.instance.pushTrades(_kline.default.instance.data.trades);
-
-        _kline_trade.default.instance.klineTradeInit = true;
-      }
-
-      if (_kline.default.instance.data.depths) {
-        _kline_trade.default.instance.updateDepth(_kline.default.instance.data.depths);
-      }
-
-      Control.clearRefreshCounter();
-
-      if (_kline.default.instance.type === 'poll') {
-        _kline.default.instance.timer = setTimeout(Control.TwoSecondThread, intervalTime);
-      }
-
-      new _chart_manager.default().redraw('All', false);
-    }
-  }, {
-    key: "AbortRequest",
-    value: function AbortRequest() {
-      if (_kline.default.instance.type !== "socket" || !_kline.default.instance.socketClient) {
-        if (_kline.default.instance.G_HTTP_REQUEST && _kline.default.instance.G_HTTP_REQUEST.readyState !== 4) {
-          _kline.default.instance.G_HTTP_REQUEST.abort();
-        }
-      }
-    }
-  }, {
-    key: "TwoSecondThread",
-    value: function TwoSecondThread() {
-      var f = _kline.default.instance.chartMgr.getDataSource("frame0.k0").getLastDate();
-
-      if (f === -1) {
-        _kline.default.instance.requestParam = Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, _kline.default.instance.limit, null);
-      } else {
-        _kline.default.instance.requestParam = Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, null, f.toString());
-      }
-
-      Control.RequestData();
-    }
-  }, {
-    key: "readCookie",
-    value: function readCookie() {
-      _chart_settings.default.get();
-
-      _chart_settings.default.save();
-
-      var tmp = _chart_settings.default.get();
-
-      new _chart_manager.default().setChartStyle('frame0.k0', tmp.charts.chartStyle);
-      var symbol = tmp.charts.symbol;
-
-      if (!_kline.default.instance.init) {
-        symbol = _kline.default.instance.symbol;
-        _kline.default.instance.init = true;
-      }
-
-      _kline.default.instance.symbol = symbol;
-      this.switchSymbolSelected(symbol);
-      var period = tmp.charts.period;
-      this.switchPeriod(period);
-      $('#chart_period_' + period + '_v a').addClass('selected');
-      $('#chart_period_' + period + '_h a').addClass('selected');
-
-      if (tmp.charts.indicsStatus === 'close') {
-        this.switchIndic('off');
-      } else if (tmp.charts.indicsStatus === 'open') {
-        this.switchIndic('on');
-      }
-
-      var mainIndic = $('#chart_select_main_indicator');
-      mainIndic.find('a').each(function () {
-        if ($(this).attr('name') === tmp.charts.mIndic) {
-          $(this).addClass('selected');
-        }
-      });
-      var chart_style = $('#chart_select_chart_style');
-      chart_style.find('a').each(function () {
-        if ($(this)[0].innerHTML === tmp.charts.chartStyle) {
-          $(this).addClass('selected');
-        }
-      });
-      new _chart_manager.default().getChart().setMainIndicator(tmp.charts.mIndic);
-      new _chart_manager.default().setThemeName('frame0', tmp.theme);
-      this.switchTools('off');
-
-      if (tmp.theme === 'Dark') {
-        this.switchTheme('dark');
-      } else if (tmp.theme === 'Light') {
-        this.switchTheme('light');
-      }
-
-      this.chartSwitchLanguage(tmp.language || "zh-cn");
-    }
-  }, {
-    key: "setHttpRequestParam",
-    value: function setHttpRequestParam(mark_from, range, limit, since) {
-      var str = "symbol=" + mark_from + "&range=" + range;
-      if (limit !== null) str += "&limit=" + limit;else str += "&since=" + since;
-
-      if (_kline_trade.default.instance.tradeDate.getTime() !== 0) {
-        str += "&prevTradeTime=" + _kline_trade.default.instance.tradeDate.getTime();
-      }
-
-      return str;
-    }
-  }, {
-    key: "refreshTemplate",
-    value: function refreshTemplate() {
-      _kline.default.instance.chartMgr = _templates.DefaultTemplate.loadTemplate("frame0.k0", "");
-      new _chart_manager.default().redraw('All', true);
-    }
-  }, {
-    key: "getRectCrossPt",
-    value: function getRectCrossPt(rect, startPt, endPt) {
-      var crossPt;
-      var firstPt = {
-        x: -1,
-        y: -1
-      };
-      var secondPt = {
-        x: -1,
-        y: -1
-      };
-      var xdiff = endPt.x - startPt.x;
-      var ydiff = endPt.y - startPt.y;
-
-      if (Math.abs(xdiff) < 2) {
-        firstPt = {
-          x: startPt.x,
-          y: rect.top
-        };
-        secondPt = {
-          x: endPt.x,
-          y: rect.bottom
-        };
-        crossPt = [firstPt, secondPt];
-        return crossPt;
-      }
-
-      var k = ydiff / xdiff;
-      secondPt.x = rect.right;
-      secondPt.y = startPt.y + (rect.right - startPt.x) * k;
-      firstPt.x = rect.left;
-      firstPt.y = startPt.y + (rect.left - startPt.x) * k;
-      crossPt = [firstPt, secondPt];
-      return crossPt;
-    }
-  }, {
-    key: "chartSwitchLanguage",
-    value: function chartSwitchLanguage(lang) {
-      var lang_tmp = lang.replace(/-/, '_');
-      $('#chart_language_switch_tmp').find('span').each(function () {
-        var name = $(this).attr('name');
-        var attr = $(this).attr(lang_tmp);
-        name = '.' + name;
-        var obj = $(name)[0];
-        if (!obj) return;
-        $(name).each(function () {
-          $(this)[0].innerHTML = attr;
-        });
-      });
-      $("#chart_language_setting_div li a[name='" + lang + "']").addClass("selected");
-      new _chart_manager.default().setLanguage(lang);
-      new _chart_manager.default().getChart().setTitle();
-
-      var tmp = _chart_settings.default.get();
-
-      tmp.language = lang;
-
-      _chart_settings.default.save();
-
-      _kline.default.instance.onLangChange(lang);
-    }
-  }, {
-    key: "onSize",
-    value: function onSize(w, h) {
-      var width = w || window.innerWidth;
-      var chartWidth = _kline.default.instance.showTrade ? width - _kline.default.instance.tradeWidth : width;
-      var height = h || window.innerHeight;
-      var container = $(_kline.default.instance.element);
-      container.css({
-        width: width + 'px',
-        height: height + 'px'
-      });
-      var toolBar = $('#chart_toolbar');
-      var toolPanel = $('#chart_toolpanel');
-      var canvasGroup = $('#chart_canvasGroup');
-      var tabBar = $('#chart_tabbar');
-      var toolPanelShown = toolPanel[0].style.display !== 'inline' ? false : true;
-      var tabBarShown = tabBar[0].style.display !== 'block' ? false : true;
-      var toolBarRect = {};
-      toolBarRect.x = 0;
-      toolBarRect.y = 0;
-      toolBarRect.w = chartWidth;
-      toolBarRect.h = 29;
-      var toolPanelRect = {};
-      toolPanelRect.x = 0;
-      toolPanelRect.y = toolBarRect.h + 1;
-      toolPanelRect.w = toolPanelShown ? 32 : 0;
-      toolPanelRect.h = height - toolPanelRect.y;
-      var tabBarRect = {};
-      tabBarRect.w = toolPanelShown ? chartWidth - (toolPanelRect.w + 1) : chartWidth;
-      tabBarRect.h = tabBarShown ? 22 : -1;
-      tabBarRect.x = chartWidth - tabBarRect.w;
-      tabBarRect.y = height - (tabBarRect.h + 1);
-      var canvasGroupRect = {};
-      canvasGroupRect.x = tabBarRect.x;
-      canvasGroupRect.y = toolPanelRect.y;
-      canvasGroupRect.w = tabBarRect.w;
-      canvasGroupRect.h = tabBarRect.y - toolPanelRect.y;
-      toolBar.css({
-        left: toolBarRect.x + 'px',
-        top: toolBarRect.y + 'px',
-        width: toolBarRect.w + 'px',
-        height: toolBarRect.h + 'px'
-      });
-
-      if (toolPanelShown) {
-        toolPanel.css({
-          left: toolPanelRect.x + 'px',
-          top: toolPanelRect.y + 'px',
-          width: toolPanelRect.w + 'px',
-          height: toolPanelRect.h + 'px'
-        });
-      }
-
-      canvasGroup.css({
-        left: canvasGroupRect.x + 'px',
-        top: canvasGroupRect.y + 'px',
-        width: canvasGroupRect.w + 'px',
-        height: canvasGroupRect.h + 'px'
-      });
-      var mainCanvas = $('#chart_mainCanvas')[0];
-      var overlayCanvas = $('#chart_overlayCanvas')[0];
-      mainCanvas.width = canvasGroupRect.w;
-      mainCanvas.height = canvasGroupRect.h;
-      overlayCanvas.width = canvasGroupRect.w;
-      overlayCanvas.height = canvasGroupRect.h;
-
-      if (tabBarShown) {
-        tabBar.css({
-          left: tabBarRect.x + 'px',
-          top: tabBarRect.y + 'px',
-          width: tabBarRect.w + 'px',
-          height: tabBarRect.h + 'px'
-        });
-      }
-
-      var dlgSettings = $("#chart_parameter_settings");
-      dlgSettings.css({
-        left: chartWidth - dlgSettings.width() >> 1,
-        top: height - dlgSettings.height() >> 1
-      });
-      var dlgLoading = $("#chart_loading");
-      dlgLoading.css({
-        left: chartWidth - dlgLoading.width() >> 1,
-        top: height - dlgLoading.height() >> 2
-      });
-      var domElemCache = $('#chart_dom_elem_cache');
-      var rowTheme = $('#chart_select_theme')[0];
-      var rowTools = $('#chart_enable_tools')[0];
-      var rowIndic = $('#chart_enable_indicator')[0];
-      var periodsVert = $('#chart_toolbar_periods_vert');
-      var periodsHorz = $('#chart_toolbar_periods_horz')[0];
-      var showIndic = $('#chart_show_indicator')[0];
-      var showTools = $('#chart_show_tools')[0];
-      var selectTheme = $('#chart_toolbar_theme')[0];
-      var dropDownSettings = $('#chart_dropdown_settings');
-      var periodsVertNW = periodsVert[0].offsetWidth;
-      var periodsHorzNW = periodsVertNW + periodsHorz.offsetWidth;
-      var showIndicNW = periodsHorzNW + showIndic.offsetWidth + 4;
-      var showToolsNW = showIndicNW + showTools.offsetWidth + 4;
-      var selectThemeNW = showToolsNW + selectTheme.offsetWidth;
-      var dropDownSettingsW = dropDownSettings.find(".chart_dropdown_t")[0].offsetWidth + 150;
-      periodsVertNW += dropDownSettingsW;
-      periodsHorzNW += dropDownSettingsW;
-      showIndicNW += dropDownSettingsW;
-      showToolsNW += dropDownSettingsW;
-      selectThemeNW += dropDownSettingsW;
-
-      if (chartWidth < periodsHorzNW) {
-        domElemCache.append(periodsHorz);
-      } else {
-        periodsVert.after(periodsHorz);
-      }
-
-      if (chartWidth < showIndicNW) {
-        domElemCache.append(showIndic);
-        rowIndic.style.display = "";
-      } else {
-        dropDownSettings.before(showIndic);
-        rowIndic.style.display = "none";
-      }
-
-      if (chartWidth < showToolsNW) {
-        domElemCache.append(showTools);
-        rowTools.style.display = "";
-      } else {
-        dropDownSettings.before(showTools);
-        rowTools.style.display = "none";
-      }
-
-      if (chartWidth < selectThemeNW) {
-        domElemCache.append(selectTheme);
-        rowTheme.style.display = "";
-      } else {
-        dropDownSettings.before(selectTheme);
-        rowTheme.style.display = "none";
-      }
-
-      new _chart_manager.default().redraw('All', true);
-
-      _kline.default.instance.onResize(width, height);
-    }
-  }, {
-    key: "mouseWheel",
-    value: function mouseWheel(e, delta) {
-      new _chart_manager.default().scale(delta > 0 ? 1 : -1);
-      new _chart_manager.default().redraw("All", true);
-      return false;
-    }
-  }, {
-    key: "switchTheme",
-    value: function switchTheme(name) {
-      $('#chart_toolbar_theme a').removeClass('selected');
-      $('#chart_select_theme a').removeClass('selected');
-      $('#chart_toolbar_theme').find('a').each(function () {
-        if ($(this).attr('name') === name) {
-          $(this).addClass('selected');
-        }
-      });
-      $('#chart_select_theme a').each(function () {
-        if ($(this).attr('name') === name) {
-          $(this).addClass('selected');
-        }
-      });
-      $(".chart_container").attr('class', "chart_container " + name);
-      $(".marketName_ a").attr('class', name);
-
-      if (name === 'dark') {
-        $(".trade_container").addClass("dark").removeClass("light");
-        new _chart_manager.default().setThemeName('frame0', 'Dark');
-
-        var tmp = _chart_settings.default.get();
-
-        tmp.theme = 'Dark';
-
-        _chart_settings.default.save();
-      } else if (name === 'light') {
-        $(".trade_container").addClass("light").removeClass("dark");
-        new _chart_manager.default().setThemeName('frame0', 'Light');
-
-        var _tmp = _chart_settings.default.get();
-
-        _tmp.theme = 'Light';
-
-        _chart_settings.default.save();
-      }
-
-      var a = {};
-      a.command = "set current themes";
-      a.content = name;
-      $('#chart_output_interface_text').val(JSON.stringify(a));
-      $('#chart_output_interface_submit').submit();
-
-      window._current_theme_change.raise(name);
-
-      new _chart_manager.default().redraw();
-
-      _kline.default.instance.onThemeChange(name);
-    }
-  }, {
-    key: "switchTools",
-    value: function switchTools(name) {
-      $(".chart_dropdown_data").removeClass("chart_dropdown-hover");
-      $("#chart_toolpanel .chart_toolpanel_button").removeClass("selected");
-      $('#chart_enable_tools a').removeClass('selected');
-
-      if (name === 'on') {
-        $('#chart_show_tools').addClass('selected');
-        $('#chart_enable_tools a').each(function () {
-          if ($(this).attr('name') === 'on') {
-            $(this).addClass('selected');
-          }
-        });
-        $('#chart_toolpanel')[0].style.display = 'inline';
-
-        if (new _chart_manager.default()._drawingTool === _chart_manager.default.DrawingTool.Cursor) {
-          $('#chart_Cursor').parent().addClass('selected');
-        } else if (new _chart_manager.default()._drawingTool === _chart_manager.default.DrawingTool.CrossCursor) {
-          $('#chart_CrossCursor').parent().addClass('selected');
-        }
-      } else if (name === 'off') {
-        $('#chart_show_tools').removeClass('selected');
-        $('#chart_enable_tools a').each(function () {
-          if ($(this).attr('name') === 'off') {
-            $(this).addClass('selected');
-          }
-        });
-        $('#chart_toolpanel')[0].style.display = 'none';
-        new _chart_manager.default().setRunningMode(new _chart_manager.default()._beforeDrawingTool);
-        new _chart_manager.default().redraw("All", true);
-      }
-
-      if (_kline.default.instance.isSized) {
-        Control.onSize();
-      } else {
-        Control.onSize(_kline.default.instance.width, _kline.default.instance.height);
-      }
-    }
-  }, {
-    key: "switchIndic",
-    value: function switchIndic(name) {
-      $('#chart_enable_indicator a').removeClass('selected');
-      $("#chart_enable_indicator a[name='" + name + "']").addClass('selected');
-
-      if (name === 'on') {
-        $('#chart_show_indicator').addClass('selected');
-
-        var tmp = _chart_settings.default.get();
-
-        tmp.charts.indicsStatus = 'open';
-
-        _chart_settings.default.save();
-
-        var value = tmp.charts.indics[1];
-        if (_templates.Template.displayVolume === false) new _chart_manager.default().getChart().setIndicator(2, value);else new _chart_manager.default().getChart().setIndicator(2, value);
-        $("#chart_tabbar").find('a').each(function () {
-          if ($(this).attr('name') === value) $(this).addClass('selected');
-        });
-        $('#chart_tabbar')[0].style.display = 'block';
-      } else if (name === 'off') {
-        $('#chart_show_indicator').removeClass('selected');
-        new _chart_manager.default().getChart().setIndicator(2, 'NONE');
-
-        var _tmp2 = _chart_settings.default.get();
-
-        _tmp2.charts.indicsStatus = 'close';
-
-        _chart_settings.default.save();
-
-        $('#chart_tabbar')[0].style.display = 'none';
-        $("#chart_tabbar a").removeClass("selected");
-      }
-
-      if (_kline.default.instance.isSized) {
-        Control.onSize();
-      } else {
-        Control.onSize(_kline.default.instance.width, _kline.default.instance.height);
-      }
-    }
-  }, {
-    key: "switchPeriod",
-    value: function switchPeriod(name) {
-      $(".chart_container .chart_toolbar_tabgroup a").removeClass("selected");
-      $("#chart_toolbar_periods_vert ul a").removeClass("selected");
-      $(".chart_container .chart_toolbar_tabgroup a").each(function () {
-        if ($(this).parent().attr('name') === name) {
-          $(this).addClass('selected');
-        }
-      });
-      $("#chart_toolbar_periods_vert ul a").each(function () {
-        if ($(this).parent().attr('name') === name) {
-          $(this).addClass('selected');
-        }
-      });
-      new _chart_manager.default().showCursor();
-      Control.calcPeriodWeight(name);
-
-      if (name === 'line') {
-        new _chart_manager.default().getChart().strIsLine = true;
-        new _chart_manager.default().setChartStyle('frame0.k0', 'Line');
-        new _chart_manager.default().getChart().setCurrentPeriod('line');
-
-        var _settings = _chart_settings.default.get();
-
-        _settings.charts.period = name;
-
-        _chart_settings.default.save();
-
-        return;
-      }
-
-      new _chart_manager.default().getChart().strIsLine = false;
-      var p = _kline.default.instance.tagMapPeriod[name];
-      new _chart_manager.default().setChartStyle('frame0.k0', _chart_settings.default.get().charts.chartStyle);
-      new _chart_manager.default().getChart().setCurrentPeriod(p);
-
-      var settings = _chart_settings.default.get();
-
-      settings.charts.period = name;
-
-      _chart_settings.default.save();
-    }
-  }, {
-    key: "reset",
-    value: function reset(symbol) {
-      _kline.default.instance.symbol = symbol;
-
-      if (_kline.default.instance.showTrade) {
-        _kline_trade.default.instance.reset(symbol);
-      }
-    }
-  }, {
-    key: "switchSymbolSelected",
-    value: function switchSymbolSelected(symbol) {
-      Control.reset(symbol);
-      $(".market_chooser ul a").removeClass("selected");
-      $(".market_chooser ul a[name='" + symbol + "']").addClass("selected");
-      new _chart_manager.default().getChart()._symbol = symbol;
-
-      var settings = _chart_settings.default.get();
-
-      settings.charts.symbol = symbol;
-
-      _chart_settings.default.save();
-    }
-  }, {
-    key: "switchSymbol",
-    value: function switchSymbol(symbol) {
-      if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient.ws.readyState === 1) {
-        _kline.default.instance.subscribed.unsubscribe();
-
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
-      }
-
-      Control.switchSymbolSelected(symbol);
-
-      var settings = _chart_settings.default.get();
-
-      if (settings.charts.period === "line") {
-        new _chart_manager.default().getChart().strIsLine = true;
-        new _chart_manager.default().setChartStyle('frame0.k0', 'Line');
-      } else {
-        new _chart_manager.default().getChart().strIsLine = false;
-        new _chart_manager.default().setChartStyle('frame0.k0', _chart_settings.default.get().charts.chartStyle);
-      }
-
-      new _chart_manager.default().getChart().setSymbol(symbol);
-    }
-  }, {
-    key: "calcPeriodWeight",
-    value: function calcPeriodWeight(period) {
-      var index = period;
-      if (period !== 'line') index = _kline.default.instance.periodMap[_kline.default.instance.tagMapPeriod[period]];
-
-      var periodWeight = _chart_settings.default.get().charts.period_weight;
-
-      for (var i in periodWeight) {
-        if (periodWeight[i] > periodWeight[index]) {
-          periodWeight[i] -= 1;
-        }
-      }
-
-      periodWeight[index] = 8;
-
-      _chart_settings.default.save();
-    }
-  }, {
-    key: "subscribeCallback",
-    value: function subscribeCallback(res) {
-      this.requestSuccessHandler(JSON.parse(res.body));
-    }
-  }, {
-    key: "socketConnect",
-    value: function (_socketConnect) {
-      function socketConnect() {
-        return _socketConnect.apply(this, arguments);
-      }
-
-      socketConnect.toString = function () {
-        return _socketConnect.toString();
-      };
-
-      return socketConnect;
-    }(function () {
-      _kline.default.instance.socketConnected = true;
-
-      if (!_kline.default.instance.socketClient) {
-        if (_kline.default.instance.enableSockjs) {
-          var socket = new SockJS(_kline.default.instance.url);
-          _kline.default.instance.socketClient = Stomp.over(socket);
-        } else {
-          _kline.default.instance.socketClient = Stomp.client(_kline.default.instance.url);
-        }
-      }
-
-      if (_kline.default.instance.socketClient.ws.readyState === 1) {
-        console.log('DEBUG: already connected');
-        return;
-      }
-
-      if (!_kline.default.instance.debug) {
-        _kline.default.instance.socketClient.debug = null;
-      }
-
-      _kline.default.instance.socketClient.connect({}, function () {
-        _kline.default.instance.socketClient.subscribe('/user' + _kline.default.instance.subscribePath, Control.subscribeCallback);
-
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
-        Control.RequestData(true);
-      }, function () {
-        _kline.default.instance.socketClient.disconnect();
-
-        console.log("DEBUG: reconnect in 5 seconds ...");
-        setTimeout(function () {
-          socketConnect();
-        }, 5000);
-      });
-    })
-  }]);
-
-  return Control;
-}();
-
-exports.default = Control;
-Control.refreshCounter = 0;
-Control.refreshHandler = null;
-
-/***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8310,7 +8971,1602 @@ KlineTrade.created = false;
 KlineTrade.instance = null;
 
 /***/ }),
-/* 10 */
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var CName =
+/*#__PURE__*/
+function () {
+  function CName(name) {
+    _classCallCheck(this, CName);
+
+    this._names = [];
+    this._comps = [];
+
+    if (name instanceof CName) {
+      this._names = name._names;
+      this._comps = name._comps;
+    } else {
+      var comps = name.split(".");
+      var dotNum = comps.length - 1;
+
+      if (dotNum > 0) {
+        this._comps = comps;
+
+        this._names.push(comps[0]);
+
+        for (var i = 1; i <= dotNum; i++) {
+          this._names.push(this._names[i - 1] + "." + comps[i]);
+        }
+      } else {
+        this._comps.push(name);
+
+        this._names.push(name);
+      }
+    }
+  }
+
+  _createClass(CName, [{
+    key: "getCompAt",
+    value: function getCompAt(index) {
+      if (index >= 0 && index < this._comps.length) return this._comps[index];
+      return "";
+    }
+  }, {
+    key: "getName",
+    value: function getName(index) {
+      if (index < 0) {
+        if (this._names.length > 0) return this._names[this._names.length - 1];
+      } else if (index < this._names.length) {
+        return this._names[index];
+      }
+
+      return "";
+    }
+  }]);
+
+  return CName;
+}();
+
+exports.default = CName;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+var _named_object = _interopRequireDefault(__webpack_require__(1));
+
+var data_sources = _interopRequireWildcard(__webpack_require__(2));
+
+var _util = _interopRequireDefault(__webpack_require__(7));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CPoint =
+/*#__PURE__*/
+function (_NamedObject) {
+  _inherits(CPoint, _NamedObject);
+
+  function CPoint(name) {
+    var _this;
+
+    _classCallCheck(this, CPoint);
+
+    _this = _possibleConstructorReturn(this, (CPoint.__proto__ || Object.getPrototypeOf(CPoint)).call(this, name));
+    _this.pos = {
+      index: -1,
+      value: -1
+    };
+    _this.state = CPoint.state.Hide;
+    return _this;
+  }
+
+  _createClass(CPoint, [{
+    key: "getChartObjects",
+    value: function getChartObjects() {
+      var ppMgr = new _chart_manager.default();
+      var ppCDS = ppMgr.getDataSource("frame0.k0");
+      if (ppCDS === null || !_util.default.isInstance(ppCDS, data_sources.MainDataSource)) return null;
+      var ppTimeline = ppMgr.getTimeline("frame0.k0");
+      if (ppTimeline === null) return null;
+      var ppRange = ppMgr.getRange("frame0.k0.main");
+      if (ppRange === null) return null;
+      return {
+        pMgr: ppMgr,
+        pCDS: ppCDS,
+        pTimeline: ppTimeline,
+        pRange: ppRange
+      };
+    }
+  }, {
+    key: "setPosXY",
+    value: function setPosXY(x, y) {
+      var pObj = this.getChartObjects();
+      var i = pObj.pTimeline.toIndex(x);
+      var v = pObj.pRange.toValue(y);
+      var result = this.snapValue(i, v);
+      if (result !== null) v = result;
+      this.setPosIV(i, v);
+    }
+  }, {
+    key: "setPosXYNoSnap",
+    value: function setPosXYNoSnap(x, y) {
+      var pObj = this.getChartObjects();
+      var i = pObj.pTimeline.toIndex(x);
+      var v = pObj.pRange.toValue(y);
+      this.setPosIV(i, v);
+    }
+  }, {
+    key: "setPosIV",
+    value: function setPosIV(i, v) {
+      this.pos = {
+        index: i,
+        value: v
+      };
+    }
+  }, {
+    key: "getPosXY",
+    value: function getPosXY() {
+      var pObj = this.getChartObjects();
+
+      var _x = pObj.pTimeline.toItemCenter(this.pos.index);
+
+      var _y = pObj.pRange.toY(this.pos.value);
+
+      return {
+        x: _x,
+        y: _y
+      };
+    }
+  }, {
+    key: "getPosIV",
+    value: function getPosIV() {
+      return {
+        i: this.pos.index,
+        v: this.pos.value
+      };
+    }
+  }, {
+    key: "setState",
+    value: function setState(s) {
+      this.state = s;
+    }
+  }, {
+    key: "getState",
+    value: function getState() {
+      return this.state;
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      var xy = this.getPosXY();
+      if (x < xy.x - 4 || x > xy.x + 4 || y < xy.y - 4 || y > xy.y + 4) return false;
+      this.setState(CPoint.state.Highlight);
+      return true;
+    }
+  }, {
+    key: "snapValue",
+    value: function snapValue(i, v) {
+      var pObj = this.getChartObjects();
+      var result = null;
+      var first = Math.floor(pObj.pTimeline.getFirstIndex());
+      var last = Math.floor(pObj.pTimeline.getLastIndex());
+      if (i < first || i > last) return result;
+      var y = pObj.pRange.toY(v);
+      var pData = pObj.pCDS.getDataAt(i);
+      if (pData === null || pData === undefined) return result;
+      var pDataPre = null;
+      if (i > 0) pDataPre = pObj.pCDS.getDataAt(i - 1);else pDataPre = pObj.pCDS.getDataAt(i);
+      var candleStickStyle = pObj.pMgr.getChartStyle(pObj.pCDS.getFrameName());
+      var open = pObj.pRange.toY(pData.open);
+      var high = pObj.pRange.toY(pData.high);
+      var low = pObj.pRange.toY(pData.low);
+      var close = pObj.pRange.toY(pData.close);
+
+      if (candleStickStyle === "CandleStickHLC") {
+        open = pObj.pRange.toY(pDataPre.close);
+      }
+
+      var dif_open = Math.abs(open - y);
+      var dif_high = Math.abs(high - y);
+      var dif_low = Math.abs(low - y);
+      var dif_close = Math.abs(close - y);
+
+      if (dif_open <= dif_high && dif_open <= dif_low && dif_open <= dif_close) {
+        if (dif_open < 6) result = pData.open;
+      }
+
+      if (dif_high <= dif_open && dif_high <= dif_low && dif_high <= dif_close) {
+        if (dif_high < 6) result = pData.high;
+      }
+
+      if (dif_low <= dif_open && dif_low <= dif_high && dif_low <= dif_close) {
+        if (dif_low < 6) result = pData.low;
+      }
+
+      if (dif_close <= dif_open && dif_close <= dif_high && dif_close <= dif_low) {
+        if (dif_close < 6) result = pData.close;
+      }
+
+      return result;
+    }
+  }]);
+
+  return CPoint;
+}(_named_object.default);
+
+exports.default = CPoint;
+CPoint.state = {
+  Hide: 0,
+  Show: 1,
+  Highlight: 2
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CArrowLineObject = exports.CPriceLineObject = exports.CVertiStraightLineObject = exports.CTriParallelLineObject = exports.CStraightLineObject = exports.CSegLineObject = exports.CRayLineObject = exports.CHoriStraightLineObject = exports.CHoriSegLineObject = exports.CHoriRayLineObject = exports.CFibRetraceObject = exports.CFibFansObject = exports.CBiParallelRayLineObject = exports.CBiParallelLineObject = exports.CBandLineObject = exports.CTriToolObject = exports.CBiToolObject = exports.CToolObject = void 0;
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+var _named_object = _interopRequireDefault(__webpack_require__(1));
+
+var _cpoint = _interopRequireDefault(__webpack_require__(14));
+
+var data_sources = _interopRequireWildcard(__webpack_require__(2));
+
+var plotters = _interopRequireWildcard(__webpack_require__(9));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return _get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CToolObject =
+/*#__PURE__*/
+function (_NamedObject) {
+  _inherits(CToolObject, _NamedObject);
+
+  function CToolObject(name) {
+    var _this;
+
+    _classCallCheck(this, CToolObject);
+
+    _this = _possibleConstructorReturn(this, (CToolObject.__proto__ || Object.getPrototypeOf(CToolObject)).call(this, name));
+    _this.drawer = null;
+    _this.state = CToolObject.state.BeforeDraw;
+    _this.points = [];
+    _this.step = 0;
+    return _this;
+  }
+
+  _createClass(CToolObject, [{
+    key: "getChartObjects",
+    value: function getChartObjects() {
+      var ppMgr = new _chart_manager.default();
+      var ppCDS = ppMgr.getDataSource("frame0.k0");
+      if (ppCDS === null || !Util.isInstance(ppCDS, data_sources.MainDataSource)) return null;
+      var ppTimeline = ppMgr.getTimeline("frame0.k0");
+      if (ppTimeline === null) return null;
+      var ppArea = ppMgr.getArea('frame0.k0.main');
+      if (ppArea === null) return null;
+      var ppRange = ppMgr.getRange("frame0.k0.main");
+      if (ppRange === null) return null;
+      return {
+        pMgr: ppMgr,
+        pCDS: ppCDS,
+        pTimeline: ppTimeline,
+        pArea: ppArea,
+        pRange: ppRange
+      };
+    }
+  }, {
+    key: "isValidMouseXY",
+    value: function isValidMouseXY(x, y) {
+      var pObj = this.getChartObjects();
+      var areaPos = {
+        left: pObj.pArea.getLeft(),
+        top: pObj.pArea.getTop(),
+        right: pObj.pArea.getRight(),
+        bottom: pObj.pArea.getBottom()
+      };
+      return !(x < areaPos.left || x > areaPos.right || y < areaPos.top || y > areaPos.bottom);
+    }
+  }, {
+    key: "getPlotter",
+    value: function getPlotter() {
+      return this.drawer;
+    }
+  }, {
+    key: "setState",
+    value: function setState(s) {
+      this.state = s;
+    }
+  }, {
+    key: "getState",
+    value: function getState() {
+      return this.state;
+    }
+  }, {
+    key: "addPoint",
+    value: function addPoint(point) {
+      this.points.push(point);
+    }
+  }, {
+    key: "getPoint",
+    value: function getPoint(i) {
+      return this.points[i];
+    }
+  }, {
+    key: "acceptMouseMoveEvent",
+    value: function acceptMouseMoveEvent(x, y) {
+      if (this.isValidMouseXY(x, y) === false) {
+        return false;
+      }
+
+      if (this.state === CToolObject.state.BeforeDraw) {
+        this.setBeforeDrawPos(x, y);
+      } else if (this.state === CToolObject.state.Draw) {
+        this.setDrawPos(x, y);
+      } else if (this.state === CToolObject.state.AfterDraw) {
+        this.setAfterDrawPos(x, y);
+      }
+
+      return true;
+    }
+  }, {
+    key: "acceptMouseDownEvent",
+    value: function acceptMouseDownEvent(x, y) {
+      if (this.isValidMouseXY(x, y) === false) {
+        return false;
+      }
+
+      if (this.state === CToolObject.state.BeforeDraw) {
+        this.setDrawPos(x, y);
+        this.setState(CToolObject.state.Draw);
+      } else if (this.state === CToolObject.state.Draw) {
+        this.setAfterDrawPos(x, y);
+        if (this.step === 0) this.setState(CToolObject.state.AfterDraw);
+      } else if (this.state === CToolObject.state.AfterDraw) {
+        if (CToolObject.prototype.isSelected(x, y)) {
+          this.setDrawPos(x, y);
+          this.setState(CToolObject.state.Draw);
+        } else {
+          this.oldx = x;
+          this.oldy = y;
+        }
+      }
+
+      return true;
+    }
+  }, {
+    key: "acceptMouseDownMoveEvent",
+    value: function acceptMouseDownMoveEvent(x, y) {
+      if (this.isValidMouseXY(x, y) === false) {
+        return false;
+      }
+
+      if (this.state === CToolObject.state.Draw) {
+        this.setDrawPos(x, y);
+      } else if (this.state === CToolObject.state.AfterDraw) {
+        var pObj = this.getChartObjects();
+
+        var _width = pObj.pTimeline.getItemWidth();
+
+        var _height = pObj.pRange;
+        if (Math.abs(x - this.oldx) < _width && Math.abs(y - this.oldy) === 0) return true;
+
+        var _old_x = pObj.pTimeline.toIndex(this.oldx);
+
+        var _old_y = pObj.pRange.toValue(this.oldy);
+
+        var _new_x = pObj.pTimeline.toIndex(x);
+
+        var _new_y = pObj.pRange.toValue(y);
+
+        this.oldx = x;
+        this.oldy = y;
+
+        var _dif_x = _new_x - _old_x;
+
+        var _dif_y = _new_y - _old_y;
+
+        for (var index in this.points) {
+          this.points[index].pos.index += _dif_x;
+          this.points[index].pos.value += _dif_y;
+        }
+      }
+
+      return true;
+    }
+  }, {
+    key: "acceptMouseUpEvent",
+    value: function acceptMouseUpEvent(x, y) {
+      if (this.isValidMouseXY(x, y) === false) {
+        return false;
+      }
+
+      if (this.state === CToolObject.state.Draw) {
+        this.setAfterDrawPos(x, y);
+        if (this.step === 0) this.setState(CToolObject.state.AfterDraw);
+        return true;
+      }
+
+      return false;
+    }
+  }, {
+    key: "setBeforeDrawPos",
+    value: function setBeforeDrawPos(x, y) {
+      for (var index in this.points) {
+        this.points[index].setPosXY(x, y);
+        this.points[index].setState(_cpoint.default.state.Show);
+      }
+    }
+  }, {
+    key: "setDrawPos",
+    value: function setDrawPos(x, y) {
+      for (var index in this.points) {
+        if (this.points[index].getState() === _cpoint.default.state.Highlight) {
+          this.points[index].setPosXY(x, y);
+        }
+      }
+    }
+  }, {
+    key: "setAfterDrawPos",
+    value: function setAfterDrawPos(x, y) {
+      if (this.step !== 0) {
+        this.step -= 1;
+      }
+
+      for (var index in this.points) {
+        this.points[index].setState(_cpoint.default.state.Hide);
+      }
+
+      if (this.step === 0) {
+        var pObj = this.getChartObjects();
+        pObj.pMgr.setNormalMode();
+      }
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      var isFind = false;
+
+      for (var index in this.points) {
+        if (this.points[index].isSelected(x, y)) {
+          this.points[index].setState(_cpoint.default.state.Highlight);
+          isFind = true;
+          break;
+        }
+      }
+
+      if (isFind === true) {
+        this.select();
+        return true;
+      }
+
+      return false;
+    }
+  }, {
+    key: "select",
+    value: function select() {
+      for (var index in this.points) {
+        if (this.points[index].getState() === _cpoint.default.state.Hide) {
+          this.points[index].setState(_cpoint.default.state.Show);
+        }
+      }
+    }
+  }, {
+    key: "unselect",
+    value: function unselect() {
+      for (var index in this.points) {
+        if (this.points[index].getState() !== _cpoint.default.state.Hide) {
+          this.points[index].setState(_cpoint.default.state.Hide);
+        }
+      }
+    }
+  }, {
+    key: "calcDistance",
+    value: function calcDistance(point1, point2, point3) {
+      var xa = point1.getPosXY().x;
+      var ya = point1.getPosXY().y;
+      var xb = point2.getPosXY().x;
+      var yb = point2.getPosXY().y;
+      var xc = point3.getPosXY().x;
+      var yc = point3.getPosXY().y;
+      var a1 = xa - xc;
+      var a2 = ya - yc;
+      var b1 = xb - xc;
+      var b2 = yb - yc;
+      var area = Math.abs(a1 * b2 - a2 * b1);
+      var len = Math.sqrt(Math.pow(xb - xa, 2) + Math.pow(yb - ya, 2));
+      return area / len;
+    }
+  }, {
+    key: "calcGap",
+    value: function calcGap(r, x, y) {
+      var xa = r.sx;
+      var ya = r.sy;
+      var xb = r.ex;
+      var yb = r.ey;
+      var xc = x;
+      var yc = y;
+      var a1 = xa - xc;
+      var a2 = ya - yc;
+      var b1 = xb - xc;
+      var b2 = yb - yc;
+      var area = Math.abs(a1 * b2 - a2 * b1);
+      var len = Math.sqrt(Math.pow(xb - xa, 2) + Math.pow(yb - ya, 2));
+      return area / len;
+    }
+  }, {
+    key: "isWithRect",
+    value: function isWithRect(point1, point2, point3) {
+      var sx = point1.getPosXY().x;
+      var sy = point1.getPosXY().y;
+      var ex = point2.getPosXY().x;
+      var ey = point2.getPosXY().y;
+      var x = point3.getPosXY().x;
+      var y = point3.getPosXY().y;
+
+      if (sx > ex) {
+        sx += 4;
+        ex -= 4;
+      } else {
+        sx -= 4;
+        ex += 4;
+      }
+
+      if (sy > ey) {
+        sy += 4;
+        ey -= 4;
+      } else {
+        sy -= 4;
+        ey += 4;
+      }
+
+      if (sx <= x && ex >= x && sy <= y && ey >= y) {
+        return true;
+      }
+
+      if (sx >= x && ex <= x && sy <= y && ey >= y) {
+        return true;
+      }
+
+      if (sx <= x && ex >= x && sy >= y && ey <= y) {
+        return true;
+      }
+
+      if (sx >= x && ex <= x && sy >= y && ey <= y) {
+        return true;
+      }
+
+      return false;
+    }
+  }]);
+
+  return CToolObject;
+}(_named_object.default);
+
+exports.CToolObject = CToolObject;
+CToolObject.state = {
+  BeforeDraw: 0,
+  Draw: 1,
+  AfterDraw: 2
+};
+
+var CBiToolObject =
+/*#__PURE__*/
+function (_CToolObject) {
+  _inherits(CBiToolObject, _CToolObject);
+
+  function CBiToolObject(name) {
+    var _this2;
+
+    _classCallCheck(this, CBiToolObject);
+
+    _this2 = _possibleConstructorReturn(this, (CBiToolObject.__proto__ || Object.getPrototypeOf(CBiToolObject)).call(this, name));
+
+    _this2.addPoint(new _cpoint.default(name));
+
+    _this2.addPoint(new _cpoint.default(name));
+
+    return _this2;
+  }
+
+  _createClass(CBiToolObject, [{
+    key: "setBeforeDrawPos",
+    value: function setBeforeDrawPos(x, y) {
+      this.step = 1;
+
+      _get(CBiToolObject.prototype.__proto__ || Object.getPrototypeOf(CBiToolObject.prototype), "setBeforeDrawPos", this).call(this, x, y);
+
+      this.getPoint(0).setState(_cpoint.default.state.Show);
+      this.getPoint(1).setState(_cpoint.default.state.Highlight);
+    }
+  }]);
+
+  return CBiToolObject;
+}(CToolObject);
+
+exports.CBiToolObject = CBiToolObject;
+
+var CTriToolObject =
+/*#__PURE__*/
+function (_CToolObject2) {
+  _inherits(CTriToolObject, _CToolObject2);
+
+  function CTriToolObject(name) {
+    var _this3;
+
+    _classCallCheck(this, CTriToolObject);
+
+    _this3 = _possibleConstructorReturn(this, (CTriToolObject.__proto__ || Object.getPrototypeOf(CTriToolObject)).call(this, name));
+
+    _this3.addPoint(new _cpoint.default(name));
+
+    _this3.addPoint(new _cpoint.default(name));
+
+    _this3.addPoint(new _cpoint.default(name));
+
+    return _this3;
+  }
+
+  _createClass(CTriToolObject, [{
+    key: "setBeforeDrawPos",
+    value: function setBeforeDrawPos(x, y) {
+      this.step = 2;
+
+      _get(CTriToolObject.prototype.__proto__ || Object.getPrototypeOf(CTriToolObject.prototype), "setBeforeDrawPos", this).call(this, x, y);
+
+      this.getPoint(0).setState(_cpoint.default.state.Show);
+      this.getPoint(1).setState(_cpoint.default.state.Show);
+      this.getPoint(2).setState(_cpoint.default.state.Highlight);
+    }
+  }, {
+    key: "setAfterDrawPos",
+    value: function setAfterDrawPos(x, y) {
+      if (this.step !== 0) this.step -= 1;
+
+      if (this.step === 0) {
+        for (var index in this.points) {
+          this.points[index].setState(_cpoint.default.state.Hide);
+        }
+      } else {
+        this.getPoint(0).setState(_cpoint.default.state.Show);
+        this.getPoint(1).setState(_cpoint.default.state.Highlight);
+        this.getPoint(2).setState(_cpoint.default.state.Show);
+      }
+
+      if (this.step === 0) {
+        var pObj = this.getChartObjects();
+        pObj.pMgr.setNormalMode();
+      }
+    }
+  }]);
+
+  return CTriToolObject;
+}(CToolObject);
+
+exports.CTriToolObject = CTriToolObject;
+
+var CBandLineObject =
+/*#__PURE__*/
+function (_CBiToolObject) {
+  _inherits(CBandLineObject, _CBiToolObject);
+
+  function CBandLineObject(name) {
+    var _this4;
+
+    _classCallCheck(this, CBandLineObject);
+
+    _this4 = _possibleConstructorReturn(this, (CBandLineObject.__proto__ || Object.getPrototypeOf(CBandLineObject)).call(this, name));
+    _this4.drawer = new plotters.DrawBandLinesPlotter(name, _assertThisInitialized(_this4));
+    return _this4;
+  }
+
+  _createClass(CBandLineObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CBandLineObject.prototype.__proto__ || Object.getPrototypeOf(CBandLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sx = this.getPoint(0).getPosXY().x;
+      var sy = this.getPoint(0).getPosXY().y;
+      var ex = this.getPoint(1).getPosXY().x;
+      var ey = this.getPoint(1).getPosXY().y;
+      var fibSequence = [100.0, 87.5, 75.0, 62.5, 50.0, 37.5, 25.0, 12.5, 0.0];
+
+      for (var i = 0; i < fibSequence.length; i++) {
+        var stage_y = sy + (100 - fibSequence[i]) / 100 * (ey - sy);
+
+        if (stage_y < y + 4 && stage_y > y - 4) {
+          this.select();
+          return true;
+        }
+      }
+
+      return false;
+    }
+  }]);
+
+  return CBandLineObject;
+}(CBiToolObject);
+
+exports.CBandLineObject = CBandLineObject;
+
+var CBiParallelLineObject =
+/*#__PURE__*/
+function (_CTriToolObject) {
+  _inherits(CBiParallelLineObject, _CTriToolObject);
+
+  function CBiParallelLineObject(name) {
+    var _this5;
+
+    _classCallCheck(this, CBiParallelLineObject);
+
+    _this5 = _possibleConstructorReturn(this, (CBiParallelLineObject.__proto__ || Object.getPrototypeOf(CBiParallelLineObject)).call(this, name));
+    _this5.drawer = new plotters.DrawBiParallelLinesPlotter(name, _assertThisInitialized(_this5));
+    return _this5;
+  }
+
+  _createClass(CBiParallelLineObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CBiParallelLineObject.prototype.__proto__ || Object.getPrototypeOf(CBiParallelLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var _0x = this.getPoint(0).getPosXY().x;
+      var _0y = this.getPoint(0).getPosXY().y;
+      var _1x = this.getPoint(1).getPosXY().x;
+      var _1y = this.getPoint(1).getPosXY().y;
+      var _2x = this.getPoint(2).getPosXY().x;
+      var _2y = this.getPoint(2).getPosXY().y;
+      var _a = {
+        x: _0x - _1x,
+        y: _0y - _1y
+      };
+      var _b = {
+        x: _0x - _2x,
+        y: _0y - _2y
+      };
+      var _c = {
+        x: _a.x + _b.x,
+        y: _a.y + _b.y
+      };
+
+      var _3x = _0x - _c.x;
+
+      var _3y = _0y - _c.y;
+
+      var r1 = {
+        sx: _0x,
+        sy: _0y,
+        ex: _2x,
+        ey: _2y
+      };
+      var r2 = {
+        sx: _1x,
+        sy: _1y,
+        ex: _3x,
+        ey: _3y
+      };
+
+      if (this.calcGap(r1, x, y) > 4 && this.calcGap(r2, x, y) > 4) {
+        return false;
+      }
+
+      return true;
+    }
+  }]);
+
+  return CBiParallelLineObject;
+}(CTriToolObject);
+
+exports.CBiParallelLineObject = CBiParallelLineObject;
+
+var CBiParallelRayLineObject =
+/*#__PURE__*/
+function (_CTriToolObject2) {
+  _inherits(CBiParallelRayLineObject, _CTriToolObject2);
+
+  function CBiParallelRayLineObject(name) {
+    var _this6;
+
+    _classCallCheck(this, CBiParallelRayLineObject);
+
+    _this6 = _possibleConstructorReturn(this, (CBiParallelRayLineObject.__proto__ || Object.getPrototypeOf(CBiParallelRayLineObject)).call(this, name));
+    _this6.drawer = new plotters.DrawBiParallelRayLinesPlotter(name, _assertThisInitialized(_this6));
+    return _this6;
+  }
+
+  _createClass(CBiParallelRayLineObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CBiParallelRayLineObject.prototype.__proto__ || Object.getPrototypeOf(CBiParallelRayLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var _0x = this.getPoint(0).getPosXY().x;
+      var _0y = this.getPoint(0).getPosXY().y;
+      var _1x = this.getPoint(1).getPosXY().x;
+      var _1y = this.getPoint(1).getPosXY().y;
+      var _2x = this.getPoint(2).getPosXY().x;
+      var _2y = this.getPoint(2).getPosXY().y;
+      var _a = {
+        x: _0x - _1x,
+        y: _0y - _1y
+      };
+      var _b = {
+        x: _0x - _2x,
+        y: _0y - _2y
+      };
+      var _c = {
+        x: _a.x + _b.x,
+        y: _a.y + _b.y
+      };
+
+      var _3x = _0x - _c.x;
+
+      var _3y = _0y - _c.y;
+
+      var r1 = {
+        sx: _0x,
+        sy: _0y,
+        ex: _2x,
+        ey: _2y
+      };
+      var r2 = {
+        sx: _1x,
+        sy: _1y,
+        ex: _3x,
+        ey: _3y
+      };
+
+      if (r1.ex > r1.sx && x > r1.sx - 4 || r1.ex < r1.sx && x < r1.sx + 4 || r2.ex > r2.sx && x > r2.sx - 4 || r2.ex < r2.sx && x < r2.sx + 4) {
+        if (this.calcGap(r1, x, y) > 4 && this.calcGap(r2, x, y) > 4) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+
+      this.select();
+      return true;
+    }
+  }]);
+
+  return CBiParallelRayLineObject;
+}(CTriToolObject);
+
+exports.CBiParallelRayLineObject = CBiParallelRayLineObject;
+
+var CFibFansObject =
+/*#__PURE__*/
+function (_CBiToolObject2) {
+  _inherits(CFibFansObject, _CBiToolObject2);
+
+  function CFibFansObject(name) {
+    var _this7;
+
+    _classCallCheck(this, CFibFansObject);
+
+    _this7 = _possibleConstructorReturn(this, (CFibFansObject.__proto__ || Object.getPrototypeOf(CFibFansObject)).call(this, name));
+    _this7.drawer = new plotters.DrawFibFansPlotter(name, _assertThisInitialized(_this7));
+    return _this7;
+  }
+
+  _createClass(CFibFansObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CFibFansObject.prototype.__proto__ || Object.getPrototypeOf(CFibFansObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sx = this.getPoint(0).getPosXY().x;
+      var sy = this.getPoint(0).getPosXY().y;
+      var ex = this.getPoint(1).getPosXY().x;
+      var ey = this.getPoint(1).getPosXY().y;
+      var pObj = this.getChartObjects();
+      var areaPos = {
+        left: pObj.pArea.getLeft(),
+        top: pObj.pArea.getTop(),
+        right: pObj.pArea.getRight(),
+        bottom: pObj.pArea.getBottom()
+      };
+      var fibFansSequence = [0, 38.2, 50, 61.8];
+
+      for (var i = 0; i < fibFansSequence.length; i++) {
+        var stageY = sy + (100 - fibFansSequence[i]) / 100 * (ey - sy);
+        var tempStartPt = {
+          x: sx,
+          y: sy
+        };
+        var tempEndPt = {
+          x: ex,
+          y: stageY
+        };
+        var crossPt = getRectCrossPt(areaPos, tempStartPt, tempEndPt);
+        var lenToStartPt = Math.pow(crossPt[0].x - sx, 2) + Math.pow(crossPt[0].y - sy, 2);
+        var lenToEndPt = Math.pow(crossPt[0].x - ex, 2) + Math.pow(crossPt[0].y - ey, 2);
+        var tempCrossPt = lenToStartPt > lenToEndPt ? {
+          x: crossPt[0].x,
+          y: crossPt[0].y
+        } : {
+          x: crossPt[1].x,
+          y: crossPt[1].y
+        };
+        if (tempCrossPt.x > sx && x < sx) continue;
+        if (tempCrossPt.x < sx && x > sx) continue;
+        var a = new _cpoint.default("frame0.k0");
+        a.setPosXY(sx, sy);
+        var b = new _cpoint.default("frame0.k0");
+        b.setPosXY(tempCrossPt.x, tempCrossPt.y);
+
+        if (this.calcDistance(a, b, c) > 4) {
+          continue;
+        }
+
+        this.select();
+        return true;
+      }
+
+      return false;
+    }
+  }]);
+
+  return CFibFansObject;
+}(CBiToolObject);
+
+exports.CFibFansObject = CFibFansObject;
+
+var CFibRetraceObject =
+/*#__PURE__*/
+function (_CBiToolObject3) {
+  _inherits(CFibRetraceObject, _CBiToolObject3);
+
+  function CFibRetraceObject(name) {
+    var _this8;
+
+    _classCallCheck(this, CFibRetraceObject);
+
+    _this8 = _possibleConstructorReturn(this, (CFibRetraceObject.__proto__ || Object.getPrototypeOf(CFibRetraceObject)).call(this, name));
+    _this8.drawer = new plotters.DrawFibRetracePlotter(name, _assertThisInitialized(_this8));
+    return _this8;
+  }
+
+  _createClass(CFibRetraceObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CFibRetraceObject.prototype.__proto__ || Object.getPrototypeOf(CFibRetraceObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sx = this.getPoint(0).getPosXY().x;
+      var sy = this.getPoint(0).getPosXY().y;
+      var ex = this.getPoint(1).getPosXY().x;
+      var ey = this.getPoint(1).getPosXY().y;
+      var fibSequence = [100.0, 78.6, 61.8, 50.0, 38.2, 23.6, 0.0];
+
+      for (var i = 0; i < fibSequence.length; i++) {
+        var stage_y = sy + (100 - fibSequence[i]) / 100 * (ey - sy);
+
+        if (stage_y < y + 4 && stage_y > y - 4) {
+          this.select();
+          return true;
+        }
+      }
+
+      return false;
+    }
+  }]);
+
+  return CFibRetraceObject;
+}(CBiToolObject);
+
+exports.CFibRetraceObject = CFibRetraceObject;
+
+var CHoriRayLineObject =
+/*#__PURE__*/
+function (_CBiToolObject4) {
+  _inherits(CHoriRayLineObject, _CBiToolObject4);
+
+  function CHoriRayLineObject(name) {
+    var _this9;
+
+    _classCallCheck(this, CHoriRayLineObject);
+
+    _this9 = _possibleConstructorReturn(this, (CHoriRayLineObject.__proto__ || Object.getPrototypeOf(CHoriRayLineObject)).call(this, name));
+    _this9.drawer = new plotters.DrawHoriRayLinesPlotter(name, _assertThisInitialized(_this9));
+    return _this9;
+  }
+
+  _createClass(CHoriRayLineObject, [{
+    key: "setDrawPos",
+    value: function setDrawPos(x, y) {
+      if (this.points[0].getState() === _cpoint.default.state.Highlight) {
+        this.points[0].setPosXY(x, y);
+        this.points[1].setPosXYNoSnap(this.points[1].getPosXY().x, this.points[0].getPosXY().y);
+        return;
+      }
+
+      if (this.points[1].getState() === _cpoint.default.state.Highlight) {
+        this.points[1].setPosXY(x, y);
+        this.points[0].setPosXYNoSnap(this.points[0].getPosXY().x, this.points[1].getPosXY().y);
+      }
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CHoriRayLineObject.prototype.__proto__ || Object.getPrototypeOf(CHoriRayLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sy = this.getPoint(0).getPosXY().y;
+      var sx = this.getPoint(0).getPosXY().x;
+      var ex = this.getPoint(1).getPosXY().x;
+
+      if (y > sy + 4 || y < sy - 4) {
+        return false;
+      }
+
+      if (ex > sx && x < sx - 4) {
+        return false;
+      }
+
+      if (ex < sx && x > sx + 4) {
+        return false;
+      }
+
+      this.select();
+      return true;
+    }
+  }]);
+
+  return CHoriRayLineObject;
+}(CBiToolObject);
+
+exports.CHoriRayLineObject = CHoriRayLineObject;
+
+var CHoriSegLineObject =
+/*#__PURE__*/
+function (_CBiToolObject5) {
+  _inherits(CHoriSegLineObject, _CBiToolObject5);
+
+  function CHoriSegLineObject(name) {
+    var _this10;
+
+    _classCallCheck(this, CHoriSegLineObject);
+
+    _this10 = _possibleConstructorReturn(this, (CHoriSegLineObject.__proto__ || Object.getPrototypeOf(CHoriSegLineObject)).call(this, name));
+    _this10.drawer = new plotters.DrawHoriSegLinesPlotter(name, _assertThisInitialized(_this10));
+    return _this10;
+  }
+
+  _createClass(CHoriSegLineObject, [{
+    key: "setDrawPos",
+    value: function setDrawPos(x, y) {
+      if (this.points[0].getState() === _cpoint.default.state.Highlight) {
+        this.points[0].setPosXY(x, y);
+        this.points[1].setPosXYNoSnap(this.points[1].getPosXY().x, this.points[0].getPosXY().y);
+        return;
+      }
+
+      if (this.points[1].getState() === _cpoint.default.state.Highlight) {
+        this.points[1].setPosXY(x, y);
+        this.points[0].setPosXYNoSnap(this.points[0].getPosXY().x, this.points[1].getPosXY().y);
+      }
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CHoriSegLineObject.prototype.__proto__ || Object.getPrototypeOf(CHoriSegLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sy = this.getPoint(0).getPosXY().y;
+      var sx = this.getPoint(0).getPosXY().x;
+      var ex = this.getPoint(1).getPosXY().x;
+
+      if (y > sy + 4 || y < sy - 4) {
+        return false;
+      }
+
+      if (sx > ex && (x > sx + 4 || x < ex - 4)) {
+        return false;
+      }
+
+      if (sx < ex && (x < sx - 4 || x > ex + 4)) {
+        return false;
+      }
+
+      this.select();
+      return true;
+    }
+  }]);
+
+  return CHoriSegLineObject;
+}(CBiToolObject);
+
+exports.CHoriSegLineObject = CHoriSegLineObject;
+
+var CHoriStraightLineObject =
+/*#__PURE__*/
+function (_CBiToolObject6) {
+  _inherits(CHoriStraightLineObject, _CBiToolObject6);
+
+  function CHoriStraightLineObject(name) {
+    var _this11;
+
+    _classCallCheck(this, CHoriStraightLineObject);
+
+    _this11 = _possibleConstructorReturn(this, (CHoriStraightLineObject.__proto__ || Object.getPrototypeOf(CHoriStraightLineObject)).call(this, name));
+    _this11.drawer = new plotters.DrawHoriStraightLinesPlotter(name, _assertThisInitialized(_this11));
+    return _this11;
+  }
+
+  _createClass(CHoriStraightLineObject, [{
+    key: "setDrawPos",
+    value: function setDrawPos(x, y) {
+      for (var index in this.points) {
+        this.points[index].setPosXY(x, y);
+      }
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CHoriStraightLineObject.prototype.__proto__ || Object.getPrototypeOf(CHoriStraightLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sy = this.getPoint(0).getPosXY().y;
+
+      if (y > sy + 4 || y < sy - 4) {
+        return false;
+      }
+
+      this.select();
+      return true;
+    }
+  }]);
+
+  return CHoriStraightLineObject;
+}(CBiToolObject);
+
+exports.CHoriStraightLineObject = CHoriStraightLineObject;
+
+var CRayLineObject =
+/*#__PURE__*/
+function (_CBiToolObject7) {
+  _inherits(CRayLineObject, _CBiToolObject7);
+
+  function CRayLineObject(name) {
+    var _this12;
+
+    _classCallCheck(this, CRayLineObject);
+
+    _this12 = _possibleConstructorReturn(this, (CRayLineObject.__proto__ || Object.getPrototypeOf(CRayLineObject)).call(this, name));
+    _this12.drawer = new plotters.DrawRayLinesPlotter(name, _assertThisInitialized(_this12));
+    return _this12;
+  }
+
+  _createClass(CRayLineObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CRayLineObject.prototype.__proto__ || Object.getPrototypeOf(CRayLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sx = this.getPoint(0).getPosXY().x;
+      var ex = this.getPoint(1).getPosXY().x;
+
+      if (ex > sx && x < sx - 4) {
+        return false;
+      }
+
+      if (ex < sx && x > sx + 4) {
+        return false;
+      }
+
+      if (this.calcDistance(this.getPoint(0), this.getPoint(1), c) < 4) {
+        this.select();
+        return true;
+      }
+
+      return false;
+    }
+  }]);
+
+  return CRayLineObject;
+}(CBiToolObject);
+
+exports.CRayLineObject = CRayLineObject;
+
+var CSegLineObject =
+/*#__PURE__*/
+function (_CBiToolObject8) {
+  _inherits(CSegLineObject, _CBiToolObject8);
+
+  function CSegLineObject(name) {
+    var _this13;
+
+    _classCallCheck(this, CSegLineObject);
+
+    _this13 = _possibleConstructorReturn(this, (CSegLineObject.__proto__ || Object.getPrototypeOf(CSegLineObject)).call(this, name));
+    _this13.drawer = new plotters.DrawSegLinesPlotter(name, _assertThisInitialized(_this13));
+    return _this13;
+  }
+
+  _createClass(CSegLineObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CSegLineObject.prototype.__proto__ || Object.getPrototypeOf(CSegLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+
+      if (this.isWithRect(this.getPoint(0), this.getPoint(1), c) === false) {
+        return false;
+      }
+
+      if (this.calcDistance(this.getPoint(0), this.getPoint(1), c) < 4) {
+        this.select();
+        return true;
+      }
+
+      return false;
+    }
+  }]);
+
+  return CSegLineObject;
+}(CBiToolObject);
+
+exports.CSegLineObject = CSegLineObject;
+
+var CStraightLineObject =
+/*#__PURE__*/
+function (_CBiToolObject9) {
+  _inherits(CStraightLineObject, _CBiToolObject9);
+
+  function CStraightLineObject(name) {
+    var _this14;
+
+    _classCallCheck(this, CStraightLineObject);
+
+    _this14 = _possibleConstructorReturn(this, (CStraightLineObject.__proto__ || Object.getPrototypeOf(CStraightLineObject)).call(this, name));
+    _this14.drawer = new plotters.DrawStraightLinesPlotter(name, _assertThisInitialized(_this14));
+    return _this14;
+  }
+
+  _createClass(CStraightLineObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CStraightLineObject.prototype.__proto__ || Object.getPrototypeOf(CStraightLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+
+      if (this.calcDistance(this.getPoint(0), this.getPoint(1), c) < 4) {
+        this.select();
+        return true;
+      }
+
+      return false;
+    }
+  }]);
+
+  return CStraightLineObject;
+}(CBiToolObject);
+
+exports.CStraightLineObject = CStraightLineObject;
+
+var CTriParallelLineObject =
+/*#__PURE__*/
+function (_CTriToolObject3) {
+  _inherits(CTriParallelLineObject, _CTriToolObject3);
+
+  function CTriParallelLineObject(name) {
+    var _this15;
+
+    _classCallCheck(this, CTriParallelLineObject);
+
+    _this15 = _possibleConstructorReturn(this, (CTriParallelLineObject.__proto__ || Object.getPrototypeOf(CTriParallelLineObject)).call(this, name));
+    _this15.drawer = new plotters.DrawTriParallelLinesPlotter(name, _assertThisInitialized(_this15));
+    return _this15;
+  }
+
+  _createClass(CTriParallelLineObject, [{
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CTriParallelLineObject.prototype.__proto__ || Object.getPrototypeOf(CTriParallelLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var pObj = this.getChartObjects();
+      var _0x = this.getPoint(0).getPosXY().x;
+      var _0y = this.getPoint(0).getPosXY().y;
+      var _1x = this.getPoint(1).getPosXY().x;
+      var _1y = this.getPoint(1).getPosXY().y;
+      var _2x = this.getPoint(2).getPosXY().x;
+      var _2y = this.getPoint(2).getPosXY().y;
+      var _a = {
+        x: _0x - _1x,
+        y: _0y - _1y
+      };
+      var _b = {
+        x: _0x - _2x,
+        y: _0y - _2y
+      };
+      var _c = {
+        x: _a.x + _b.x,
+        y: _a.y + _b.y
+      };
+
+      var _3x = _0x - _c.x;
+
+      var _3y = _0y - _c.y;
+
+      var r1 = {
+        sx: _0x,
+        sy: _0y,
+        ex: _2x,
+        ey: _2y
+      };
+      var r2 = {
+        sx: _1x,
+        sy: _1y,
+        ex: _3x,
+        ey: _3y
+      };
+      var _i = {
+        x: _0x - _1x,
+        y: _0y - _1y
+      };
+      var _j = {
+        x: _2x - _3x,
+        y: _2y - _3y
+      };
+      var _ri = {
+        x: _1x - _0x,
+        y: _1y - _0y
+      };
+      var _rj = {
+        x: _3x - _2x,
+        y: _3y - _2y
+      };
+
+      var _4x = Math.abs(_ri.x - _0x);
+
+      var _4y = Math.abs(_ri.y - _0y);
+
+      var _5x = Math.abs(_rj.x - _2x);
+
+      var _5y = Math.abs(_rj.y - _2y);
+
+      var r3 = {
+        sx: _4x,
+        sy: _4y,
+        ex: _5x,
+        ey: _5y
+      };
+
+      if (this.calcGap(r1, x, y) > 4 && this.calcGap(r2, x, y) > 4 && this.calcGap(r3, x, y) > 4) {
+        return false;
+      }
+
+      this.select();
+      return true;
+    }
+  }]);
+
+  return CTriParallelLineObject;
+}(CTriToolObject);
+
+exports.CTriParallelLineObject = CTriParallelLineObject;
+
+var CVertiStraightLineObject =
+/*#__PURE__*/
+function (_CBiToolObject10) {
+  _inherits(CVertiStraightLineObject, _CBiToolObject10);
+
+  function CVertiStraightLineObject(name) {
+    var _this16;
+
+    _classCallCheck(this, CVertiStraightLineObject);
+
+    _this16 = _possibleConstructorReturn(this, (CVertiStraightLineObject.__proto__ || Object.getPrototypeOf(CVertiStraightLineObject)).call(this, name));
+    _this16.drawer = new plotters.DrawVertiStraightLinesPlotter(name, _assertThisInitialized(_this16));
+    return _this16;
+  }
+
+  _createClass(CVertiStraightLineObject, [{
+    key: "setDrawPos",
+    value: function setDrawPos(x, y) {
+      for (var index in this.points) {
+        this.points[index].setPosXY(x, y);
+      }
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CVertiStraightLineObject.prototype.__proto__ || Object.getPrototypeOf(CVertiStraightLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sx = this.getPoint(0).getPosXY().x;
+
+      if (x > sx + 4 || x < sx - 4) {
+        return false;
+      }
+
+      this.select();
+      return true;
+    }
+  }]);
+
+  return CVertiStraightLineObject;
+}(CBiToolObject);
+
+exports.CVertiStraightLineObject = CVertiStraightLineObject;
+
+var CPriceLineObject =
+/*#__PURE__*/
+function (_CSegLineObject) {
+  _inherits(CPriceLineObject, _CSegLineObject);
+
+  function CPriceLineObject(name) {
+    var _this17;
+
+    _classCallCheck(this, CPriceLineObject);
+
+    _this17 = _possibleConstructorReturn(this, (CPriceLineObject.__proto__ || Object.getPrototypeOf(CPriceLineObject)).call(this, name));
+    _this17.drawer = new plotters.DrawPriceLinesPlotter(name, _assertThisInitialized(_this17));
+    return _this17;
+  }
+
+  _createClass(CPriceLineObject, [{
+    key: "setDrawPos",
+    value: function setDrawPos(x, y) {
+      for (var index in this.points) {
+        this.points[index].setPosXY(x, y);
+      }
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(x, y) {
+      if (_get(CPriceLineObject.prototype.__proto__ || Object.getPrototypeOf(CPriceLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
+        return true;
+      }
+
+      var c = new _cpoint.default("frame0.k0");
+      c.setPosXY(x, y);
+      var sx = this.getPoint(0).getPosXY().x;
+      var sy = this.getPoint(0).getPosXY().y;
+      var ex = this.getPoint(1).getPosXY().x;
+      var ey = this.getPoint(1).getPosXY().y;
+
+      if (x < sx - 4) {
+        return false;
+      }
+
+      if (y >= sy + 4 || y <= sy - 4) {
+        return false;
+      }
+
+      this.select();
+      return true;
+    }
+  }]);
+
+  return CPriceLineObject;
+}(CSegLineObject);
+
+exports.CPriceLineObject = CPriceLineObject;
+
+var CArrowLineObject =
+/*#__PURE__*/
+function (_CSegLineObject2) {
+  _inherits(CArrowLineObject, _CSegLineObject2);
+
+  function CArrowLineObject(name) {
+    var _this18;
+
+    _classCallCheck(this, CArrowLineObject);
+
+    _this18 = _possibleConstructorReturn(this, (CArrowLineObject.__proto__ || Object.getPrototypeOf(CArrowLineObject)).call(this, name));
+    _this18.drawer = new plotters.DrawArrowLinesPlotter(name, _assertThisInitialized(_this18));
+    return _this18;
+  }
+
+  return CArrowLineObject;
+}(CSegLineObject);
+
+exports.CArrowLineObject = CArrowLineObject;
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9908,2217 +12164,6 @@ function (_OpABCDExpr) {
 exports.SarExpr = SarExpr;
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var CName =
-/*#__PURE__*/
-function () {
-  function CName(name) {
-    _classCallCheck(this, CName);
-
-    this._names = [];
-    this._comps = [];
-
-    if (name instanceof CName) {
-      this._names = name._names;
-      this._comps = name._comps;
-    } else {
-      var comps = name.split(".");
-      var dotNum = comps.length - 1;
-
-      if (dotNum > 0) {
-        this._comps = comps;
-
-        this._names.push(comps[0]);
-
-        for (var i = 1; i <= dotNum; i++) {
-          this._names.push(this._names[i - 1] + "." + comps[i]);
-        }
-      } else {
-        this._comps.push(name);
-
-        this._names.push(name);
-      }
-    }
-  }
-
-  _createClass(CName, [{
-    key: "getCompAt",
-    value: function getCompAt(index) {
-      if (index >= 0 && index < this._comps.length) return this._comps[index];
-      return "";
-    }
-  }, {
-    key: "getName",
-    value: function getName(index) {
-      if (index < 0) {
-        if (this._names.length > 0) return this._names[this._names.length - 1];
-      } else if (index < this._names.length) {
-        return this._names[index];
-      }
-
-      return "";
-    }
-  }]);
-
-  return CName;
-}();
-
-exports.default = CName;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.TemplateMeasuringHandler = exports.DefaultTemplate = exports.Template = void 0;
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-var _chart_settings = _interopRequireDefault(__webpack_require__(3));
-
-var data_sources = _interopRequireWildcard(__webpack_require__(4));
-
-var data_providers = _interopRequireWildcard(__webpack_require__(15));
-
-var areas = _interopRequireWildcard(__webpack_require__(7));
-
-var plotters = _interopRequireWildcard(__webpack_require__(6));
-
-var _timeline = _interopRequireDefault(__webpack_require__(22));
-
-var _cname = _interopRequireDefault(__webpack_require__(11));
-
-var layouts = _interopRequireWildcard(__webpack_require__(23));
-
-var themes = _interopRequireWildcard(__webpack_require__(5));
-
-var ranges = _interopRequireWildcard(__webpack_require__(20));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Template =
-/*#__PURE__*/
-function () {
-  function Template() {
-    _classCallCheck(this, Template);
-  }
-
-  _createClass(Template, null, [{
-    key: "createCandlestickDataSource",
-    value: function createCandlestickDataSource(dsAlias) {
-      return new data_sources.MainDataSource(dsAlias);
-    }
-  }, {
-    key: "createDataSource",
-    value: function createDataSource(dsName, dsAlias, createFunc) {
-      var mgr = new _chart_manager.default();
-      if (mgr.getCachedDataSource(dsAlias) === null) mgr.setCachedDataSource(dsAlias, createFunc(dsAlias));
-      mgr.setCurrentDataSource(dsName, dsAlias);
-      mgr.updateData(dsName, null);
-    }
-  }, {
-    key: "createTableComps",
-    value: function createTableComps(dsName) {
-      this.createMainChartComps(dsName);
-
-      if (this.displayVolume) {
-        this.createIndicatorChartComps(dsName, "VOLUME");
-      }
-
-      this.createTimelineComps(dsName);
-    }
-  }, {
-    key: "createMainChartComps",
-    value: function createMainChartComps(dsName) {
-      var mgr = new _chart_manager.default();
-      var tableLayout = mgr.getArea(dsName + ".charts");
-      var areaName = dsName + ".main";
-      var rangeAreaName = areaName + "Range";
-      var area = new areas.MainArea(areaName);
-      mgr.setArea(areaName, area);
-      tableLayout.addArea(area);
-      var rangeArea = new areas.MainRangeArea(rangeAreaName);
-      mgr.setArea(rangeAreaName, rangeArea);
-      tableLayout.addArea(rangeArea);
-      var dp = new data_providers.MainDataProvider(areaName + ".main");
-      mgr.setDataProvider(dp.getName(), dp);
-      mgr.setMainIndicator(dsName, "MA");
-      var range = new ranges.MainRange(areaName);
-      mgr.setRange(range.getName(), range);
-      range.setPaddingTop(28);
-      range.setPaddingBottom(12);
-      var plotter = new plotters.MainAreaBackgroundPlotter(areaName + ".background");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.CGridPlotter(areaName + ".grid");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.CandlestickPlotter(areaName + ".main");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.MinMaxPlotter(areaName + ".decoration");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.MainInfoPlotter(areaName + ".info");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.SelectionPlotter(areaName + ".selection");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.CDynamicLinePlotter(areaName + ".tool");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.RangeAreaBackgroundPlotter(areaName + "Range.background");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.COrderGraphPlotter(areaName + "Range.grid");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.RangePlotter(areaName + "Range.main");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.RangeSelectionPlotter(areaName + "Range.selection");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.LastClosePlotter(areaName + "Range.decoration");
-      mgr.setPlotter(plotter.getName(), plotter);
-    }
-  }, {
-    key: "createIndicatorChartComps",
-    value: function createIndicatorChartComps(dsName, indicName) {
-      var mgr = new _chart_manager.default();
-      var tableLayout = mgr.getArea(dsName + ".charts");
-      var areaName = dsName + ".indic" + tableLayout.getNextRowId();
-      var rangeAreaName = areaName + "Range";
-      var area = new areas.IndicatorArea(areaName);
-      mgr.setArea(areaName, area);
-      tableLayout.addArea(area);
-      var rowIndex = tableLayout.getAreaCount() >> 1;
-
-      var heights = _chart_settings.default.get().charts.areaHeight;
-
-      if (heights.length > rowIndex) {
-        var a, i;
-
-        for (i = 0; i < rowIndex; i++) {
-          a = tableLayout.getAreaAt(i << 1);
-          a.setTop(0);
-          a.setBottom(heights[i]);
-        }
-
-        area.setTop(0);
-        area.setBottom(heights[rowIndex]);
-      }
-
-      var rangeArea = new areas.IndicatorRangeArea(rangeAreaName);
-      mgr.setArea(rangeAreaName, rangeArea);
-      tableLayout.addArea(rangeArea);
-      var dp = new data_providers.IndicatorDataProvider(areaName + ".secondary");
-      mgr.setDataProvider(dp.getName(), dp);
-
-      if (mgr.setIndicator(areaName, indicName) === false) {
-        mgr.removeIndicator(areaName);
-        return;
-      }
-
-      var plotter = new plotters.MainAreaBackgroundPlotter(areaName + ".background");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.CGridPlotter(areaName + ".grid");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.IndicatorPlotter(areaName + ".secondary");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.IndicatorInfoPlotter(areaName + ".info");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.SelectionPlotter(areaName + ".selection");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.RangeAreaBackgroundPlotter(areaName + "Range.background");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.RangePlotter(areaName + "Range.main");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.RangeSelectionPlotter(areaName + "Range.selection");
-      mgr.setPlotter(plotter.getName(), plotter);
-    }
-  }, {
-    key: "createTimelineComps",
-    value: function createTimelineComps(dsName) {
-      var mgr = new _chart_manager.default();
-      var plotter;
-      var timeline = new _timeline.default(dsName);
-      mgr.setTimeline(timeline.getName(), timeline);
-      plotter = new plotters.TimelineAreaBackgroundPlotter(dsName + ".timeline.background");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.TimelinePlotter(dsName + ".timeline.main");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.TimelineSelectionPlotter(dsName + ".timeline.selection");
-      mgr.setPlotter(plotter.getName(), plotter);
-    }
-  }, {
-    key: "createLiveOrderComps",
-    value: function createLiveOrderComps(dsName) {
-      var mgr = new _chart_manager.default();
-      var plotter;
-      plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.CLiveOrderPlotter(dsName + ".main.main");
-      mgr.setPlotter(plotter.getName(), plotter);
-    }
-  }, {
-    key: "createLiveTradeComps",
-    value: function createLiveTradeComps(dsName) {
-      var mgr = new _chart_manager.default();
-      var plotter;
-      plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
-      mgr.setPlotter(plotter.getName(), plotter);
-      plotter = new plotters.CLiveTradePlotter(dsName + ".main.main");
-      mgr.setPlotter(plotter.getName(), plotter);
-    }
-  }]);
-
-  return Template;
-}();
-
-exports.Template = Template;
-Template.displayVolume = true;
-
-var DefaultTemplate =
-/*#__PURE__*/
-function (_Template) {
-  _inherits(DefaultTemplate, _Template);
-
-  function DefaultTemplate() {
-    _classCallCheck(this, DefaultTemplate);
-
-    return _possibleConstructorReturn(this, (DefaultTemplate.__proto__ || Object.getPrototypeOf(DefaultTemplate)).apply(this, arguments));
-  }
-
-  _createClass(DefaultTemplate, null, [{
-    key: "loadTemplate",
-    value: function loadTemplate(dsName, dsAlias) {
-      var mgr = new _chart_manager.default();
-
-      var settings = _chart_settings.default.get();
-
-      var frameName = new _cname.default(dsName).getCompAt(0);
-      mgr.unloadTemplate(frameName);
-      this.createDataSource(dsName, dsAlias, this.createCandlestickDataSource);
-      var frame = new layouts.DockableLayout(frameName);
-      mgr.setFrame(frame.getName(), frame);
-      mgr.setArea(frame.getName(), frame);
-      frame.setGridColor(themes.Theme.Color.Grid1);
-      var area = new areas.TimelineArea(dsName + ".timeline");
-      mgr.setArea(area.getName(), area);
-      frame.addArea(area);
-      area.setDockStyle(areas.ChartArea.DockStyle.Bottom);
-      area.Measuring.addHandler(area, TemplateMeasuringHandler.onMeasuring);
-      var tableLayout = new layouts.TableLayout(dsName + ".charts");
-      mgr.setArea(tableLayout.getName(), tableLayout);
-      tableLayout.setDockStyle(areas.ChartArea.DockStyle.Fill);
-      frame.addArea(tableLayout);
-      this.createTableComps(dsName);
-      mgr.setThemeName(frameName, settings.theme);
-      return mgr;
-    }
-  }]);
-
-  return DefaultTemplate;
-}(Template);
-
-exports.DefaultTemplate = DefaultTemplate;
-
-var TemplateMeasuringHandler =
-/*#__PURE__*/
-function () {
-  function TemplateMeasuringHandler() {
-    _classCallCheck(this, TemplateMeasuringHandler);
-  }
-
-  _createClass(TemplateMeasuringHandler, null, [{
-    key: "onMeasuring",
-    value: function onMeasuring(sender, args) {
-      var width = args.Width;
-      var height = args.Height;
-      var areaName = sender.getNameObject().getCompAt(2);
-
-      if (areaName === "timeline") {
-        sender.setMeasuredDimension(width, 22);
-      }
-    }
-  }]);
-
-  return TemplateMeasuringHandler;
-}();
-
-exports.TemplateMeasuringHandler = TemplateMeasuringHandler;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-var _named_object = _interopRequireDefault(__webpack_require__(1));
-
-var data_sources = _interopRequireWildcard(__webpack_require__(4));
-
-var _util = _interopRequireDefault(__webpack_require__(25));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CPoint =
-/*#__PURE__*/
-function (_NamedObject) {
-  _inherits(CPoint, _NamedObject);
-
-  function CPoint(name) {
-    var _this;
-
-    _classCallCheck(this, CPoint);
-
-    _this = _possibleConstructorReturn(this, (CPoint.__proto__ || Object.getPrototypeOf(CPoint)).call(this, name));
-    _this.pos = {
-      index: -1,
-      value: -1
-    };
-    _this.state = CPoint.state.Hide;
-    return _this;
-  }
-
-  _createClass(CPoint, [{
-    key: "getChartObjects",
-    value: function getChartObjects() {
-      var ppMgr = new _chart_manager.default();
-      var ppCDS = ppMgr.getDataSource("frame0.k0");
-      if (ppCDS === null || !_util.default.isInstance(ppCDS, data_sources.MainDataSource)) return null;
-      var ppTimeline = ppMgr.getTimeline("frame0.k0");
-      if (ppTimeline === null) return null;
-      var ppRange = ppMgr.getRange("frame0.k0.main");
-      if (ppRange === null) return null;
-      return {
-        pMgr: ppMgr,
-        pCDS: ppCDS,
-        pTimeline: ppTimeline,
-        pRange: ppRange
-      };
-    }
-  }, {
-    key: "setPosXY",
-    value: function setPosXY(x, y) {
-      var pObj = this.getChartObjects();
-      var i = pObj.pTimeline.toIndex(x);
-      var v = pObj.pRange.toValue(y);
-      var result = this.snapValue(i, v);
-      if (result !== null) v = result;
-      this.setPosIV(i, v);
-    }
-  }, {
-    key: "setPosXYNoSnap",
-    value: function setPosXYNoSnap(x, y) {
-      var pObj = this.getChartObjects();
-      var i = pObj.pTimeline.toIndex(x);
-      var v = pObj.pRange.toValue(y);
-      this.setPosIV(i, v);
-    }
-  }, {
-    key: "setPosIV",
-    value: function setPosIV(i, v) {
-      this.pos = {
-        index: i,
-        value: v
-      };
-    }
-  }, {
-    key: "getPosXY",
-    value: function getPosXY() {
-      var pObj = this.getChartObjects();
-
-      var _x = pObj.pTimeline.toItemCenter(this.pos.index);
-
-      var _y = pObj.pRange.toY(this.pos.value);
-
-      return {
-        x: _x,
-        y: _y
-      };
-    }
-  }, {
-    key: "getPosIV",
-    value: function getPosIV() {
-      return {
-        i: this.pos.index,
-        v: this.pos.value
-      };
-    }
-  }, {
-    key: "setState",
-    value: function setState(s) {
-      this.state = s;
-    }
-  }, {
-    key: "getState",
-    value: function getState() {
-      return this.state;
-    }
-  }, {
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      var xy = this.getPosXY();
-      if (x < xy.x - 4 || x > xy.x + 4 || y < xy.y - 4 || y > xy.y + 4) return false;
-      this.setState(CPoint.state.Highlight);
-      return true;
-    }
-  }, {
-    key: "snapValue",
-    value: function snapValue(i, v) {
-      var pObj = this.getChartObjects();
-      var result = null;
-      var first = Math.floor(pObj.pTimeline.getFirstIndex());
-      var last = Math.floor(pObj.pTimeline.getLastIndex());
-      if (i < first || i > last) return result;
-      var y = pObj.pRange.toY(v);
-      var pData = pObj.pCDS.getDataAt(i);
-      if (pData === null || pData === undefined) return result;
-      var pDataPre = null;
-      if (i > 0) pDataPre = pObj.pCDS.getDataAt(i - 1);else pDataPre = pObj.pCDS.getDataAt(i);
-      var candleStickStyle = pObj.pMgr.getChartStyle(pObj.pCDS.getFrameName());
-      var open = pObj.pRange.toY(pData.open);
-      var high = pObj.pRange.toY(pData.high);
-      var low = pObj.pRange.toY(pData.low);
-      var close = pObj.pRange.toY(pData.close);
-
-      if (candleStickStyle === "CandleStickHLC") {
-        open = pObj.pRange.toY(pDataPre.close);
-      }
-
-      var dif_open = Math.abs(open - y);
-      var dif_high = Math.abs(high - y);
-      var dif_low = Math.abs(low - y);
-      var dif_close = Math.abs(close - y);
-
-      if (dif_open <= dif_high && dif_open <= dif_low && dif_open <= dif_close) {
-        if (dif_open < 6) result = pData.open;
-      }
-
-      if (dif_high <= dif_open && dif_high <= dif_low && dif_high <= dif_close) {
-        if (dif_high < 6) result = pData.high;
-      }
-
-      if (dif_low <= dif_open && dif_low <= dif_high && dif_low <= dif_close) {
-        if (dif_low < 6) result = pData.low;
-      }
-
-      if (dif_close <= dif_open && dif_close <= dif_high && dif_close <= dif_low) {
-        if (dif_close < 6) result = pData.close;
-      }
-
-      return result;
-    }
-  }]);
-
-  return CPoint;
-}(_named_object.default);
-
-exports.default = CPoint;
-CPoint.state = {
-  Hide: 0,
-  Show: 1,
-  Highlight: 2
-};
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CArrowLineObject = exports.CPriceLineObject = exports.CVertiStraightLineObject = exports.CTriParallelLineObject = exports.CStraightLineObject = exports.CSegLineObject = exports.CRayLineObject = exports.CHoriStraightLineObject = exports.CHoriSegLineObject = exports.CHoriRayLineObject = exports.CFibRetraceObject = exports.CFibFansObject = exports.CBiParallelRayLineObject = exports.CBiParallelLineObject = exports.CBandLineObject = exports.CTriToolObject = exports.CBiToolObject = exports.CToolObject = void 0;
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-var _named_object = _interopRequireDefault(__webpack_require__(1));
-
-var _cpoint = _interopRequireDefault(__webpack_require__(13));
-
-var data_sources = _interopRequireWildcard(__webpack_require__(4));
-
-var plotters = _interopRequireWildcard(__webpack_require__(6));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return _get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CToolObject =
-/*#__PURE__*/
-function (_NamedObject) {
-  _inherits(CToolObject, _NamedObject);
-
-  function CToolObject(name) {
-    var _this;
-
-    _classCallCheck(this, CToolObject);
-
-    _this = _possibleConstructorReturn(this, (CToolObject.__proto__ || Object.getPrototypeOf(CToolObject)).call(this, name));
-    _this.drawer = null;
-    _this.state = CToolObject.state.BeforeDraw;
-    _this.points = [];
-    _this.step = 0;
-    return _this;
-  }
-
-  _createClass(CToolObject, [{
-    key: "getChartObjects",
-    value: function getChartObjects() {
-      var ppMgr = new _chart_manager.default();
-      var ppCDS = ppMgr.getDataSource("frame0.k0");
-      if (ppCDS === null || !Util.isInstance(ppCDS, data_sources.MainDataSource)) return null;
-      var ppTimeline = ppMgr.getTimeline("frame0.k0");
-      if (ppTimeline === null) return null;
-      var ppArea = ppMgr.getArea('frame0.k0.main');
-      if (ppArea === null) return null;
-      var ppRange = ppMgr.getRange("frame0.k0.main");
-      if (ppRange === null) return null;
-      return {
-        pMgr: ppMgr,
-        pCDS: ppCDS,
-        pTimeline: ppTimeline,
-        pArea: ppArea,
-        pRange: ppRange
-      };
-    }
-  }, {
-    key: "isValidMouseXY",
-    value: function isValidMouseXY(x, y) {
-      var pObj = this.getChartObjects();
-      var areaPos = {
-        left: pObj.pArea.getLeft(),
-        top: pObj.pArea.getTop(),
-        right: pObj.pArea.getRight(),
-        bottom: pObj.pArea.getBottom()
-      };
-      return !(x < areaPos.left || x > areaPos.right || y < areaPos.top || y > areaPos.bottom);
-    }
-  }, {
-    key: "getPlotter",
-    value: function getPlotter() {
-      return this.drawer;
-    }
-  }, {
-    key: "setState",
-    value: function setState(s) {
-      this.state = s;
-    }
-  }, {
-    key: "getState",
-    value: function getState() {
-      return this.state;
-    }
-  }, {
-    key: "addPoint",
-    value: function addPoint(point) {
-      this.points.push(point);
-    }
-  }, {
-    key: "getPoint",
-    value: function getPoint(i) {
-      return this.points[i];
-    }
-  }, {
-    key: "acceptMouseMoveEvent",
-    value: function acceptMouseMoveEvent(x, y) {
-      if (this.isValidMouseXY(x, y) === false) {
-        return false;
-      }
-
-      if (this.state === CToolObject.state.BeforeDraw) {
-        this.setBeforeDrawPos(x, y);
-      } else if (this.state === CToolObject.state.Draw) {
-        this.setDrawPos(x, y);
-      } else if (this.state === CToolObject.state.AfterDraw) {
-        this.setAfterDrawPos(x, y);
-      }
-
-      return true;
-    }
-  }, {
-    key: "acceptMouseDownEvent",
-    value: function acceptMouseDownEvent(x, y) {
-      if (this.isValidMouseXY(x, y) === false) {
-        return false;
-      }
-
-      if (this.state === CToolObject.state.BeforeDraw) {
-        this.setDrawPos(x, y);
-        this.setState(CToolObject.state.Draw);
-      } else if (this.state === CToolObject.state.Draw) {
-        this.setAfterDrawPos(x, y);
-        if (this.step === 0) this.setState(CToolObject.state.AfterDraw);
-      } else if (this.state === CToolObject.state.AfterDraw) {
-        if (CToolObject.prototype.isSelected(x, y)) {
-          this.setDrawPos(x, y);
-          this.setState(CToolObject.state.Draw);
-        } else {
-          this.oldx = x;
-          this.oldy = y;
-        }
-      }
-
-      return true;
-    }
-  }, {
-    key: "acceptMouseDownMoveEvent",
-    value: function acceptMouseDownMoveEvent(x, y) {
-      if (this.isValidMouseXY(x, y) === false) {
-        return false;
-      }
-
-      if (this.state === CToolObject.state.Draw) {
-        this.setDrawPos(x, y);
-      } else if (this.state === CToolObject.state.AfterDraw) {
-        var pObj = this.getChartObjects();
-
-        var _width = pObj.pTimeline.getItemWidth();
-
-        var _height = pObj.pRange;
-        if (Math.abs(x - this.oldx) < _width && Math.abs(y - this.oldy) === 0) return true;
-
-        var _old_x = pObj.pTimeline.toIndex(this.oldx);
-
-        var _old_y = pObj.pRange.toValue(this.oldy);
-
-        var _new_x = pObj.pTimeline.toIndex(x);
-
-        var _new_y = pObj.pRange.toValue(y);
-
-        this.oldx = x;
-        this.oldy = y;
-
-        var _dif_x = _new_x - _old_x;
-
-        var _dif_y = _new_y - _old_y;
-
-        for (var index in this.points) {
-          this.points[index].pos.index += _dif_x;
-          this.points[index].pos.value += _dif_y;
-        }
-      }
-
-      return true;
-    }
-  }, {
-    key: "acceptMouseUpEvent",
-    value: function acceptMouseUpEvent(x, y) {
-      if (this.isValidMouseXY(x, y) === false) {
-        return false;
-      }
-
-      if (this.state === CToolObject.state.Draw) {
-        this.setAfterDrawPos(x, y);
-        if (this.step === 0) this.setState(CToolObject.state.AfterDraw);
-        return true;
-      }
-
-      return false;
-    }
-  }, {
-    key: "setBeforeDrawPos",
-    value: function setBeforeDrawPos(x, y) {
-      for (var index in this.points) {
-        this.points[index].setPosXY(x, y);
-        this.points[index].setState(_cpoint.default.state.Show);
-      }
-    }
-  }, {
-    key: "setDrawPos",
-    value: function setDrawPos(x, y) {
-      for (var index in this.points) {
-        if (this.points[index].getState() === _cpoint.default.state.Highlight) {
-          this.points[index].setPosXY(x, y);
-        }
-      }
-    }
-  }, {
-    key: "setAfterDrawPos",
-    value: function setAfterDrawPos(x, y) {
-      if (this.step !== 0) {
-        this.step -= 1;
-      }
-
-      for (var index in this.points) {
-        this.points[index].setState(_cpoint.default.state.Hide);
-      }
-
-      if (this.step === 0) {
-        var pObj = this.getChartObjects();
-        pObj.pMgr.setNormalMode();
-      }
-    }
-  }, {
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      var isFind = false;
-
-      for (var index in this.points) {
-        if (this.points[index].isSelected(x, y)) {
-          this.points[index].setState(_cpoint.default.state.Highlight);
-          isFind = true;
-          break;
-        }
-      }
-
-      if (isFind === true) {
-        this.select();
-        return true;
-      }
-
-      return false;
-    }
-  }, {
-    key: "select",
-    value: function select() {
-      for (var index in this.points) {
-        if (this.points[index].getState() === _cpoint.default.state.Hide) {
-          this.points[index].setState(_cpoint.default.state.Show);
-        }
-      }
-    }
-  }, {
-    key: "unselect",
-    value: function unselect() {
-      for (var index in this.points) {
-        if (this.points[index].getState() !== _cpoint.default.state.Hide) {
-          this.points[index].setState(_cpoint.default.state.Hide);
-        }
-      }
-    }
-  }, {
-    key: "calcDistance",
-    value: function calcDistance(point1, point2, point3) {
-      var xa = point1.getPosXY().x;
-      var ya = point1.getPosXY().y;
-      var xb = point2.getPosXY().x;
-      var yb = point2.getPosXY().y;
-      var xc = point3.getPosXY().x;
-      var yc = point3.getPosXY().y;
-      var a1 = xa - xc;
-      var a2 = ya - yc;
-      var b1 = xb - xc;
-      var b2 = yb - yc;
-      var area = Math.abs(a1 * b2 - a2 * b1);
-      var len = Math.sqrt(Math.pow(xb - xa, 2) + Math.pow(yb - ya, 2));
-      return area / len;
-    }
-  }, {
-    key: "calcGap",
-    value: function calcGap(r, x, y) {
-      var xa = r.sx;
-      var ya = r.sy;
-      var xb = r.ex;
-      var yb = r.ey;
-      var xc = x;
-      var yc = y;
-      var a1 = xa - xc;
-      var a2 = ya - yc;
-      var b1 = xb - xc;
-      var b2 = yb - yc;
-      var area = Math.abs(a1 * b2 - a2 * b1);
-      var len = Math.sqrt(Math.pow(xb - xa, 2) + Math.pow(yb - ya, 2));
-      return area / len;
-    }
-  }, {
-    key: "isWithRect",
-    value: function isWithRect(point1, point2, point3) {
-      var sx = point1.getPosXY().x;
-      var sy = point1.getPosXY().y;
-      var ex = point2.getPosXY().x;
-      var ey = point2.getPosXY().y;
-      var x = point3.getPosXY().x;
-      var y = point3.getPosXY().y;
-
-      if (sx > ex) {
-        sx += 4;
-        ex -= 4;
-      } else {
-        sx -= 4;
-        ex += 4;
-      }
-
-      if (sy > ey) {
-        sy += 4;
-        ey -= 4;
-      } else {
-        sy -= 4;
-        ey += 4;
-      }
-
-      if (sx <= x && ex >= x && sy <= y && ey >= y) {
-        return true;
-      }
-
-      if (sx >= x && ex <= x && sy <= y && ey >= y) {
-        return true;
-      }
-
-      if (sx <= x && ex >= x && sy >= y && ey <= y) {
-        return true;
-      }
-
-      if (sx >= x && ex <= x && sy >= y && ey <= y) {
-        return true;
-      }
-
-      return false;
-    }
-  }]);
-
-  return CToolObject;
-}(_named_object.default);
-
-exports.CToolObject = CToolObject;
-CToolObject.state = {
-  BeforeDraw: 0,
-  Draw: 1,
-  AfterDraw: 2
-};
-
-var CBiToolObject =
-/*#__PURE__*/
-function (_CToolObject) {
-  _inherits(CBiToolObject, _CToolObject);
-
-  function CBiToolObject(name) {
-    var _this2;
-
-    _classCallCheck(this, CBiToolObject);
-
-    _this2 = _possibleConstructorReturn(this, (CBiToolObject.__proto__ || Object.getPrototypeOf(CBiToolObject)).call(this, name));
-
-    _this2.addPoint(new _cpoint.default(name));
-
-    _this2.addPoint(new _cpoint.default(name));
-
-    return _this2;
-  }
-
-  _createClass(CBiToolObject, [{
-    key: "setBeforeDrawPos",
-    value: function setBeforeDrawPos(x, y) {
-      this.step = 1;
-
-      _get(CBiToolObject.prototype.__proto__ || Object.getPrototypeOf(CBiToolObject.prototype), "setBeforeDrawPos", this).call(this, x, y);
-
-      this.getPoint(0).setState(_cpoint.default.state.Show);
-      this.getPoint(1).setState(_cpoint.default.state.Highlight);
-    }
-  }]);
-
-  return CBiToolObject;
-}(CToolObject);
-
-exports.CBiToolObject = CBiToolObject;
-
-var CTriToolObject =
-/*#__PURE__*/
-function (_CToolObject2) {
-  _inherits(CTriToolObject, _CToolObject2);
-
-  function CTriToolObject(name) {
-    var _this3;
-
-    _classCallCheck(this, CTriToolObject);
-
-    _this3 = _possibleConstructorReturn(this, (CTriToolObject.__proto__ || Object.getPrototypeOf(CTriToolObject)).call(this, name));
-
-    _this3.addPoint(new _cpoint.default(name));
-
-    _this3.addPoint(new _cpoint.default(name));
-
-    _this3.addPoint(new _cpoint.default(name));
-
-    return _this3;
-  }
-
-  _createClass(CTriToolObject, [{
-    key: "setBeforeDrawPos",
-    value: function setBeforeDrawPos(x, y) {
-      this.step = 2;
-
-      _get(CTriToolObject.prototype.__proto__ || Object.getPrototypeOf(CTriToolObject.prototype), "setBeforeDrawPos", this).call(this, x, y);
-
-      this.getPoint(0).setState(_cpoint.default.state.Show);
-      this.getPoint(1).setState(_cpoint.default.state.Show);
-      this.getPoint(2).setState(_cpoint.default.state.Highlight);
-    }
-  }, {
-    key: "setAfterDrawPos",
-    value: function setAfterDrawPos(x, y) {
-      if (this.step !== 0) this.step -= 1;
-
-      if (this.step === 0) {
-        for (var index in this.points) {
-          this.points[index].setState(_cpoint.default.state.Hide);
-        }
-      } else {
-        this.getPoint(0).setState(_cpoint.default.state.Show);
-        this.getPoint(1).setState(_cpoint.default.state.Highlight);
-        this.getPoint(2).setState(_cpoint.default.state.Show);
-      }
-
-      if (this.step === 0) {
-        var pObj = this.getChartObjects();
-        pObj.pMgr.setNormalMode();
-      }
-    }
-  }]);
-
-  return CTriToolObject;
-}(CToolObject);
-
-exports.CTriToolObject = CTriToolObject;
-
-var CBandLineObject =
-/*#__PURE__*/
-function (_CBiToolObject) {
-  _inherits(CBandLineObject, _CBiToolObject);
-
-  function CBandLineObject(name) {
-    var _this4;
-
-    _classCallCheck(this, CBandLineObject);
-
-    _this4 = _possibleConstructorReturn(this, (CBandLineObject.__proto__ || Object.getPrototypeOf(CBandLineObject)).call(this, name));
-    _this4.drawer = new plotters.DrawBandLinesPlotter(name, _assertThisInitialized(_this4));
-    return _this4;
-  }
-
-  _createClass(CBandLineObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CBandLineObject.prototype.__proto__ || Object.getPrototypeOf(CBandLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sx = this.getPoint(0).getPosXY().x;
-      var sy = this.getPoint(0).getPosXY().y;
-      var ex = this.getPoint(1).getPosXY().x;
-      var ey = this.getPoint(1).getPosXY().y;
-      var fibSequence = [100.0, 87.5, 75.0, 62.5, 50.0, 37.5, 25.0, 12.5, 0.0];
-
-      for (var i = 0; i < fibSequence.length; i++) {
-        var stage_y = sy + (100 - fibSequence[i]) / 100 * (ey - sy);
-
-        if (stage_y < y + 4 && stage_y > y - 4) {
-          this.select();
-          return true;
-        }
-      }
-
-      return false;
-    }
-  }]);
-
-  return CBandLineObject;
-}(CBiToolObject);
-
-exports.CBandLineObject = CBandLineObject;
-
-var CBiParallelLineObject =
-/*#__PURE__*/
-function (_CTriToolObject) {
-  _inherits(CBiParallelLineObject, _CTriToolObject);
-
-  function CBiParallelLineObject(name) {
-    var _this5;
-
-    _classCallCheck(this, CBiParallelLineObject);
-
-    _this5 = _possibleConstructorReturn(this, (CBiParallelLineObject.__proto__ || Object.getPrototypeOf(CBiParallelLineObject)).call(this, name));
-    _this5.drawer = new plotters.DrawBiParallelLinesPlotter(name, _assertThisInitialized(_this5));
-    return _this5;
-  }
-
-  _createClass(CBiParallelLineObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CBiParallelLineObject.prototype.__proto__ || Object.getPrototypeOf(CBiParallelLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var _0x = this.getPoint(0).getPosXY().x;
-      var _0y = this.getPoint(0).getPosXY().y;
-      var _1x = this.getPoint(1).getPosXY().x;
-      var _1y = this.getPoint(1).getPosXY().y;
-      var _2x = this.getPoint(2).getPosXY().x;
-      var _2y = this.getPoint(2).getPosXY().y;
-      var _a = {
-        x: _0x - _1x,
-        y: _0y - _1y
-      };
-      var _b = {
-        x: _0x - _2x,
-        y: _0y - _2y
-      };
-      var _c = {
-        x: _a.x + _b.x,
-        y: _a.y + _b.y
-      };
-
-      var _3x = _0x - _c.x;
-
-      var _3y = _0y - _c.y;
-
-      var r1 = {
-        sx: _0x,
-        sy: _0y,
-        ex: _2x,
-        ey: _2y
-      };
-      var r2 = {
-        sx: _1x,
-        sy: _1y,
-        ex: _3x,
-        ey: _3y
-      };
-
-      if (this.calcGap(r1, x, y) > 4 && this.calcGap(r2, x, y) > 4) {
-        return false;
-      }
-
-      return true;
-    }
-  }]);
-
-  return CBiParallelLineObject;
-}(CTriToolObject);
-
-exports.CBiParallelLineObject = CBiParallelLineObject;
-
-var CBiParallelRayLineObject =
-/*#__PURE__*/
-function (_CTriToolObject2) {
-  _inherits(CBiParallelRayLineObject, _CTriToolObject2);
-
-  function CBiParallelRayLineObject(name) {
-    var _this6;
-
-    _classCallCheck(this, CBiParallelRayLineObject);
-
-    _this6 = _possibleConstructorReturn(this, (CBiParallelRayLineObject.__proto__ || Object.getPrototypeOf(CBiParallelRayLineObject)).call(this, name));
-    _this6.drawer = new plotters.DrawBiParallelRayLinesPlotter(name, _assertThisInitialized(_this6));
-    return _this6;
-  }
-
-  _createClass(CBiParallelRayLineObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CBiParallelRayLineObject.prototype.__proto__ || Object.getPrototypeOf(CBiParallelRayLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var _0x = this.getPoint(0).getPosXY().x;
-      var _0y = this.getPoint(0).getPosXY().y;
-      var _1x = this.getPoint(1).getPosXY().x;
-      var _1y = this.getPoint(1).getPosXY().y;
-      var _2x = this.getPoint(2).getPosXY().x;
-      var _2y = this.getPoint(2).getPosXY().y;
-      var _a = {
-        x: _0x - _1x,
-        y: _0y - _1y
-      };
-      var _b = {
-        x: _0x - _2x,
-        y: _0y - _2y
-      };
-      var _c = {
-        x: _a.x + _b.x,
-        y: _a.y + _b.y
-      };
-
-      var _3x = _0x - _c.x;
-
-      var _3y = _0y - _c.y;
-
-      var r1 = {
-        sx: _0x,
-        sy: _0y,
-        ex: _2x,
-        ey: _2y
-      };
-      var r2 = {
-        sx: _1x,
-        sy: _1y,
-        ex: _3x,
-        ey: _3y
-      };
-
-      if (r1.ex > r1.sx && x > r1.sx - 4 || r1.ex < r1.sx && x < r1.sx + 4 || r2.ex > r2.sx && x > r2.sx - 4 || r2.ex < r2.sx && x < r2.sx + 4) {
-        if (this.calcGap(r1, x, y) > 4 && this.calcGap(r2, x, y) > 4) {
-          return false;
-        }
-      } else {
-        return false;
-      }
-
-      this.select();
-      return true;
-    }
-  }]);
-
-  return CBiParallelRayLineObject;
-}(CTriToolObject);
-
-exports.CBiParallelRayLineObject = CBiParallelRayLineObject;
-
-var CFibFansObject =
-/*#__PURE__*/
-function (_CBiToolObject2) {
-  _inherits(CFibFansObject, _CBiToolObject2);
-
-  function CFibFansObject(name) {
-    var _this7;
-
-    _classCallCheck(this, CFibFansObject);
-
-    _this7 = _possibleConstructorReturn(this, (CFibFansObject.__proto__ || Object.getPrototypeOf(CFibFansObject)).call(this, name));
-    _this7.drawer = new plotters.DrawFibFansPlotter(name, _assertThisInitialized(_this7));
-    return _this7;
-  }
-
-  _createClass(CFibFansObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CFibFansObject.prototype.__proto__ || Object.getPrototypeOf(CFibFansObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sx = this.getPoint(0).getPosXY().x;
-      var sy = this.getPoint(0).getPosXY().y;
-      var ex = this.getPoint(1).getPosXY().x;
-      var ey = this.getPoint(1).getPosXY().y;
-      var pObj = this.getChartObjects();
-      var areaPos = {
-        left: pObj.pArea.getLeft(),
-        top: pObj.pArea.getTop(),
-        right: pObj.pArea.getRight(),
-        bottom: pObj.pArea.getBottom()
-      };
-      var fibFansSequence = [0, 38.2, 50, 61.8];
-
-      for (var i = 0; i < fibFansSequence.length; i++) {
-        var stageY = sy + (100 - fibFansSequence[i]) / 100 * (ey - sy);
-        var tempStartPt = {
-          x: sx,
-          y: sy
-        };
-        var tempEndPt = {
-          x: ex,
-          y: stageY
-        };
-        var crossPt = getRectCrossPt(areaPos, tempStartPt, tempEndPt);
-        var lenToStartPt = Math.pow(crossPt[0].x - sx, 2) + Math.pow(crossPt[0].y - sy, 2);
-        var lenToEndPt = Math.pow(crossPt[0].x - ex, 2) + Math.pow(crossPt[0].y - ey, 2);
-        var tempCrossPt = lenToStartPt > lenToEndPt ? {
-          x: crossPt[0].x,
-          y: crossPt[0].y
-        } : {
-          x: crossPt[1].x,
-          y: crossPt[1].y
-        };
-        if (tempCrossPt.x > sx && x < sx) continue;
-        if (tempCrossPt.x < sx && x > sx) continue;
-        var a = new _cpoint.default("frame0.k0");
-        a.setPosXY(sx, sy);
-        var b = new _cpoint.default("frame0.k0");
-        b.setPosXY(tempCrossPt.x, tempCrossPt.y);
-
-        if (this.calcDistance(a, b, c) > 4) {
-          continue;
-        }
-
-        this.select();
-        return true;
-      }
-
-      return false;
-    }
-  }]);
-
-  return CFibFansObject;
-}(CBiToolObject);
-
-exports.CFibFansObject = CFibFansObject;
-
-var CFibRetraceObject =
-/*#__PURE__*/
-function (_CBiToolObject3) {
-  _inherits(CFibRetraceObject, _CBiToolObject3);
-
-  function CFibRetraceObject(name) {
-    var _this8;
-
-    _classCallCheck(this, CFibRetraceObject);
-
-    _this8 = _possibleConstructorReturn(this, (CFibRetraceObject.__proto__ || Object.getPrototypeOf(CFibRetraceObject)).call(this, name));
-    _this8.drawer = new plotters.DrawFibRetracePlotter(name, _assertThisInitialized(_this8));
-    return _this8;
-  }
-
-  _createClass(CFibRetraceObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CFibRetraceObject.prototype.__proto__ || Object.getPrototypeOf(CFibRetraceObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sx = this.getPoint(0).getPosXY().x;
-      var sy = this.getPoint(0).getPosXY().y;
-      var ex = this.getPoint(1).getPosXY().x;
-      var ey = this.getPoint(1).getPosXY().y;
-      var fibSequence = [100.0, 78.6, 61.8, 50.0, 38.2, 23.6, 0.0];
-
-      for (var i = 0; i < fibSequence.length; i++) {
-        var stage_y = sy + (100 - fibSequence[i]) / 100 * (ey - sy);
-
-        if (stage_y < y + 4 && stage_y > y - 4) {
-          this.select();
-          return true;
-        }
-      }
-
-      return false;
-    }
-  }]);
-
-  return CFibRetraceObject;
-}(CBiToolObject);
-
-exports.CFibRetraceObject = CFibRetraceObject;
-
-var CHoriRayLineObject =
-/*#__PURE__*/
-function (_CBiToolObject4) {
-  _inherits(CHoriRayLineObject, _CBiToolObject4);
-
-  function CHoriRayLineObject(name) {
-    var _this9;
-
-    _classCallCheck(this, CHoriRayLineObject);
-
-    _this9 = _possibleConstructorReturn(this, (CHoriRayLineObject.__proto__ || Object.getPrototypeOf(CHoriRayLineObject)).call(this, name));
-    _this9.drawer = new plotters.DrawHoriRayLinesPlotter(name, _assertThisInitialized(_this9));
-    return _this9;
-  }
-
-  _createClass(CHoriRayLineObject, [{
-    key: "setDrawPos",
-    value: function setDrawPos(x, y) {
-      if (this.points[0].getState() === _cpoint.default.state.Highlight) {
-        this.points[0].setPosXY(x, y);
-        this.points[1].setPosXYNoSnap(this.points[1].getPosXY().x, this.points[0].getPosXY().y);
-        return;
-      }
-
-      if (this.points[1].getState() === _cpoint.default.state.Highlight) {
-        this.points[1].setPosXY(x, y);
-        this.points[0].setPosXYNoSnap(this.points[0].getPosXY().x, this.points[1].getPosXY().y);
-      }
-    }
-  }, {
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CHoriRayLineObject.prototype.__proto__ || Object.getPrototypeOf(CHoriRayLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sy = this.getPoint(0).getPosXY().y;
-      var sx = this.getPoint(0).getPosXY().x;
-      var ex = this.getPoint(1).getPosXY().x;
-
-      if (y > sy + 4 || y < sy - 4) {
-        return false;
-      }
-
-      if (ex > sx && x < sx - 4) {
-        return false;
-      }
-
-      if (ex < sx && x > sx + 4) {
-        return false;
-      }
-
-      this.select();
-      return true;
-    }
-  }]);
-
-  return CHoriRayLineObject;
-}(CBiToolObject);
-
-exports.CHoriRayLineObject = CHoriRayLineObject;
-
-var CHoriSegLineObject =
-/*#__PURE__*/
-function (_CBiToolObject5) {
-  _inherits(CHoriSegLineObject, _CBiToolObject5);
-
-  function CHoriSegLineObject(name) {
-    var _this10;
-
-    _classCallCheck(this, CHoriSegLineObject);
-
-    _this10 = _possibleConstructorReturn(this, (CHoriSegLineObject.__proto__ || Object.getPrototypeOf(CHoriSegLineObject)).call(this, name));
-    _this10.drawer = new plotters.DrawHoriSegLinesPlotter(name, _assertThisInitialized(_this10));
-    return _this10;
-  }
-
-  _createClass(CHoriSegLineObject, [{
-    key: "setDrawPos",
-    value: function setDrawPos(x, y) {
-      if (this.points[0].getState() === _cpoint.default.state.Highlight) {
-        this.points[0].setPosXY(x, y);
-        this.points[1].setPosXYNoSnap(this.points[1].getPosXY().x, this.points[0].getPosXY().y);
-        return;
-      }
-
-      if (this.points[1].getState() === _cpoint.default.state.Highlight) {
-        this.points[1].setPosXY(x, y);
-        this.points[0].setPosXYNoSnap(this.points[0].getPosXY().x, this.points[1].getPosXY().y);
-      }
-    }
-  }, {
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CHoriSegLineObject.prototype.__proto__ || Object.getPrototypeOf(CHoriSegLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sy = this.getPoint(0).getPosXY().y;
-      var sx = this.getPoint(0).getPosXY().x;
-      var ex = this.getPoint(1).getPosXY().x;
-
-      if (y > sy + 4 || y < sy - 4) {
-        return false;
-      }
-
-      if (sx > ex && (x > sx + 4 || x < ex - 4)) {
-        return false;
-      }
-
-      if (sx < ex && (x < sx - 4 || x > ex + 4)) {
-        return false;
-      }
-
-      this.select();
-      return true;
-    }
-  }]);
-
-  return CHoriSegLineObject;
-}(CBiToolObject);
-
-exports.CHoriSegLineObject = CHoriSegLineObject;
-
-var CHoriStraightLineObject =
-/*#__PURE__*/
-function (_CBiToolObject6) {
-  _inherits(CHoriStraightLineObject, _CBiToolObject6);
-
-  function CHoriStraightLineObject(name) {
-    var _this11;
-
-    _classCallCheck(this, CHoriStraightLineObject);
-
-    _this11 = _possibleConstructorReturn(this, (CHoriStraightLineObject.__proto__ || Object.getPrototypeOf(CHoriStraightLineObject)).call(this, name));
-    _this11.drawer = new plotters.DrawHoriStraightLinesPlotter(name, _assertThisInitialized(_this11));
-    return _this11;
-  }
-
-  _createClass(CHoriStraightLineObject, [{
-    key: "setDrawPos",
-    value: function setDrawPos(x, y) {
-      for (var index in this.points) {
-        this.points[index].setPosXY(x, y);
-      }
-    }
-  }, {
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CHoriStraightLineObject.prototype.__proto__ || Object.getPrototypeOf(CHoriStraightLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sy = this.getPoint(0).getPosXY().y;
-
-      if (y > sy + 4 || y < sy - 4) {
-        return false;
-      }
-
-      this.select();
-      return true;
-    }
-  }]);
-
-  return CHoriStraightLineObject;
-}(CBiToolObject);
-
-exports.CHoriStraightLineObject = CHoriStraightLineObject;
-
-var CRayLineObject =
-/*#__PURE__*/
-function (_CBiToolObject7) {
-  _inherits(CRayLineObject, _CBiToolObject7);
-
-  function CRayLineObject(name) {
-    var _this12;
-
-    _classCallCheck(this, CRayLineObject);
-
-    _this12 = _possibleConstructorReturn(this, (CRayLineObject.__proto__ || Object.getPrototypeOf(CRayLineObject)).call(this, name));
-    _this12.drawer = new plotters.DrawRayLinesPlotter(name, _assertThisInitialized(_this12));
-    return _this12;
-  }
-
-  _createClass(CRayLineObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CRayLineObject.prototype.__proto__ || Object.getPrototypeOf(CRayLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sx = this.getPoint(0).getPosXY().x;
-      var ex = this.getPoint(1).getPosXY().x;
-
-      if (ex > sx && x < sx - 4) {
-        return false;
-      }
-
-      if (ex < sx && x > sx + 4) {
-        return false;
-      }
-
-      if (this.calcDistance(this.getPoint(0), this.getPoint(1), c) < 4) {
-        this.select();
-        return true;
-      }
-
-      return false;
-    }
-  }]);
-
-  return CRayLineObject;
-}(CBiToolObject);
-
-exports.CRayLineObject = CRayLineObject;
-
-var CSegLineObject =
-/*#__PURE__*/
-function (_CBiToolObject8) {
-  _inherits(CSegLineObject, _CBiToolObject8);
-
-  function CSegLineObject(name) {
-    var _this13;
-
-    _classCallCheck(this, CSegLineObject);
-
-    _this13 = _possibleConstructorReturn(this, (CSegLineObject.__proto__ || Object.getPrototypeOf(CSegLineObject)).call(this, name));
-    _this13.drawer = new plotters.DrawSegLinesPlotter(name, _assertThisInitialized(_this13));
-    return _this13;
-  }
-
-  _createClass(CSegLineObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CSegLineObject.prototype.__proto__ || Object.getPrototypeOf(CSegLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-
-      if (this.isWithRect(this.getPoint(0), this.getPoint(1), c) === false) {
-        return false;
-      }
-
-      if (this.calcDistance(this.getPoint(0), this.getPoint(1), c) < 4) {
-        this.select();
-        return true;
-      }
-
-      return false;
-    }
-  }]);
-
-  return CSegLineObject;
-}(CBiToolObject);
-
-exports.CSegLineObject = CSegLineObject;
-
-var CStraightLineObject =
-/*#__PURE__*/
-function (_CBiToolObject9) {
-  _inherits(CStraightLineObject, _CBiToolObject9);
-
-  function CStraightLineObject(name) {
-    var _this14;
-
-    _classCallCheck(this, CStraightLineObject);
-
-    _this14 = _possibleConstructorReturn(this, (CStraightLineObject.__proto__ || Object.getPrototypeOf(CStraightLineObject)).call(this, name));
-    _this14.drawer = new plotters.DrawStraightLinesPlotter(name, _assertThisInitialized(_this14));
-    return _this14;
-  }
-
-  _createClass(CStraightLineObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CStraightLineObject.prototype.__proto__ || Object.getPrototypeOf(CStraightLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-
-      if (this.calcDistance(this.getPoint(0), this.getPoint(1), c) < 4) {
-        this.select();
-        return true;
-      }
-
-      return false;
-    }
-  }]);
-
-  return CStraightLineObject;
-}(CBiToolObject);
-
-exports.CStraightLineObject = CStraightLineObject;
-
-var CTriParallelLineObject =
-/*#__PURE__*/
-function (_CTriToolObject3) {
-  _inherits(CTriParallelLineObject, _CTriToolObject3);
-
-  function CTriParallelLineObject(name) {
-    var _this15;
-
-    _classCallCheck(this, CTriParallelLineObject);
-
-    _this15 = _possibleConstructorReturn(this, (CTriParallelLineObject.__proto__ || Object.getPrototypeOf(CTriParallelLineObject)).call(this, name));
-    _this15.drawer = new plotters.DrawTriParallelLinesPlotter(name, _assertThisInitialized(_this15));
-    return _this15;
-  }
-
-  _createClass(CTriParallelLineObject, [{
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CTriParallelLineObject.prototype.__proto__ || Object.getPrototypeOf(CTriParallelLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var pObj = this.getChartObjects();
-      var _0x = this.getPoint(0).getPosXY().x;
-      var _0y = this.getPoint(0).getPosXY().y;
-      var _1x = this.getPoint(1).getPosXY().x;
-      var _1y = this.getPoint(1).getPosXY().y;
-      var _2x = this.getPoint(2).getPosXY().x;
-      var _2y = this.getPoint(2).getPosXY().y;
-      var _a = {
-        x: _0x - _1x,
-        y: _0y - _1y
-      };
-      var _b = {
-        x: _0x - _2x,
-        y: _0y - _2y
-      };
-      var _c = {
-        x: _a.x + _b.x,
-        y: _a.y + _b.y
-      };
-
-      var _3x = _0x - _c.x;
-
-      var _3y = _0y - _c.y;
-
-      var r1 = {
-        sx: _0x,
-        sy: _0y,
-        ex: _2x,
-        ey: _2y
-      };
-      var r2 = {
-        sx: _1x,
-        sy: _1y,
-        ex: _3x,
-        ey: _3y
-      };
-      var _i = {
-        x: _0x - _1x,
-        y: _0y - _1y
-      };
-      var _j = {
-        x: _2x - _3x,
-        y: _2y - _3y
-      };
-      var _ri = {
-        x: _1x - _0x,
-        y: _1y - _0y
-      };
-      var _rj = {
-        x: _3x - _2x,
-        y: _3y - _2y
-      };
-
-      var _4x = Math.abs(_ri.x - _0x);
-
-      var _4y = Math.abs(_ri.y - _0y);
-
-      var _5x = Math.abs(_rj.x - _2x);
-
-      var _5y = Math.abs(_rj.y - _2y);
-
-      var r3 = {
-        sx: _4x,
-        sy: _4y,
-        ex: _5x,
-        ey: _5y
-      };
-
-      if (this.calcGap(r1, x, y) > 4 && this.calcGap(r2, x, y) > 4 && this.calcGap(r3, x, y) > 4) {
-        return false;
-      }
-
-      this.select();
-      return true;
-    }
-  }]);
-
-  return CTriParallelLineObject;
-}(CTriToolObject);
-
-exports.CTriParallelLineObject = CTriParallelLineObject;
-
-var CVertiStraightLineObject =
-/*#__PURE__*/
-function (_CBiToolObject10) {
-  _inherits(CVertiStraightLineObject, _CBiToolObject10);
-
-  function CVertiStraightLineObject(name) {
-    var _this16;
-
-    _classCallCheck(this, CVertiStraightLineObject);
-
-    _this16 = _possibleConstructorReturn(this, (CVertiStraightLineObject.__proto__ || Object.getPrototypeOf(CVertiStraightLineObject)).call(this, name));
-    _this16.drawer = new plotters.DrawVertiStraightLinesPlotter(name, _assertThisInitialized(_this16));
-    return _this16;
-  }
-
-  _createClass(CVertiStraightLineObject, [{
-    key: "setDrawPos",
-    value: function setDrawPos(x, y) {
-      for (var index in this.points) {
-        this.points[index].setPosXY(x, y);
-      }
-    }
-  }, {
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CVertiStraightLineObject.prototype.__proto__ || Object.getPrototypeOf(CVertiStraightLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sx = this.getPoint(0).getPosXY().x;
-
-      if (x > sx + 4 || x < sx - 4) {
-        return false;
-      }
-
-      this.select();
-      return true;
-    }
-  }]);
-
-  return CVertiStraightLineObject;
-}(CBiToolObject);
-
-exports.CVertiStraightLineObject = CVertiStraightLineObject;
-
-var CPriceLineObject =
-/*#__PURE__*/
-function (_CSegLineObject) {
-  _inherits(CPriceLineObject, _CSegLineObject);
-
-  function CPriceLineObject(name) {
-    var _this17;
-
-    _classCallCheck(this, CPriceLineObject);
-
-    _this17 = _possibleConstructorReturn(this, (CPriceLineObject.__proto__ || Object.getPrototypeOf(CPriceLineObject)).call(this, name));
-    _this17.drawer = new plotters.DrawPriceLinesPlotter(name, _assertThisInitialized(_this17));
-    return _this17;
-  }
-
-  _createClass(CPriceLineObject, [{
-    key: "setDrawPos",
-    value: function setDrawPos(x, y) {
-      for (var index in this.points) {
-        this.points[index].setPosXY(x, y);
-      }
-    }
-  }, {
-    key: "isSelected",
-    value: function isSelected(x, y) {
-      if (_get(CPriceLineObject.prototype.__proto__ || Object.getPrototypeOf(CPriceLineObject.prototype), "isSelected", this).call(this, x, y) === true) {
-        return true;
-      }
-
-      var c = new _cpoint.default("frame0.k0");
-      c.setPosXY(x, y);
-      var sx = this.getPoint(0).getPosXY().x;
-      var sy = this.getPoint(0).getPosXY().y;
-      var ex = this.getPoint(1).getPosXY().x;
-      var ey = this.getPoint(1).getPosXY().y;
-
-      if (x < sx - 4) {
-        return false;
-      }
-
-      if (y >= sy + 4 || y <= sy - 4) {
-        return false;
-      }
-
-      this.select();
-      return true;
-    }
-  }]);
-
-  return CPriceLineObject;
-}(CSegLineObject);
-
-exports.CPriceLineObject = CPriceLineObject;
-
-var CArrowLineObject =
-/*#__PURE__*/
-function (_CSegLineObject2) {
-  _inherits(CArrowLineObject, _CSegLineObject2);
-
-  function CArrowLineObject(name) {
-    var _this18;
-
-    _classCallCheck(this, CArrowLineObject);
-
-    _this18 = _possibleConstructorReturn(this, (CArrowLineObject.__proto__ || Object.getPrototypeOf(CArrowLineObject)).call(this, name));
-    _this18.drawer = new plotters.DrawArrowLinesPlotter(name, _assertThisInitialized(_this18));
-    return _this18;
-  }
-
-  return CArrowLineObject;
-}(CSegLineObject);
-
-exports.CArrowLineObject = CArrowLineObject;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.IndicatorDataProvider = exports.MainDataProvider = exports.DataProvider = void 0;
-
-var _named_object = _interopRequireDefault(__webpack_require__(1));
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-var _util = _interopRequireDefault(__webpack_require__(25));
-
-var data_sources = _interopRequireWildcard(__webpack_require__(4));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var DataProvider =
-/*#__PURE__*/
-function (_NamedObject) {
-  _inherits(DataProvider, _NamedObject);
-
-  function DataProvider(name) {
-    var _this;
-
-    _classCallCheck(this, DataProvider);
-
-    _this = _possibleConstructorReturn(this, (DataProvider.__proto__ || Object.getPrototypeOf(DataProvider)).call(this, name));
-    _this._minValue = 0;
-    _this._maxValue = 0;
-    _this._minValueIndex = -1;
-    _this._maxValueIndex = -1;
-    return _this;
-  }
-
-  _createClass(DataProvider, [{
-    key: "getMinValue",
-    value: function getMinValue() {
-      return this._minValue;
-    }
-  }, {
-    key: "getMaxValue",
-    value: function getMaxValue() {
-      return this._maxValue;
-    }
-  }, {
-    key: "getMinValueIndex",
-    value: function getMinValueIndex() {
-      return this._minValueIndex;
-    }
-  }, {
-    key: "getMaxValueIndex",
-    value: function getMaxValueIndex() {
-      return this._maxValueIndex;
-    }
-  }, {
-    key: "getMinMaxAt",
-    value: function getMinMaxAt(index, minmax) {
-      return true;
-    }
-  }, {
-    key: "calcRange",
-    value: function calcRange(firstIndexes, lastIndex, minmaxes, indexes) {
-      var min = Number.MAX_VALUE;
-      var max = -Number.MAX_VALUE;
-      var minIndex = -1;
-      var maxIndex = -1;
-      var minmax = {};
-      var i = lastIndex - 1;
-      var n = firstIndexes.length - 1;
-
-      for (; n >= 0; n--) {
-        var first = firstIndexes[n];
-
-        if (i < first) {
-          minmaxes[n] = {
-            "min": min,
-            "max": max
-          };
-        } else {
-          for (; i >= first; i--) {
-            if (this.getMinMaxAt(i, minmax) === false) {
-              continue;
-            }
-
-            if (min > minmax.min) {
-              min = minmax.min;
-              minIndex = i;
-            }
-
-            if (max < minmax.max) {
-              max = minmax.max;
-              maxIndex = i;
-            }
-          }
-
-          minmaxes[n] = {
-            "min": min,
-            "max": max
-          };
-        }
-
-        if (indexes !== null && indexes !== undefined) {
-          indexes[n] = {
-            "minIndex": minIndex,
-            "maxIndex": maxIndex
-          };
-        }
-      }
-    }
-  }, {
-    key: "updateRange",
-    value: function updateRange() {
-      var mgr = new _chart_manager.default();
-      var timeline = mgr.getTimeline(this.getDataSourceName());
-      var firstIndexes = [timeline.getFirstIndex()];
-      var minmaxes = [{}];
-      var indexes = [{}];
-      this.calcRange(firstIndexes, timeline.getLastIndex(), minmaxes, indexes);
-      this._minValue = minmaxes[0].min;
-      this._maxValue = minmaxes[0].max;
-      this._minValueIndex = indexes[0].minIndex;
-      this._maxValueIndex = indexes[0].maxIndex;
-    }
-  }]);
-
-  return DataProvider;
-}(_named_object.default);
-
-exports.DataProvider = DataProvider;
-
-var MainDataProvider =
-/*#__PURE__*/
-function (_DataProvider) {
-  _inherits(MainDataProvider, _DataProvider);
-
-  function MainDataProvider(name) {
-    var _this2;
-
-    _classCallCheck(this, MainDataProvider);
-
-    _this2 = _possibleConstructorReturn(this, (MainDataProvider.__proto__ || Object.getPrototypeOf(MainDataProvider)).call(this, name));
-    _this2._candlestickDS = null;
-    return _this2;
-  }
-
-  _createClass(MainDataProvider, [{
-    key: "updateData",
-    value: function updateData() {
-      var mgr = new _chart_manager.default();
-      var ds = mgr.getDataSource(this.getDataSourceName());
-
-      if (!_util.default.isInstance(ds, data_sources.MainDataSource)) {
-        return;
-      }
-
-      this._candlestickDS = ds;
-    }
-  }, {
-    key: "getMinMaxAt",
-    value: function getMinMaxAt(index, minmax) {
-      var data = this._candlestickDS.getDataAt(index);
-
-      minmax.min = data.low;
-      minmax.max = data.high;
-      return true;
-    }
-  }]);
-
-  return MainDataProvider;
-}(DataProvider);
-
-exports.MainDataProvider = MainDataProvider;
-
-var IndicatorDataProvider =
-/*#__PURE__*/
-function (_DataProvider2) {
-  _inherits(IndicatorDataProvider, _DataProvider2);
-
-  function IndicatorDataProvider() {
-    _classCallCheck(this, IndicatorDataProvider);
-
-    return _possibleConstructorReturn(this, (IndicatorDataProvider.__proto__ || Object.getPrototypeOf(IndicatorDataProvider)).apply(this, arguments));
-  }
-
-  _createClass(IndicatorDataProvider, [{
-    key: "getIndicator",
-    value: function getIndicator() {
-      return this._indicator;
-    }
-  }, {
-    key: "setIndicator",
-    value: function setIndicator(v) {
-      this._indicator = v;
-      this.refresh();
-    }
-  }, {
-    key: "refresh",
-    value: function refresh() {
-      var mgr = new _chart_manager.default();
-      var ds = mgr.getDataSource(this.getDataSourceName());
-
-      if (ds.getDataCount() < 1) {
-        return;
-      }
-
-      var indic = this._indicator;
-      var i,
-          last = ds.getDataCount();
-      indic.clear();
-      indic.reserve(last);
-
-      for (i = 0; i < last; i++) {
-        indic.execute(ds, i);
-      }
-    }
-  }, {
-    key: "updateData",
-    value: function updateData() {
-      var mgr = new _chart_manager.default();
-      var ds = mgr.getDataSource(this.getDataSourceName());
-
-      if (ds.getDataCount() < 1) {
-        return;
-      }
-
-      var indic = this._indicator;
-      var mode = ds.getUpdateMode();
-
-      switch (mode) {
-        case data_sources.DataSource.UpdateMode.Refresh:
-          {
-            this.refresh();
-            break;
-          }
-
-        case data_sources.DataSource.UpdateMode.Append:
-          {
-            indic.reserve(ds.getAppendedCount());
-          }
-
-        case data_sources.DataSource.UpdateMode.Update:
-          {
-            var i,
-                last = ds.getDataCount();
-            var cnt = ds.getUpdatedCount() + ds.getAppendedCount();
-
-            for (i = last - cnt; i < last; i++) {
-              indic.execute(ds, i);
-            }
-
-            break;
-          }
-      }
-    }
-  }, {
-    key: "getMinMaxAt",
-    value: function getMinMaxAt(index, minmax) {
-      minmax.min = Number.MAX_VALUE;
-      minmax.max = -Number.MAX_VALUE;
-      var result,
-          valid = false;
-
-      var i,
-          cnt = this._indicator.getOutputCount();
-
-      for (i = 0; i < cnt; i++) {
-        result = this._indicator.getOutputAt(i).execute(index);
-
-        if (isNaN(result) === false) {
-          valid = true;
-
-          if (minmax.min > result) {
-            minmax.min = result;
-          }
-
-          if (minmax.max < result) {
-            minmax.max = result;
-          }
-        }
-      }
-
-      return valid;
-    }
-  }]);
-
-  return IndicatorDataProvider;
-}(DataProvider);
-
-exports.IndicatorDataProvider = IndicatorDataProvider;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _kline = _interopRequireDefault(__webpack_require__(2));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-window.Kline = _kline.default;
-
-/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12136,27 +12181,616 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var View =
+var MEvent =
 /*#__PURE__*/
 function () {
-  function View() {
-    _classCallCheck(this, View);
+  function MEvent() {
+    _classCallCheck(this, MEvent);
+
+    this._handlers = [];
   }
 
-  _createClass(View, null, [{
-    key: "template",
-    value: function template() {
-      return "\n" + "<div class=\"trade_container dark hide\">\n" + "        <div class=\"m_cent\">\n" + "            <div class=\"m_guadan\">\n" + "                <div class=\"symbol-title\">\n" + "                    <a class=\"dark\">test</a>\n" + "                    \n" + "                </div>\n" + "                <div id=\"orderbook\">\n" + "                    <div id=\"asks\">\n" + "                        <div class=\"table\"> </div>\n" + "                   </div>\n" + "                   <div id=\"gasks\">\n" + "                        <div class=\"table\"> </div>\n" + "                   </div>\n" + "                   <div id=\"price\" class=\"green\"></div>\n" + "                   <div id=\"bids\">\n" + "                        <div class=\"table\"> </div>\n" + "                    </div>\n" + "                    <div id=\"gbids\">\n" + "                        <div class=\"table\"> </div>\n" + "                    </div>\n" + "                </div>\n" + "                <div id=\"trades\" class=\"trades\">\n" + "                <div class=\"trades_list\"> </div>\n" + "                </div>\n" + "            \n" + "            </div>\n" + "        \n" + "        </div>\n" + "</div>\n" + "<div class=\"chart_container dark\">\n" + "            <div id=\"chart_dom_elem_cache\"></div>\n" + "            <!-- ToolBar -->\n" + "            <div id=\"chart_toolbar\">\n" + "                <div class=\"chart_toolbar_minisep\"></div>\n" + "                <!-- Periods -->\n" + "                <div class=\"chart_dropdown\" id=\"chart_toolbar_periods_vert\">\n" + "                    <div class=\"chart_dropdown_t\"><a class=\"chart_str_period\">周期</a></div>\n" + "                    <div class=\"chart_dropdown_data\" style=\"margin-left: -58px;\">\n" + "                        <table>\n" + "                            <tbody>\n" + "                            <tr>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li id=\"chart_period_1w_v\" style=\"display:none;\" name=\"1w\"><a class=\"chart_str_period_1w\">周线</a></li>\n" + "                                        <li id=\"chart_period_3d_v\" style=\"display:none;\" name=\"3d\"><a class=\"chart_str_period_3d\">3日</a></li>\n" + "                                        <li id=\"chart_period_1d_v\" style=\"display:none;\" name=\"1d\"><a class=\"chart_str_period_1d\">日线</a></li>\n" + "                                        <li id=\"chart_period_12h_v\" style=\"display:none;\" name=\"12h\"><a class=\"chart_str_period_12h\">12小时</a></li>\n" + "                                        <li id=\"chart_period_6h_v\" style=\"display:none;\" name=\"6h\"><a class=\"chart_str_period_6h\">6小时</a></li>\n" + "                                        <li id=\"chart_period_4h_v\" style=\"display:none;\" name=\"4h\"><a class=\"chart_str_period_4h\">4小时</a></li>\n" + "                                        <li id=\"chart_period_2h_v\" style=\"display:none;\" name=\"2h\"><a class=\"chart_str_period_2h\">2小时</a></li>\n" + "                                        <li id=\"chart_period_1h_v\" style=\"display:none;\" name=\"1h\"><a class=\"chart_str_period_1h\">1小时</a></li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            <tr>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li id=\"chart_period_30m_v\" style=\"display:none;\" name=\"30m\"><a class=\"chart_str_period_30m\">30分钟</a></li>\n" + "                                        <li id=\"chart_period_15m_v\" style=\"display:none;\" name=\"15m\"><a class=\"chart_str_period_15m\">15分钟</a></li>\n" + "                                        <li id=\"chart_period_5m_v\" style=\"display:none;\" name=\"5m\"><a class=\"chart_str_period_5m\">5分钟</a></li>\n" + "                                        <li id=\"chart_period_3m_v\" style=\"display:none;\" name=\"3m\"><a class=\"chart_str_period_3m\">3分钟</a></li>\n" + "                                        <li id=\"chart_period_1m_v\" style=\"display:none;\" name=\"1m\"><a class=\"chart_str_period_1m selected\">1分钟</a></li>\n" + "                                        <li id=\"chart_period_line_v\" style=\"display:none;\" name=\"line\"><a class=\"chart_str_period_line\">分时</a>\n" + "                                        </li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            </tbody>\n" + "                        </table>\n" + "                    </div>\n" + "                </div>\n" + "                <div id=\"chart_toolbar_periods_horz\">\n" + "                    <ul class=\"chart_toolbar_tabgroup\" style=\"padding-left:5px; padding-right:11px;\">\n" + "                        <li id=\"chart_period_1w_h\" name=\"1w\" style=\"display: none;\"><a\ class=\"chart_str_period_1w\">周线</a></li>\n" + "                        <li id=\"chart_period_3d_h\" name=\"3d\" style=\"display: none;\"><a\ class=\"chart_str_period_3d\">3日</a></li>\n" + "                        <li id=\"chart_period_1d_h\" name=\"1d\" style=\"display: none;\"><a class=\"chart_str_period_1d\">日线</a></li>\n" + "                        <li id=\"chart_period_12h_h\" name=\"12h\" style=\"display: none;\"><a class=\"chart_str_period_12h\">12小时</a></li>\n" + "                        <li id=\"chart_period_6h_h\" name=\"6h\" style=\"display: none;\"><a class=\"chart_str_period_6h\">6小时</a></li>\n" + "                        <li id=\"chart_period_4h_h\" name=\"4h\" style=\"display: none;\"><a class=\"chart_str_period_4h\">4小时</a></li>\n" + "                        <li id=\"chart_period_2h_h\" name=\"2h\" style=\"display: none;\"><a class=\"chart_str_period_2h\">2小时</a></li>\n" + "                        <li id=\"chart_period_1h_h\" name=\"1h\" style=\"display: none;\"><a class=\"chart_str_period_1h\">1小时</a></li>\n" + "                        <li id=\"chart_period_30m_h\" name=\"30m\" style=\"display: none;\"><a class=\"chart_str_period_30m\">30分钟</a></li>\n" + "                        <li id=\"chart_period_15m_h\" name=\"15m\" style=\"display: none;\"><a class=\"chart_str_period_15m\">15分钟</a></li>\n" + "                        <li id=\"chart_period_5m_h\" name=\"5m\" style=\"display: none;\"><a class=\"chart_str_period_5m\">5分钟</a></li>\n" + "                        <li id=\"chart_period_3m_h\" name=\"3m\" style=\"display: none;\"><a class=\"chart_str_period_3m\">3分钟</a></li>\n" + "                        <li id=\"chart_period_1m_h\" name=\"1m\" style=\"display: none;\"><a class=\"chart_str_period_1m selected\">1分钟</a></li>\n" + "                        <li id=\"chart_period_line_h\" name=\"line\" style=\"display: none;\"><a class=\"chart_str_period_line\">分时</a></li>\n" + "                    </ul>\n" + "                </div>\n" + "                <div id=\"chart_show_indicator\" class=\"chart_toolbar_button chart_str_indicator_cap selected\">技术指标</div>\n" + "                <div id=\"chart_show_tools\" class=\"chart_toolbar_button chart_str_tools_cap\">画线工具</div>\n" + "                <div id=\"chart_toolbar_theme\">\n" + "                    <div class=\"chart_toolbar_label chart_str_theme_cap\">主题选择</div>\n" + "                    <a name=\"dark\" class=\"chart_icon chart_icon_theme_dark selected\"></a>\n" + "                    <a name=\"light\" class=\"chart_icon chart_icon_theme_light\"></a>\n" + "                </div>\n" + "                <div class=\"chart_dropdown\" id=\"chart_dropdown_settings\">\n" + "                    <div class=\"chart_dropdown_t\"><a class=\"chart_str_settings\">更多</a></div>\n" + "                    <div class=\"chart_dropdown_data\" style=\"margin-left: -142px;\">\n" + "                        <table>\n" + "                            <tbody>\n" + "                            <tr id=\"chart_select_main_indicator\">\n" + "                                <td class=\"chart_str_main_indicator\">主指标</td>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li><a name=\"MA\" class=\"selected\">MA</a></li>\n" + "                                        <li><a name=\"EMA\" class=\"\">EMA</a></li>\n" + "                                        <li><a name=\"BOLL\" class=\"\">BOLL</a></li>\n" + "                                        <li><a name=\"SAR\" class=\"\">SAR</a></li>\n" + "                                        <li><a name=\"NONE\" class=\"\">None</a></li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            <tr id=\"chart_select_chart_style\">\n" + "                                <td class=\"chart_str_chart_style\">主图样式</td>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li><a class=\"selected\">CandleStick</a></li>\n" + "                                        <li><a>CandleStickHLC</a></li>\n" + "                                        <li><a class=\"\">OHLC</a></li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            <tr id=\"chart_select_theme\" style=\"display: none;\">\n" + "                                <td class=\"chart_str_theme\">主题选择</td>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li>\n" + "                                            <a name=\"dark\" class=\"chart_icon chart_icon_theme_dark selected\"></a>\n" + "                                        </li>\n" + "                                        <li>\n" + "                                            <a name=\"light\" class=\"chart_icon chart_icon_theme_light\"></a>\n" + "                                        </li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            <tr id=\"chart_enable_tools\" style=\"display: none;\">\n" + "                                <td class=\"chart_str_tools\">画线工具</td>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li><a name=\"on\" class=\"chart_str_on\">开启</a></li>\n" + "                                        <li><a name=\"off\" class=\"chart_str_off selected\">关闭</a></li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            <tr id=\"chart_enable_indicator\" style=\"display: none;\">\n" + "                                <td class=\"chart_str_indicator\">技术指标</td>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li><a name=\"on\" class=\"chart_str_on selected\">开启</a></li>\n" + "                                        <li><a name=\"off\" class=\"chart_str_off\">关闭</a></li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            <tr>\n" + "                                <td></td>\n" + "                                <td>\n" + "                                    <ul>\n" + "                                        <li><a id=\"chart_btn_parameter_settings\"\n" + "                                               class=\"chart_str_indicator_parameters\">指标参数设置</a>\n" + "                                        </li>\n" + "                                    </ul>\n" + "                                </td>\n" + "                            </tr>\n" + "                            </tbody>\n" + "                        </table>\n" + "                    </div>\n" + "                </div>\n" + "                <div class=\"chart_dropdown\" id=\"chart_language_setting_div\" style=\"padding-left: 5px;\">\n" + "                    <div class=\"chart_dropdown_t\">\n" + "                        <a class=\"chart_language_setting\">语言(LANG)</a>\n" + "                    </div>\n" + "                    <div class=\"chart_dropdown_data\" style=\"padding-top: 15px; margin-left: -12px;\">\n" + "                        <ul>\n" + "                            <li style=\"height: 25px;\"><a name=\"zh-cn\" class=\"selected\">简体中文(zh-CN)</a></li>\n" + "                            <li style=\"height: 25px;\"><a name=\"en-us\">English(en-US)</a></li>\n" + "                            <li style=\"height: 25px;\"><a name=\"zh-tw\">繁體中文(zh-HK)</a></li>\n" + "                        </ul>\n" + "                    </div>\n" + "                </div>\n" + "                <div id=\"chart_updated_time\">\n" + "                    <div id=\"sizeIcon\" class=\"chart_BoxSize\"></div>\n" + "                </div>\n" + "            </div>\n" + "            <!-- ToolPanel -->\n" + "            <div id=\"chart_toolpanel\">\n" + "                <div class=\"chart_toolpanel_separator\"></div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_Cursor\" name=\"Cursor\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_cursor\">光标</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_CrossCursor\" name=\"CrossCursor\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_cross_cursor\">十字光标</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_SegLine\" name=\"SegLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_seg_line\">线段</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_StraightLine\" name=\"StraightLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_straight_line\">直线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_RayLine\" name=\"RayLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_ray_line\">射线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_ArrowLine\" name=\"ArrowLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_arrow_line\">箭头</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_HoriSegLine\" name=\"HoriSegLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_horz_seg_line\">水平线段</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_HoriStraightLine\" name=\"HoriStraightLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_horz_straight_line\">水平直线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_HoriRayLine\" name=\"HoriRayLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_horz_ray_line\">水平射线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_VertiStraightLine\" name=\"VertiStraightLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_vert_straight_line\">垂直直线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_PriceLine\" name=\"PriceLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_price_line\">价格线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_TriParallelLine\" name=\"TriParallelLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_tri_parallel_line\">价格通道线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_BiParallelLine\" name=\"BiParallelLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_bi_parallel_line\">平行直线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_BiParallelRayLine\" name=\"BiParallelRayLine\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_bi_parallel_ray\">平行射线</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_DrawFibRetrace\" name=\"DrawFibRetrace\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_fib_retrace\">斐波纳契回调</div>\n" + "                </div>\n" + "                <div class=\"chart_toolpanel_button\">\n" + "                    <div class=\"chart_toolpanel_icon\" id=\"chart_DrawFibFans\" name=\"DrawFibFans\"></div>\n" + "                    <div class=\"chart_toolpanel_tip chart_str_fib_fans\">斐波纳契扇形</div>\n" + "                </div>\n" + "                <div style=\"padding-left: 3px;padding-top: 10px;\">\n" + "                    <button style=\"color: red;\" id=\"clearCanvas\" title=\"Clear All\">X</button>\n" + "                </div>\n" + "            </div>\n" + "            <!-- Canvas Group -->\n" + "            <div id=\"chart_canvasGroup\" class=\"temp\">\n" + "                <canvas class=\"chart_canvas\" id=\"chart_mainCanvas\"\n" + "                        style=\"cursor: default;\"></canvas>\n" + "                <canvas class=\"chart_canvas\" id=\"chart_overlayCanvas\"\n" + "                        style=\"cursor: default;\"></canvas>\n" + "            </div>\n" + "            <!-- TabBar -->\n" + "            <div id=\"chart_tabbar\"\">\n" + "                <ul>\n" + "                    <li><a name=\"MACD\" class=\"\">MACD</a></li>\n" + "                    <li><a name=\"KDJ\" class=\"\">KDJ</a></li>\n" + "                    <li><a name=\"StochRSI\" class=\"\">StochRSI</a></li>\n" + "                    <li><a name=\"RSI\" class=\"\">RSI</a></li>\n" + "                    <li><a name=\"DMI\" class=\"\">DMI</a></li>\n" + "                    <li><a name=\"OBV\" class=\"\">OBV</a></li>\n" + "                    <li><a name=\"BOLL\" class=\"\">BOLL</a></li>\n" + "                    <li><a name=\"SAR\" class=\"\">SAR</a></li>\n" + "                    <li><a name=\"DMA\" class=\"\">DMA</a></li>\n" + "                    <li><a name=\"TRIX\" class=\"\">TRIX</a></li>\n" + "                    <li><a name=\"BRAR\" class=\"\">BRAR</a></li>\n" + "                    <li><a name=\"VR\" class=\"\">VR</a></li>\n" + "                    <li><a name=\"EMV\" class=\"\">EMV</a></li>\n" + "                    <li><a name=\"WR\" class=\"\">WR</a></li>\n" + "                    <li><a name=\"ROC\" class=\"\">ROC</a></li>\n" + "                    <li><a name=\"MTM\" class=\"\">MTM</a></li>\n" + "                    <li><a name=\"PSY\">PSY</a></li>\n" + "                </ul>\n" + "            </div>\n" + "            <!-- Parameter Settings -->\n" + "            <div id=\"chart_parameter_settings\">\n" + "                <h2 class=\"chart_str_indicator_parameters\">指标参数设置</h2>\n" + "                <table>\n" + "                    <tbody>\n" + "                    <tr>\n" + "                        <th>MA</th>\n" + "                        <td><input name=\"MA\"><input name=\"MA\"><input name=\"MA\"><input name=\"MA\"><br><input\n" + "                                name=\"MA\"><input\n" + "                                name=\"MA\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>DMA</th>\n" + "                        <td><input name=\"DMA\"><input name=\"DMA\"><input name=\"DMA\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>EMA</th>\n" + "                        <td><input name=\"EMA\"><input name=\"EMA\"><input name=\"EMA\"><input name=\"EMA\"><br><input\n" + "                                name=\"EMA\"><input name=\"EMA\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>TRIX</th>\n" + "                        <td><input name=\"TRIX\"><input name=\"TRIX\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>VOLUME</th>\n" + "                        <td><input name=\"VOLUME\"><input name=\"VOLUME\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>BRAR</th>\n" + "                        <td><input name=\"BRAR\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>MACD</th>\n" + "                        <td><input name=\"MACD\"><input name=\"MACD\"><input name=\"MACD\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>VR</th>\n" + "                        <td><input name=\"VR\"><input name=\"VR\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>KDJ</th>\n" + "                        <td><input name=\"KDJ\"><input name=\"KDJ\"><input name=\"KDJ\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>EMV</th>\n" + "                        <td><input name=\"EMV\"><input name=\"EMV\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>StochRSI</th>\n" + "                        <td><input name=\"StochRSI\"><input name=\"StochRSI\"><input name=\"StochRSI\"><input name=\"StochRSI\">\n" + "                        </td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>WR</th>\n" + "                        <td><input name=\"WR\"><input name=\"WR\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>RSI</th>\n" + "                        <td><input name=\"RSI\"><input name=\"RSI\"><input name=\"RSI\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>ROC</th>\n" + "                        <td><input name=\"ROC\"><input name=\"ROC\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>DMI</th>\n" + "                        <td><input name=\"DMI\"><input name=\"DMI\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>MTM</th>\n" + "                        <td><input name=\"MTM\"><input name=\"MTM\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>OBV</th>\n" + "                        <td><input name=\"OBV\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                        <th>PSY</th>\n" + "                        <td><input name=\"PSY\"><input name=\"PSY\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    <tr>\n" + "                        <th>BOLL</th>\n" + "                        <td><input name=\"BOLL\"></td>\n" + "                        <td>\n" + "                            <button class=\"chart_str_default\">默认值</button>\n" + "                        </td>\n" + "                    </tr>\n" + "                    </tbody>\n" + "                </table>\n" + "                <div id=\"close_settings\"><a class=\"chart_str_close\">关闭</a></div>\n" + "            </div>\n" + "            <!-- Loading -->\n" + "            <div id=\"chart_loading\" class=\"chart_str_loading\">正在读取数据...</div>\n" + "        </div>\n" + "        <div style=\"display: none\" id=\"chart_language_switch_tmp\">\n" + "            <span name=\"chart_str_period\" zh_tw=\"週期\" zh_cn=\"周期\" en_us=\"TIME\"></span>\n" + "            <span name=\"chart_str_period_line\" zh_tw=\"分時\" zh_cn=\"分时\" en_us=\"Line\"></span>\n" + "            <span name=\"chart_str_period_1m\" zh_tw=\"1分鐘\" zh_cn=\"1分钟\" en_us=\"1m\"></span>\n" + "            <span name=\"chart_str_period_3m\" zh_tw=\"3分鐘\" zh_cn=\"3分钟\" en_us=\"3m\"></span>\n" + "            <span name=\"chart_str_period_5m\" zh_tw=\"5分鐘\" zh_cn=\"5分钟\" en_us=\"5m\"></span>\n" + "            <span name=\"chart_str_period_15m\" zh_tw=\"15分鐘\" zh_cn=\"15分钟\" en_us=\"15m\"></span>\n" + "            <span name=\"chart_str_period_30m\" zh_tw=\"30分鐘\" zh_cn=\"30分钟\" en_us=\"30m\"></span>\n" + "            <span name=\"chart_str_period_1h\" zh_tw=\"1小時\" zh_cn=\"1小时\" en_us=\"1h\"></span>\n" + "            <span name=\"chart_str_period_2h\" zh_tw=\"2小時\" zh_cn=\"2小时\" en_us=\"2h\"></span>\n" + "            <span name=\"chart_str_period_4h\" zh_tw=\"4小時\" zh_cn=\"4小时\" en_us=\"4h\"></span>\n" + "            <span name=\"chart_str_period_6h\" zh_tw=\"6小時\" zh_cn=\"6小时\" en_us=\"6h\"></span>\n" + "            <span name=\"chart_str_period_12h\" zh_tw=\"12小時\" zh_cn=\"12小时\" en_us=\"12h\"></span>\n" + "            <span name=\"chart_str_period_1d\" zh_tw=\"日線\" zh_cn=\"日线\" en_us=\"1d\"></span>\n" + "            <span name=\"chart_str_period_3d\" zh_tw=\"3日\" zh_cn=\"3日\" en_us=\"3d\"></span>\n" + "            <span name=\"chart_str_period_1w\" zh_tw=\"周線\" zh_cn=\"周线\" en_us=\"1w\"></span>\n" + "\n" + "            <span name=\"chart_str_settings\" zh_tw=\"更多\" zh_cn=\"更多\" en_us=\"MORE\"></span>\n" + "            <span name=\"chart_setting_main_indicator\" zh_tw=\"均線設置\" zh_cn=\"均线设置\" en_us=\"Main Indicator\"></span>\n" + "            <span name=\"chart_setting_main_indicator_none\" zh_tw=\"關閉均線\" zh_cn=\"关闭均线\" en_us=\"None\"></span>\n" + "            <span name=\"chart_setting_indicator_parameters\" zh_tw=\"指標參數設置\" zh_cn=\"指标参数设置\"\n" + "                  en_us=\"Indicator Parameters\"></span>\n" + "\n" + "            <span name=\"chart_str_chart_style\" zh_tw=\"主圖樣式\" zh_cn=\"主图样式\" en_us=\"Chart Style\"></span>\n" + "            <span name=\"chart_str_main_indicator\" zh_tw=\"主指標\" zh_cn=\"主指标\" en_us=\"Main Indicator\"></span>\n" + "            <span name=\"chart_str_indicator\" zh_tw=\"技術指標\" zh_cn=\"技术指标\" en_us=\"Indicator\"></span>\n" + "            <span name=\"chart_str_indicator_cap\" zh_tw=\"技術指標\" zh_cn=\"技术指标\" en_us=\"INDICATOR\"></span>\n" + "            <span name=\"chart_str_tools\" zh_tw=\"畫線工具\" zh_cn=\"画线工具\" en_us=\"Tools\"></span>\n" + "            <span name=\"chart_str_tools_cap\" zh_tw=\"畫線工具\" zh_cn=\"画线工具\" en_us=\"TOOLS\"></span>\n" + "            <span name=\"chart_str_theme\" zh_tw=\"主題選擇\" zh_cn=\"主题选择\" en_us=\"Theme\"></span>\n" + "            <span name=\"chart_str_theme_cap\" zh_tw=\"主題選擇\" zh_cn=\"主题选择\" en_us=\"THEME\"></span>\n" + "\n" + "            <span name=\"chart_language_setting\" zh_tw=\"語言(LANG)\" zh_cn=\"语言(LANG)\" en_us=\"LANGUAGE\"></span>\n" + "            <span name=\"chart_exchanges_setting\" zh_tw=\"更多市場\" zh_cn=\"更多市场\" en_us=\"MORE MARKETS\"></span>\n" + "            <span name=\"chart_othercoin_setting\" zh_tw=\"其它市場\" zh_cn=\"其它市场\" en_us=\"OTHER MARKETS\"></span>\n" + "\n" + "\n" + "            <span name=\"chart_str_none\" zh_tw=\"關閉\" zh_cn=\"关闭\" en_us=\"None\"></span>\n" + "\n" + "            <span name=\"chart_str_theme_dark\" zh_tw=\"深色主題\" zh_cn=\"深色主题\" en_us=\"Dark\"></span>\n" + "            <span name=\"chart_str_theme_light\" zh_tw=\"淺色主題\" zh_cn=\"浅色主题\" en_us=\"Light\"></span>\n" + "\n" + "            <span name=\"chart_str_on\" zh_tw=\"開啟\" zh_cn=\"开启\" en_us=\"On\"></span>\n" + "            <span name=\"chart_str_off\" zh_tw=\"關閉\" zh_cn=\"关闭\" en_us=\"Off\"></span>\n" + "\n" + "            <span name=\"chart_str_close\" zh_tw=\"關閉\" zh_cn=\"关闭\" en_us=\"CLOSE\"></span>\n" + "            <span name=\"chart_str_default\" zh_tw=\"默認值\" zh_cn=\"默认值\" en_us=\"default\"></span>\n" + "\n" + "            <span name=\"chart_str_loading\" zh_tw=\"正在讀取數據...\" zh_cn=\"正在读取数据...\" en_us=\"Loading...\"></span>\n" + "\n" + "            <span name=\"chart_str_indicator_parameters\" zh_tw=\"指標參數設置\" zh_cn=\"指标参数设置\"\n" + "                  en_us=\"Indicator Parameters\"></span>\n" + "\n" + "            <span name=\"chart_str_cursor\" zh_tw=\"光標\" zh_cn=\"光标\" en_us=\"Cursor\"></span>\n" + "            <span name=\"chart_str_cross_cursor\" zh_tw=\"十字光標\" zh_cn=\"十字光标\" en_us=\"Cross Cursor\"></span>\n" + "            <span name=\"chart_str_seg_line\" zh_tw=\"線段\" zh_cn=\"线段\" en_us=\"Trend Line\"></span>\n" + "            <span name=\"chart_str_straight_line\" zh_tw=\"直線\" zh_cn=\"直线\" en_us=\"Extended\"></span>\n" + "            <span name=\"chart_str_ray_line\" zh_tw=\"射線\" zh_cn=\"射线\" en_us=\"Ray\"></span>\n" + "            <span name=\"chart_str_arrow_line\" zh_tw=\"箭頭\" zh_cn=\"箭头\" en_us=\"Arrow\"></span>\n" + "            <span name=\"chart_str_horz_seg_line\" zh_tw=\"水平線段\" zh_cn=\"水平线段\" en_us=\"Horizontal Line\"></span>\n" + "            <span name=\"chart_str_horz_straight_line\" zh_tw=\"水平直線\" zh_cn=\"水平直线\" en_us=\"Horizontal Extended\"></span>\n" + "            <span name=\"chart_str_horz_ray_line\" zh_tw=\"水平射線\" zh_cn=\"水平射线\" en_us=\"Horizontal Ray\"></span>\n" + "            <span name=\"chart_str_vert_straight_line\" zh_tw=\"垂直直線\" zh_cn=\"垂直直线\" en_us=\"Vertical Extended\"></span>\n" + "            <span name=\"chart_str_price_line\" zh_tw=\"價格線\" zh_cn=\"价格线\" en_us=\"Price Line\"></span>\n" + "            <span name=\"chart_str_tri_parallel_line\" zh_tw=\"價格通道線\" zh_cn=\"价格通道线\" en_us=\"Parallel Channel\"></span>\n" + "            <span name=\"chart_str_bi_parallel_line\" zh_tw=\"平行直線\" zh_cn=\"平行直线\" en_us=\"Parallel Lines\"></span>\n" + "            <span name=\"chart_str_bi_parallel_ray\" zh_tw=\"平行射線\" zh_cn=\"平行射线\" en_us=\"Parallel Rays\"></span>\n" + "            <span name=\"chart_str_fib_retrace\" zh_tw=\"斐波納契回調\" zh_cn=\"斐波纳契回调\" en_us=\"Fibonacci Retracements\"></span>\n" + "            <span name=\"chart_str_fib_fans\" zh_tw=\"斐波納契扇形\" zh_cn=\"斐波纳契扇形\" en_us=\"Fibonacci Fans\"></span>\n" + "\n" + "            <span name=\"chart_str_updated\" zh_tw=\"更新於\" zh_cn=\"更新于\" en_us=\"Updated\"></span>\n" + "            <span name=\"chart_str_ago\" zh_tw=\"前\" zh_cn=\"前\" en_us=\"ago\"></span>\n" + "</div>\n";
+  _createClass(MEvent, [{
+    key: "addHandler",
+    value: function addHandler(o, f) {
+      if (this.indexOf(o, f) < 0) this._handlers.push({
+        obj: o,
+        func: f
+      });
+    }
+  }, {
+    key: "removeHandler",
+    value: function removeHandler(o, f) {
+      var i = this._indexOf(o, f);
+
+      if (i >= 0) this._handlers.splice(i, 1);
+    }
+  }, {
+    key: "raise",
+    value: function raise(s, g) {
+      var a = this._handlers;
+      var e,
+          i,
+          c = a.length;
+
+      for (i = 0; i < c; i++) {
+        e = a[i];
+        e.func(s, g);
+      }
+    }
+  }, {
+    key: "indexOf",
+    value: function indexOf(o, f) {
+      var a = this._handlers;
+      var e,
+          i,
+          c = a.length;
+
+      for (i = 0; i < c; i++) {
+        e = a[i];
+        if (o === e.obj && f === e.func) return i;
+      }
+
+      return -1;
     }
   }]);
 
-  return View;
+  return MEvent;
 }();
 
-exports.default = View;
+exports.default = MEvent;
 
 /***/ }),
 /* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PercentageRange = exports.ZeroCenteredRange = exports.MainRange = exports.ZeroBasedPositiveRange = exports.PositiveRange = exports.Range = void 0;
+
+var _named_object = _interopRequireDefault(__webpack_require__(1));
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Range =
+/*#__PURE__*/
+function (_NamedObject) {
+  _inherits(Range, _NamedObject);
+
+  function Range(name) {
+    var _this;
+
+    _classCallCheck(this, Range);
+
+    _this = _possibleConstructorReturn(this, (Range.__proto__ || Object.getPrototypeOf(Range)).call(this, name));
+    _this._updated = true;
+    _this._minValue = Number.MAX_VALUE;
+    _this._maxValue = -Number.MAX_VALUE;
+    _this._outerMinValue = Number.MAX_VALUE;
+    _this._outerMaxValue = -Number.MAX_VALUE;
+    _this._ratio = 0;
+    _this._top = 0;
+    _this._bottom = 0;
+    _this._paddingTop = 0;
+    _this._paddingBottom = 0;
+    _this._minInterval = 36;
+    _this._selectedPosition = -1;
+    _this._selectedValue = -Number.MAX_VALUE;
+    _this._gradations = [];
+    return _this;
+  }
+
+  _createClass(Range, [{
+    key: "isUpdated",
+    value: function isUpdated() {
+      return this._updated;
+    }
+  }, {
+    key: "setUpdated",
+    value: function setUpdated(v) {
+      this._updated = v;
+    }
+  }, {
+    key: "getMinValue",
+    value: function getMinValue() {
+      return this._minValue;
+    }
+  }, {
+    key: "getMaxValue",
+    value: function getMaxValue() {
+      return this._maxValue;
+    }
+  }, {
+    key: "getRange",
+    value: function getRange() {
+      return this._maxValue - this._minValue;
+    }
+  }, {
+    key: "getOuterMinValue",
+    value: function getOuterMinValue() {
+      return this._outerMinValue;
+    }
+  }, {
+    key: "getOuterMaxValue",
+    value: function getOuterMaxValue() {
+      return this._outerMaxValue;
+    }
+  }, {
+    key: "getOuterRange",
+    value: function getOuterRange() {
+      return this._outerMaxValue - this._outerMinValue;
+    }
+  }, {
+    key: "getHeight",
+    value: function getHeight() {
+      return Math.max(0, this._bottom - this._top);
+    }
+  }, {
+    key: "getGradations",
+    value: function getGradations() {
+      return this._gradations;
+    }
+  }, {
+    key: "getMinInterval",
+    value: function getMinInterval() {
+      return this._minInterval;
+    }
+  }, {
+    key: "setMinInterval",
+    value: function setMinInterval(v) {
+      this._minInterval = v;
+    }
+  }, {
+    key: "getSelectedPosition",
+    value: function getSelectedPosition() {
+      if (this._selectedPosition >= 0) {
+        return this._selectedPosition;
+      }
+
+      if (this._selectedValue > -Number.MAX_VALUE) {
+        return this.toY(this._selectedValue);
+      }
+
+      return -1;
+    }
+  }, {
+    key: "getSelectedValue",
+    value: function getSelectedValue() {
+      if (this._selectedValue > -Number.MAX_VALUE) {
+        return this._selectedValue;
+      }
+
+      var mgr = new _chart_manager.default();
+      var area = mgr.getArea(this.getAreaName());
+
+      if (area === null) {
+        return -Number.MAX_VALUE;
+      }
+
+      if (this._selectedPosition < area.getTop() + 12 || this._selectedPosition >= area.getBottom() - 4) {
+        return -Number.MAX_VALUE;
+      }
+
+      return this.toValue(this._selectedPosition);
+    }
+  }, {
+    key: "setPaddingTop",
+    value: function setPaddingTop(p) {
+      this._paddingTop = p;
+    }
+  }, {
+    key: "setPaddingBottom",
+    value: function setPaddingBottom(p) {
+      this._paddingBottom = p;
+    }
+  }, {
+    key: "toValue",
+    value: function toValue(y) {
+      return this._maxValue - (y - this._top) / this._ratio;
+    }
+  }, {
+    key: "toY",
+    value: function toY(value) {
+      if (this._ratio > 0) {
+        return this._top + Math.floor((this._maxValue - value) * this._ratio + 0.5);
+      }
+
+      return this._top;
+    }
+  }, {
+    key: "toHeight",
+    value: function toHeight(value) {
+      return Math.floor(value * this._ratio + 1.5);
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      var min = Number.MAX_VALUE;
+      var max = -Number.MAX_VALUE;
+      var mgr = new _chart_manager.default();
+      var dp,
+          dpNames = [".main", ".secondary"];
+
+      for (var i = 0; i < dpNames.length; i++) {
+        dp = mgr.getDataProvider(this.getName() + dpNames[i]);
+
+        if (dp !== null && dp !== undefined) {
+          min = Math.min(min, dp.getMinValue());
+          max = Math.max(max, dp.getMaxValue());
+        }
+      }
+
+      var r = {
+        "min": min,
+        "max": max
+      };
+      this.preSetRange(r);
+      this.setRange(r.min, r.max);
+    }
+  }, {
+    key: "select",
+    value: function select(v) {
+      this._selectedValue = v;
+      this._selectedPosition = -1;
+    }
+  }, {
+    key: "selectAt",
+    value: function selectAt(y) {
+      this._selectedPosition = y;
+      this._selectedValue = -Number.MAX_VALUE;
+    }
+  }, {
+    key: "unselect",
+    value: function unselect() {
+      this._selectedPosition = -1;
+      this._selectedValue = -Number.MAX_VALUE;
+    }
+  }, {
+    key: "preSetRange",
+    value: function preSetRange(r) {
+      if (r.min === r.max) {
+        r.min = -1.0;
+        r.max = 1.0;
+      }
+    }
+  }, {
+    key: "setRange",
+    value: function setRange(minValue, maxValue) {
+      var mgr = new _chart_manager.default();
+      var area = mgr.getArea(this.getAreaName());
+
+      if (this._minValue === minValue && this._maxValue === maxValue && !area.isChanged()) {
+        return;
+      }
+
+      this._updated = true;
+      this._minValue = minValue;
+      this._maxValue = maxValue;
+      this._gradations = [];
+
+      var top = area.getTop() + this._paddingTop;
+
+      var bottom = area.getBottom() - (this._paddingBottom + 1);
+
+      if (top >= bottom) {
+        this._minValue = this._maxValue;
+        return;
+      }
+
+      this._top = top;
+      this._bottom = bottom;
+      if (this._maxValue > this._minValue) this._ratio = (bottom - top) / (this._maxValue - this._minValue);else {
+        this._ratio = 1;
+      }
+      this._outerMinValue = this.toValue(area.getBottom());
+      this._outerMaxValue = this.toValue(area.getTop());
+      this.updateGradations();
+    }
+  }, {
+    key: "calcInterval",
+    value: function calcInterval() {
+      var H = this.getHeight();
+      var h = this.getMinInterval();
+
+      if (H / h <= 1) {
+        h = H >> 1;
+      }
+
+      var d = this.getRange();
+      var i = 0;
+
+      while (i > -2 && Math.floor(d) < d) {
+        d *= 10.0;
+        i--;
+      }
+
+      var m, c;
+
+      for (;; i++) {
+        c = Math.pow(10.0, i);
+        m = c;
+        if (this.toHeight(m) > h) break;
+        m = 2.0 * c;
+        if (this.toHeight(m) > h) break;
+        m = 5.0 * c;
+        if (this.toHeight(m) > h) break;
+      }
+
+      return m;
+    }
+  }, {
+    key: "updateGradations",
+    value: function updateGradations() {
+      this._gradations = [];
+      var interval = this.calcInterval();
+
+      if (interval <= 0.0) {
+        return;
+      }
+
+      var v = Math.floor(this.getMaxValue() / interval) * interval;
+
+      do {
+        this._gradations.push(v);
+
+        v -= interval;
+      } while (v > this.getMinValue());
+    }
+  }]);
+
+  return Range;
+}(_named_object.default);
+
+exports.Range = Range;
+
+var PositiveRange =
+/*#__PURE__*/
+function (_Range) {
+  _inherits(PositiveRange, _Range);
+
+  function PositiveRange(name) {
+    _classCallCheck(this, PositiveRange);
+
+    return _possibleConstructorReturn(this, (PositiveRange.__proto__ || Object.getPrototypeOf(PositiveRange)).call(this, name));
+  }
+
+  _createClass(PositiveRange, [{
+    key: "preSetRange",
+    value: function preSetRange(r) {
+      if (r.min < 0) r.min = 0;
+      if (r.max < 0) r.max = 0;
+    }
+  }]);
+
+  return PositiveRange;
+}(Range);
+
+exports.PositiveRange = PositiveRange;
+
+var ZeroBasedPositiveRange =
+/*#__PURE__*/
+function (_Range2) {
+  _inherits(ZeroBasedPositiveRange, _Range2);
+
+  function ZeroBasedPositiveRange(name) {
+    _classCallCheck(this, ZeroBasedPositiveRange);
+
+    return _possibleConstructorReturn(this, (ZeroBasedPositiveRange.__proto__ || Object.getPrototypeOf(ZeroBasedPositiveRange)).call(this, name));
+  }
+
+  _createClass(ZeroBasedPositiveRange, [{
+    key: "preSetRange",
+    value: function preSetRange(r) {
+      r.min = 0;
+      if (r.max < 0) r.max = 0;
+    }
+  }]);
+
+  return ZeroBasedPositiveRange;
+}(Range);
+
+exports.ZeroBasedPositiveRange = ZeroBasedPositiveRange;
+
+var MainRange =
+/*#__PURE__*/
+function (_Range3) {
+  _inherits(MainRange, _Range3);
+
+  function MainRange(name) {
+    _classCallCheck(this, MainRange);
+
+    return _possibleConstructorReturn(this, (MainRange.__proto__ || Object.getPrototypeOf(MainRange)).call(this, name));
+  }
+
+  _createClass(MainRange, [{
+    key: "preSetRange",
+    value: function preSetRange(r) {
+      var mgr = new _chart_manager.default();
+      var timeline = mgr.getTimeline(this.getDataSourceName());
+      var dIndex = timeline.getMaxIndex() - timeline.getLastIndex();
+
+      if (dIndex < 25) {
+        var ds = mgr.getDataSource(this.getDataSourceName());
+        var data = ds.getDataAt(ds.getDataCount() - 1);
+        var d = (r.max - r.min) / 4 * (1 - dIndex / 25);
+        r.min = Math.min(r.min, Math.max(data.low - d, 0));
+        r.max = Math.max(r.max, data.high + d);
+      }
+
+      if (r.min > 0) {
+        var a = r.max / r.min;
+
+        if (a < 1.016) {
+          var m = (r.max + r.min) / 2.0;
+          var c = (a - 1.0) * 1.5;
+          r.max = m * (1.0 + c);
+          r.min = m * (1.0 - c);
+        } else if (a < 1.048) {
+          var _m = (r.max + r.min) / 2.0;
+
+          r.max = _m * 1.024;
+          r.min = _m * 0.976;
+        }
+      }
+
+      if (r.min < 0) r.min = 0;
+      if (r.max < 0) r.max = 0;
+    }
+  }]);
+
+  return MainRange;
+}(Range);
+
+exports.MainRange = MainRange;
+
+var ZeroCenteredRange =
+/*#__PURE__*/
+function (_Range4) {
+  _inherits(ZeroCenteredRange, _Range4);
+
+  function ZeroCenteredRange(name) {
+    _classCallCheck(this, ZeroCenteredRange);
+
+    return _possibleConstructorReturn(this, (ZeroCenteredRange.__proto__ || Object.getPrototypeOf(ZeroCenteredRange)).call(this, name));
+  }
+
+  _createClass(ZeroCenteredRange, [{
+    key: "calcInterval",
+    value: function calcInterval(area) {
+      var h = this.getMinInterval();
+
+      if (area.getHeight() / h < 2) {
+        return 0.0;
+      }
+
+      var r = this.getRange();
+      var i;
+
+      for (i = 3;; i += 2) {
+        if (this.toHeight(r / i) <= h) break;
+      }
+
+      i -= 2;
+      return r / i;
+    }
+  }, {
+    key: "updateGradations",
+    value: function updateGradations() {
+      this._gradations = [];
+      var mgr = new _chart_manager.default();
+      var area = mgr.getArea(this.getAreaName());
+      var interval = this.calcInterval(area);
+
+      if (interval <= 0.0) {
+        return;
+      }
+
+      var v = interval / 2.0;
+
+      do {
+        this._gradations.push(v);
+
+        this._gradations.push(-v);
+
+        v += interval;
+      } while (v <= this.getMaxValue());
+    }
+  }, {
+    key: "preSetRange",
+    value: function preSetRange(r) {
+      var abs = Math.max(Math.abs(r.min), Math.abs(r.max));
+      r.min = -abs;
+      r.max = abs;
+    }
+  }]);
+
+  return ZeroCenteredRange;
+}(Range);
+
+exports.ZeroCenteredRange = ZeroCenteredRange;
+
+var PercentageRange =
+/*#__PURE__*/
+function (_Range5) {
+  _inherits(PercentageRange, _Range5);
+
+  function PercentageRange(name) {
+    _classCallCheck(this, PercentageRange);
+
+    return _possibleConstructorReturn(this, (PercentageRange.__proto__ || Object.getPrototypeOf(PercentageRange)).call(this, name));
+  }
+
+  _createClass(PercentageRange, [{
+    key: "updateGradations",
+    value: function updateGradations() {
+      this._gradations = [];
+      var mgr = new _chart_manager.default();
+      var area = mgr.getArea(this.getAreaName());
+      var interval = 10.0;
+      var h = Math.floor(this.toHeight(interval));
+      if (h << 2 > area.getHeight()) return;
+      var v = Math.ceil(this.getMinValue() / interval) * interval;
+      if (v === 0.0) v = 0;
+
+      if (h << 2 < 24) {
+        if (h << 1 < 8) return;
+
+        do {
+          if (v === 20.0 || v === 80.0) this._gradations.push(v);
+          v += interval;
+        } while (v < this.getMaxValue());
+      } else {
+        do {
+          if (h < 8) {
+            if (v === 20.0 || v === 50.0 || v === 80.0) this._gradations.push(v);
+          } else {
+            if (v === 0.0 || v === 20.0 || v === 50.0 || v === 80.0 || v === 100.0) this._gradations.push(v);
+          }
+
+          v += interval;
+        } while (v < this.getMaxValue());
+      }
+    }
+  }]);
+
+  return PercentageRange;
+}(Range);
+
+exports.PercentageRange = PercentageRange;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _kline = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+window.Kline = _kline.default;
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12171,9 +12805,9 @@ var _chart_manager = _interopRequireDefault(__webpack_require__(0));
 
 var _control = _interopRequireDefault(__webpack_require__(8));
 
-var _kline = _interopRequireDefault(__webpack_require__(2));
+var _kline = _interopRequireDefault(__webpack_require__(3));
 
-var _templates = __webpack_require__(12);
+var _templates = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12439,7 +13073,1053 @@ Chart.strPeriod = {
 };
 
 /***/ }),
-/* 19 */
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _named_object = _interopRequireDefault(__webpack_require__(1));
+
+var _cpoint = _interopRequireDefault(__webpack_require__(14));
+
+var ctools = _interopRequireWildcard(__webpack_require__(15));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CToolManager =
+/*#__PURE__*/
+function (_NamedObject) {
+  _inherits(CToolManager, _NamedObject);
+
+  function CToolManager(name) {
+    var _this;
+
+    _classCallCheck(this, CToolManager);
+
+    _this = _possibleConstructorReturn(this, (CToolManager.__proto__ || Object.getPrototypeOf(CToolManager)).call(this, name));
+    _this.selectedObject = -1;
+    _this.toolObjects = [];
+    return _this;
+  }
+
+  _createClass(CToolManager, [{
+    key: "getToolObjectCount",
+    value: function getToolObjectCount() {
+      return this.toolObjects.length;
+    }
+  }, {
+    key: "addToolObject",
+    value: function addToolObject(o) {
+      this.toolObjects.push(o);
+    }
+  }, {
+    key: "getToolObject",
+    value: function getToolObject(i) {
+      if (i < this.toolObjects.length && i >= 0) {
+        return this.toolObjects[i];
+      }
+
+      return null;
+    }
+  }, {
+    key: "getCurrentObject",
+    value: function getCurrentObject() {
+      return this.getToolObject(this.getToolObjectCount() - 1);
+    }
+  }, {
+    key: "getSelectedObject",
+    value: function getSelectedObject() {
+      return this.getToolObject(this.selectedObject);
+    }
+  }, {
+    key: "delCurrentObject",
+    value: function delCurrentObject() {
+      this.toolObjects.splice(this.getToolObjectCount() - 1, 1);
+    }
+  }, {
+    key: "delSelectedObject",
+    value: function delSelectedObject() {
+      this.toolObjects.splice(this.selectedObject, 1);
+      this.selectedObject = -1;
+    }
+  }, {
+    key: "acceptMouseMoveEvent",
+    value: function acceptMouseMoveEvent(x, y) {
+      if (this.selectedObject === -1) {
+        var curr = this.toolObjects[this.getToolObjectCount() - 1];
+        if (curr !== null && curr !== undefined && curr.getState() !== ctools.CToolObject.state.AfterDraw) return curr.acceptMouseMoveEvent(x, y);
+      } else {
+        var sel = this.toolObjects[this.selectedObject];
+
+        if (sel.getState() === ctools.CToolObject.state.Draw) {
+          return sel.acceptMouseMoveEvent(x, y);
+        }
+
+        sel.unselect();
+        this.selectedObject = -1;
+      }
+
+      for (var index in this.toolObjects) {
+        if (this.toolObjects[index].isSelected(x, y)) {
+          this.selectedObject = index;
+          return false;
+        }
+      }
+
+      return false;
+    }
+  }, {
+    key: "acceptMouseDownEvent",
+    value: function acceptMouseDownEvent(x, y) {
+      this.mouseDownMove = false;
+
+      if (this.selectedObject === -1) {
+        var curr = this.toolObjects[this.getToolObjectCount() - 1];
+        if (curr !== null && curr !== undefined && curr.getState() !== ctools.CToolObject.state.AfterDraw) return curr.acceptMouseDownEvent(x, y);
+      } else {
+        var sel = this.toolObjects[this.selectedObject];
+        if (sel.getState() !== ctools.CToolObject.state.BeforeDraw) return sel.acceptMouseDownEvent(x, y);
+      }
+
+      return false;
+    }
+  }, {
+    key: "acceptMouseDownMoveEvent",
+    value: function acceptMouseDownMoveEvent(x, y) {
+      this.mouseDownMove = true;
+
+      if (this.selectedObject === -1) {
+        var curr = this.toolObjects[this.getToolObjectCount() - 1];
+        if (curr !== null && curr !== undefined && curr.getState() === ctools.CToolObject.state.Draw) return curr.acceptMouseDownMoveEvent(x, y);
+        return false;
+      } else {
+        var sel = this.toolObjects[this.selectedObject];
+
+        if (sel.getState() !== ctools.CToolObject.state.BeforeDraw) {
+          if (sel.acceptMouseDownMoveEvent(x, y) === true) {
+            var point = this.toolObjects[this.selectedObject].points;
+
+            for (var i = 0; i < point.length; i++) {
+              if (point[i].state === _cpoint.default.state.Highlight || point[i].state === _cpoint.default.state.Show) {
+                return true;
+              }
+            }
+          }
+
+          return true;
+        }
+      }
+    }
+  }, {
+    key: "acceptMouseUpEvent",
+    value: function acceptMouseUpEvent(x, y) {
+      if (this.mouseDownMove === true) {
+        if (this.selectedObject === -1) {
+          var _curr = this.toolObjects[this.getToolObjectCount() - 1];
+          if (_curr !== null && _curr !== undefined && _curr.getState() === ctools.CToolObject.state.Draw) return _curr.acceptMouseUpEvent(x, y);
+          return true;
+        } else {
+          var sel = this.toolObjects[this.selectedObject];
+          if (sel.getState() !== ctools.CToolObject.state.BeforeDraw) return sel.acceptMouseUpEvent(x, y);
+        }
+      }
+
+      if (this.selectedObject !== -1) {
+        return true;
+      }
+
+      var curr = this.toolObjects[this.getToolObjectCount() - 1];
+
+      if (curr !== null && curr !== undefined) {
+        if (curr.getState() === ctools.CToolObject.state.Draw) return true;
+
+        if (!curr.isValidMouseXY(x, y)) {
+          return false;
+        }
+
+        if (curr.isSelected(x, y)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+  }]);
+
+  return CToolManager;
+}(_named_object.default);
+
+exports.default = CToolManager;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _named_object = _interopRequireDefault(__webpack_require__(1));
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+var _data_sources = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Timeline =
+/*#__PURE__*/
+function (_NamedObject) {
+  _inherits(Timeline, _NamedObject);
+
+  function Timeline(name) {
+    var _this;
+
+    _classCallCheck(this, Timeline);
+
+    _this = _possibleConstructorReturn(this, (Timeline.__proto__ || Object.getPrototypeOf(Timeline)).call(this, name));
+    _this._updated = false;
+    _this._innerLeft = 0;
+    _this._innerWidth = 0;
+    _this._firstColumnLeft = 0;
+    _this._scale = 3;
+    _this._lastScale = -1;
+    _this._maxItemCount = 0;
+    _this._maxIndex = 0;
+    _this._firstIndex = -1;
+    _this._selectedIndex = -1;
+    _this._savedFirstIndex = -1;
+    return _this;
+  }
+
+  _createClass(Timeline, [{
+    key: "isLatestShown",
+    value: function isLatestShown() {
+      return this.getLastIndex() === this._maxIndex;
+    }
+  }, {
+    key: "isUpdated",
+    value: function isUpdated() {
+      return this._updated;
+    }
+  }, {
+    key: "setUpdated",
+    value: function setUpdated(v) {
+      this._updated = v;
+    }
+  }, {
+    key: "getItemWidth",
+    value: function getItemWidth() {
+      return Timeline.itemWidth[this._scale];
+    }
+  }, {
+    key: "getSpaceWidth",
+    value: function getSpaceWidth() {
+      return Timeline.spaceWidth[this._scale];
+    }
+  }, {
+    key: "getColumnWidth",
+    value: function getColumnWidth() {
+      return this.getSpaceWidth() + this.getItemWidth();
+    }
+  }, {
+    key: "getInnerWidth",
+    value: function getInnerWidth() {
+      return this._innerWidth;
+    }
+  }, {
+    key: "getItemLeftOffset",
+    value: function getItemLeftOffset() {
+      return this.getSpaceWidth();
+    }
+  }, {
+    key: "getItemCenterOffset",
+    value: function getItemCenterOffset() {
+      return this.getSpaceWidth() + (this.getItemWidth() >> 1);
+    }
+  }, {
+    key: "getFirstColumnLeft",
+    value: function getFirstColumnLeft() {
+      return this._firstColumnLeft;
+    }
+  }, {
+    key: "getMaxItemCount",
+    value: function getMaxItemCount() {
+      return this._maxItemCount;
+    }
+  }, {
+    key: "getFirstIndex",
+    value: function getFirstIndex() {
+      return this._firstIndex;
+    }
+  }, {
+    key: "getLastIndex",
+    value: function getLastIndex() {
+      return Math.min(this._firstIndex + this._maxItemCount, this._maxIndex);
+    }
+  }, {
+    key: "getSelectedIndex",
+    value: function getSelectedIndex() {
+      return this._selectedIndex;
+    }
+  }, {
+    key: "getMaxIndex",
+    value: function getMaxIndex() {
+      return this._maxIndex;
+    }
+  }, {
+    key: "calcColumnCount",
+    value: function calcColumnCount(w) {
+      return Math.floor(w / this.getColumnWidth()) << 0;
+    }
+  }, {
+    key: "calcFirstColumnLeft",
+    value: function calcFirstColumnLeft(maxItemCount) {
+      return this._innerLeft + this._innerWidth - this.getColumnWidth() * maxItemCount;
+    }
+  }, {
+    key: "calcFirstIndexAlignRight",
+    value: function calcFirstIndexAlignRight(oldFirstIndex, oldMaxItemCount, newMaxItemCount) {
+      return Math.max(0, oldFirstIndex + Math.max(oldMaxItemCount, 1) - Math.max(newMaxItemCount, 1));
+    }
+  }, {
+    key: "calcFirstIndex",
+    value: function calcFirstIndex(newMaxItemCount) {
+      return this.validateFirstIndex(this.calcFirstIndexAlignRight(this._firstIndex, this._maxItemCount, newMaxItemCount), newMaxItemCount);
+    }
+  }, {
+    key: "updateMaxItemCount",
+    value: function updateMaxItemCount() {
+      var newMaxItemCount = this.calcColumnCount(this._innerWidth);
+      var newFirstIndex;
+
+      if (this._maxItemCount < 1) {
+        newFirstIndex = this.calcFirstIndex(newMaxItemCount);
+      } else if (this._lastScale === this._scale) {
+        newFirstIndex = this.validateFirstIndex(this._firstIndex - (newMaxItemCount - this._maxItemCount));
+      } else {
+        var focusedIndex = this._selectedIndex >= 0 ? this._selectedIndex : this.getLastIndex() - 1;
+        newFirstIndex = this.validateFirstIndex(focusedIndex - Math.round((focusedIndex - this._firstIndex) * newMaxItemCount / this._maxItemCount));
+      }
+
+      this._lastScale = this._scale;
+
+      if (this._firstIndex !== newFirstIndex) {
+        if (this._selectedIndex === this._firstIndex) this._selectedIndex = newFirstIndex;
+        this._firstIndex = newFirstIndex;
+        this._updated = true;
+      }
+
+      if (this._maxItemCount !== newMaxItemCount) {
+        this._maxItemCount = newMaxItemCount;
+        this._updated = true;
+      }
+
+      this._firstColumnLeft = this.calcFirstColumnLeft(newMaxItemCount);
+    }
+  }, {
+    key: "validateFirstIndex",
+    value: function validateFirstIndex(firstIndex, maxItemCount) {
+      if (this._maxIndex < 1) {
+        return -1;
+      }
+
+      if (firstIndex < 0) {
+        return 0;
+      }
+
+      var lastFirst = Math.max(0, this._maxIndex - 1
+      /*maxItemCount*/
+      );
+
+      if (firstIndex > lastFirst) {
+        return lastFirst;
+      }
+
+      return firstIndex;
+    }
+  }, {
+    key: "validateSelectedIndex",
+    value: function validateSelectedIndex() {
+      if (this._selectedIndex < this._firstIndex) this._selectedIndex = -1;else if (this._selectedIndex >= this.getLastIndex()) this._selectedIndex = -1;
+    }
+  }, {
+    key: "onLayout",
+    value: function onLayout() {
+      var mgr = new _chart_manager.default();
+      var area = mgr.getArea(this.getDataSourceName() + ".main");
+
+      if (area !== null) {
+        this._innerLeft = area.getLeft() + Timeline.PADDING_LEFT;
+        var w = Math.max(0, area.getWidth() - (Timeline.PADDING_LEFT + Timeline.PADDING_RIGHT));
+
+        if (this._innerWidth !== w) {
+          this._innerWidth = w;
+          this.updateMaxItemCount();
+        }
+      }
+    }
+  }, {
+    key: "toIndex",
+    value: function toIndex(x) {
+      return this._firstIndex + this.calcColumnCount(x - this._firstColumnLeft);
+    }
+  }, {
+    key: "toColumnLeft",
+    value: function toColumnLeft(index) {
+      return this._firstColumnLeft + this.getColumnWidth() * (index - this._firstIndex);
+    }
+  }, {
+    key: "toItemLeft",
+    value: function toItemLeft(index) {
+      return this.toColumnLeft(index) + this.getItemLeftOffset();
+    }
+  }, {
+    key: "toItemCenter",
+    value: function toItemCenter(index) {
+      return this.toColumnLeft(index) + this.getItemCenterOffset();
+    }
+  }, {
+    key: "selectAt",
+    value: function selectAt(x) {
+      this._selectedIndex = this.toIndex(x);
+      this.validateSelectedIndex();
+      return this._selectedIndex >= 0;
+    }
+  }, {
+    key: "unselect",
+    value: function unselect() {
+      this._selectedIndex = -1;
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      var mgr = new _chart_manager.default();
+      var ds = mgr.getDataSource(this.getDataSourceName());
+      var oldMaxIndex = this._maxIndex;
+      this._maxIndex = ds.getDataCount();
+
+      switch (ds.getUpdateMode()) {
+        case _data_sources.DataSource.UpdateMode.Refresh:
+          if (this._maxIndex < 1) this._firstIndex = -1;else this._firstIndex = Math.max(this._maxIndex - this._maxItemCount, 0);
+          this._selectedIndex = -1;
+          this._updated = true;
+          break;
+
+        case _data_sources.DataSource.UpdateMode.Append:
+          var lastIndex = this.getLastIndex();
+          var erasedCount = ds.getErasedCount();
+
+          if (lastIndex < oldMaxIndex) {
+            if (erasedCount > 0) {
+              this._firstIndex = Math.max(this._firstIndex - erasedCount, 0);
+
+              if (this._selectedIndex >= 0) {
+                this._selectedIndex -= erasedCount;
+                this.validateSelectedIndex();
+              }
+
+              this._updated = true;
+            }
+          } else if (lastIndex === oldMaxIndex) {
+            this._firstIndex += this._maxIndex - oldMaxIndex;
+
+            if (this._selectedIndex >= 0) {
+              this._selectedIndex -= erasedCount;
+              this.validateSelectedIndex();
+            }
+
+            this._updated = true;
+          }
+
+          break;
+      }
+    }
+  }, {
+    key: "move",
+    value: function move(x) {
+      if (this.isLatestShown()) {
+        new _chart_manager.default().getArea(this.getDataSourceName() + ".mainRange").setChanged(true);
+      }
+
+      this._firstIndex = this.validateFirstIndex(this._savedFirstIndex - this.calcColumnCount(x), this._maxItemCount);
+      this._updated = true;
+      if (this._selectedIndex >= 0) this.validateSelectedIndex();
+    }
+  }, {
+    key: "startMove",
+    value: function startMove() {
+      this._savedFirstIndex = this._firstIndex;
+    }
+  }, {
+    key: "scale",
+    value: function scale(s) {
+      this._scale += s;
+
+      if (this._scale < 0) {
+        this._scale = 0;
+      } else if (this._scale >= Timeline.itemWidth.length) {
+        this._scale = Timeline.itemWidth.length - 1;
+      }
+
+      this.updateMaxItemCount();
+
+      if (this._selectedIndex >= 0) {
+        this.validateSelectedIndex();
+      }
+    }
+  }]);
+
+  return Timeline;
+}(_named_object.default);
+
+exports.default = Timeline;
+Timeline.itemWidth = [1, 3, 3, 5, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29];
+Timeline.spaceWidth = [1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 7, 7, 7];
+Timeline.PADDING_LEFT = 4;
+Timeline.PADDING_RIGHT = 8;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DockableLayout = exports.TableLayout = void 0;
+
+var areas = _interopRequireWildcard(__webpack_require__(11));
+
+var _chart_manager = _interopRequireDefault(__webpack_require__(0));
+
+var themes = _interopRequireWildcard(__webpack_require__(5));
+
+var _chart_settings = _interopRequireDefault(__webpack_require__(4));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return _get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TableLayout =
+/*#__PURE__*/
+function (_areas$ChartAreaGroup) {
+  _inherits(TableLayout, _areas$ChartAreaGroup);
+
+  function TableLayout(name) {
+    var _this;
+
+    _classCallCheck(this, TableLayout);
+
+    _this = _possibleConstructorReturn(this, (TableLayout.__proto__ || Object.getPrototypeOf(TableLayout)).call(this, name));
+    _this._nextRowId = 0;
+    _this._focusedRowIndex = -1;
+    return _this;
+  }
+
+  _createClass(TableLayout, [{
+    key: "getNextRowId",
+    value: function getNextRowId() {
+      return this._nextRowId++;
+    }
+  }, {
+    key: "measure",
+    value: function measure(context, width, height) {
+      this.setMeasuredDimension(width, height);
+      var rowH,
+          prevH = 0,
+          totalH = 0;
+      var h, rows;
+      var rh = [];
+      var i,
+          cnt = this._areas.length;
+
+      for (i = 0; i < cnt; i += 2) {
+        rowH = this._areas[i].getHeight();
+
+        if (rowH === 0) {
+          if (i === 0) {
+            rows = cnt + 1 >> 1;
+            var n = rows * 2 + 5;
+            var nh = height / n * 2 << 0;
+            h = height;
+
+            for (i = rows - 1; i > 0; i--) {
+              rh.unshift(nh);
+              h -= nh;
+            }
+
+            rh.unshift(h);
+            break;
+          } else if (i === 2) {
+            rowH = prevH / 3;
+          } else {
+            rowH = prevH;
+          }
+        }
+
+        totalH += rowH;
+        prevH = rowH;
+        rh.push(rowH);
+      }
+
+      if (totalH > 0) {
+        var rate = height / totalH;
+        rows = cnt + 1 >> 1;
+        h = height;
+
+        for (i = rows - 1; i > 0; i--) {
+          rh[i] *= rate;
+          h -= rh[i];
+        }
+
+        rh[0] = h;
+      }
+
+      var nw = 8; // chart depths sidebar
+
+      var minRW = 64;
+      var maxRW = Math.min(240, width >> 1);
+      var rw = minRW;
+      var mgr = new _chart_manager.default();
+      var timeline = mgr.getTimeline(this.getDataSourceName());
+
+      if (timeline.getFirstIndex() >= 0) {
+        var firstIndexes = [];
+
+        for (rw = minRW; rw < maxRW; rw += nw) {
+          firstIndexes.push(timeline.calcFirstIndex(timeline.calcColumnCount(width - rw)));
+        }
+
+        var lastIndex = timeline.getLastIndex();
+        var dpNames = [".main", ".secondary"];
+        var minmaxes = new Array(firstIndexes.length);
+        var iArea, iIndex;
+
+        for (iArea = 0, iIndex = 0, rw = minRW; iArea < this._areas.length && iIndex < firstIndexes.length; iArea += 2) {
+          var area = this._areas[iArea];
+          var plotter = mgr.getPlotter(area.getName() + "Range.main");
+
+          for (var iDp in dpNames) {
+            var dp = mgr.getDataProvider(area.getName() + dpNames[iDp]);
+
+            if (dp === undefined) {
+              continue;
+            }
+
+            dp.calcRange(firstIndexes, lastIndex, minmaxes, null);
+
+            while (iIndex < firstIndexes.length) {
+              var minW = plotter.getRequiredWidth(context, minmaxes[iIndex].min);
+              var maxW = plotter.getRequiredWidth(context, minmaxes[iIndex].max);
+
+              if (Math.max(minW, maxW) < rw) {
+                break;
+              }
+
+              iIndex++;
+              rw += nw;
+            }
+          }
+        }
+      }
+
+      for (i = 1; i < this._areas.length; i += 2) {
+        this._areas[i].measure(context, rw, rh[i >> 1]);
+      }
+
+      var lw = width - rw;
+
+      for (i = 0; i < this._areas.length; i += 2) {
+        this._areas[i].measure(context, lw, rh[i >> 1]);
+      }
+    }
+  }, {
+    key: "layout",
+    value: function layout(left, top, right, bottom, forceChange) {
+      _get(TableLayout.prototype.__proto__ || Object.getPrototypeOf(TableLayout.prototype), "layout", this).call(this, left, top, right, bottom, forceChange);
+
+      if (this._areas.length < 1) return;
+      var area;
+
+      var center = left + this._areas[0].getMeasuredWidth();
+
+      var t = top,
+          b;
+      if (!forceChange) forceChange = this.isChanged();
+      var i,
+          cnt = this._areas.length;
+
+      for (i = 0; i < cnt; i++) {
+        area = this._areas[i];
+        b = t + area.getMeasuredHeight();
+        area.layout(left, t, center, b, forceChange);
+        i++;
+        area = this._areas[i];
+        area.layout(center, t, this.getRight(), b, forceChange);
+        t = b;
+      }
+
+      this.setChanged(false);
+    }
+  }, {
+    key: "drawGrid",
+    value: function drawGrid(context) {
+      if (this._areas.length < 1) {
+        return;
+      }
+
+      var mgr = new _chart_manager.default();
+      var theme = mgr.getTheme(this.getFrameName());
+      context.fillStyle = theme.getColor(themes.Theme.Color.Grid1);
+      context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight());
+      var i,
+          cnt = this._areas.length - 2;
+
+      for (i = 0; i < cnt; i += 2) {
+        context.fillRect(this.getLeft(), this._areas[i].getBottom(), this.getWidth(), 1);
+      }
+
+      if (!mgr.getCaptureMouseWheelDirectly()) {
+        for (i = 0, cnt += 2; i < cnt; i += 2) {
+          if (this._areas[i].isSelected()) {
+            context.strokeStyle = theme.getColor(themes.Theme.Color.Indicator1);
+            context.strokeRect(this.getLeft() + 0.5, this.getTop() + 0.5, this.getWidth() - 1, this.getHeight() - 1);
+            break;
+          }
+        }
+      }
+    }
+  }, {
+    key: "highlight",
+    value: function highlight(area) {
+      this._highlightedArea = null;
+      var e,
+          i,
+          cnt = this._areas.length;
+
+      for (i = 0; i < cnt; i++) {
+        e = this._areas[i];
+
+        if (e === area) {
+          i &= ~1;
+          e = this._areas[i];
+          e.highlight(e);
+          this._highlightedArea = e;
+          i++;
+          e = this._areas[i];
+          e.highlight(null);
+          e.highlight(e);
+        } else {
+          e.highlight(null);
+        }
+      }
+
+      return this._highlightedArea !== null ? this : null;
+    }
+  }, {
+    key: "select",
+    value: function select(area) {
+      this._selectedArea = null;
+      var e,
+          i,
+          cnt = this._areas.length;
+
+      for (i = 0; i < cnt; i++) {
+        e = this._areas[i];
+
+        if (e === area) {
+          i &= ~1;
+          e = this._areas[i];
+          e.select(e);
+          this._selectedArea = e;
+          i++;
+          e = this._areas[i];
+          e.select(e);
+        } else {
+          e.select(null);
+        }
+      }
+
+      return this._selectedArea !== null ? this : null;
+    }
+  }, {
+    key: "onMouseMove",
+    value: function onMouseMove(x, y) {
+      if (this._focusedRowIndex >= 0) {
+        var upper = this._areas[this._focusedRowIndex];
+        var lower = this._areas[this._focusedRowIndex + 2];
+        var d = y - this._oldY;
+        if (d === 0) return this;
+        var upperBottom = this._oldUpperBottom + d;
+        var lowerTop = this._oldLowerTop + d;
+
+        if (upperBottom - upper.getTop() >= 60 && lower.getBottom() - lowerTop >= 60) {
+          upper.setBottom(upperBottom);
+          lower.setTop(lowerTop);
+        }
+
+        return this;
+      }
+
+      var i,
+          cnt = this._areas.length - 2;
+
+      for (i = 0; i < cnt; i += 2) {
+        var b = this._areas[i].getBottom();
+
+        if (y >= b - 4 && y < b + 4) {
+          new _chart_manager.default().showCursor('n-resize');
+          return this;
+        }
+      }
+
+      return null;
+    }
+  }, {
+    key: "onMouseLeave",
+    value: function onMouseLeave(x, y) {
+      this._focusedRowIndex = -1;
+    }
+  }, {
+    key: "onMouseDown",
+    value: function onMouseDown(x, y) {
+      var i,
+          cnt = this._areas.length - 2;
+
+      for (i = 0; i < cnt; i += 2) {
+        var b = this._areas[i].getBottom();
+
+        if (y >= b - 4 && y < b + 4) {
+          this._focusedRowIndex = i;
+          this._oldY = y;
+          this._oldUpperBottom = b;
+          this._oldLowerTop = this._areas[i + 2].getTop();
+          return this;
+        }
+      }
+
+      return null;
+    }
+  }, {
+    key: "onMouseUp",
+    value: function onMouseUp(x, y) {
+      if (this._focusedRowIndex >= 0) {
+        this._focusedRowIndex = -1;
+        var i,
+            cnt = this._areas.length;
+        var height = [];
+
+        for (i = 0; i < cnt; i += 2) {
+          height.push(this._areas[i].getHeight());
+        }
+
+        _chart_settings.default.get().charts.areaHeight = height;
+
+        _chart_settings.default.save();
+      }
+
+      return this;
+    }
+  }]);
+
+  return TableLayout;
+}(areas.ChartAreaGroup);
+
+exports.TableLayout = TableLayout;
+
+var DockableLayout =
+/*#__PURE__*/
+function (_areas$ChartAreaGroup2) {
+  _inherits(DockableLayout, _areas$ChartAreaGroup2);
+
+  function DockableLayout(name) {
+    _classCallCheck(this, DockableLayout);
+
+    return _possibleConstructorReturn(this, (DockableLayout.__proto__ || Object.getPrototypeOf(DockableLayout)).call(this, name));
+  }
+
+  _createClass(DockableLayout, [{
+    key: "measure",
+    value: function measure(context, width, height) {
+      _get(DockableLayout.prototype.__proto__ || Object.getPrototypeOf(DockableLayout.prototype), "measure", this).call(this, context, width, height);
+
+      width = this.getMeasuredWidth();
+      height = this.getMeasuredHeight();
+
+      for (var i in this._areas) {
+        var area = this._areas[i];
+        area.measure(context, width, height);
+
+        switch (area.getDockStyle()) {
+          case areas.ChartArea.DockStyle.left:
+          case areas.ChartArea.DockStyle.Right:
+            width -= area.getMeasuredWidth();
+            break;
+
+          case areas.ChartArea.DockStyle.Top:
+          case areas.ChartArea.DockStyle.Bottom:
+            height -= area.getMeasuredHeight();
+            break;
+
+          case areas.ChartArea.DockStyle.Fill:
+            width = 0;
+            height = 0;
+            break;
+        }
+      }
+    }
+  }, {
+    key: "layout",
+    value: function layout(left, top, right, bottom, forceChange) {
+      _get(DockableLayout.prototype.__proto__ || Object.getPrototypeOf(DockableLayout.prototype), "layout", this).call(this, left, top, right, bottom, forceChange);
+
+      left = this.getLeft();
+      top = this.getTop();
+      right = this.getRight();
+      bottom = this.getBottom();
+      var w, h;
+
+      if (!forceChange) {
+        forceChange = this.isChanged();
+      }
+
+      for (var i in this._areas) {
+        var area = this._areas[i];
+
+        switch (area.getDockStyle()) {
+          case areas.ChartArea.DockStyle.left:
+            w = area.getMeasuredWidth();
+            area.layout(left, top, left + w, bottom, forceChange);
+            left += w;
+            break;
+
+          case areas.ChartArea.DockStyle.Top:
+            h = area.getMeasuredHeight();
+            area.layout(left, top, right, top + h, forceChange);
+            top += h;
+            break;
+
+          case areas.ChartArea.DockStyle.Right:
+            w = area.getMeasuredWidth();
+            area.layout(right - w, top, right, bottom, forceChange);
+            right -= w;
+            break;
+
+          case areas.ChartArea.DockStyle.Bottom:
+            h = area.getMeasuredHeight();
+            area.layout(left, bottom - h, right, bottom, forceChange);
+            bottom -= h;
+            break;
+
+          case areas.ChartArea.DockStyle.Fill:
+            area.layout(left, top, right, bottom, forceChange);
+            left = right;
+            top = bottom;
+            break;
+        }
+      }
+
+      this.setChanged(false);
+    }
+  }, {
+    key: "drawGrid",
+    value: function drawGrid(context) {
+      var mgr = new _chart_manager.default();
+      var theme = mgr.getTheme(this.getFrameName());
+      var left = this.getLeft();
+      var top = this.getTop();
+      var right = this.getRight();
+      var bottom = this.getBottom();
+      context.fillStyle = theme.getColor(this._gridColor);
+
+      for (var i in this._areas) {
+        var area = this._areas[i];
+
+        switch (area.getDockStyle()) {
+          case areas.ChartArea.DockStyle.Left:
+            context.fillRect(area.getRight(), top, 1, bottom - top);
+            left += area.getWidth();
+            break;
+
+          case areas.ChartArea.DockStyle.Top:
+            context.fillRect(left, area.getBottom(), right - left, 1);
+            top += area.getHeight();
+            break;
+
+          case areas.ChartArea.DockStyle.Right:
+            context.fillRect(area.getLeft(), top, 1, bottom - top);
+            right -= area.getWidth();
+            break;
+
+          case areas.ChartArea.DockStyle.Bottom:
+            context.fillRect(left, area.getTop(), right - left, 1);
+            bottom -= area.getHeight();
+            break;
+        }
+      }
+    }
+  }]);
+
+  return DockableLayout;
+}(areas.ChartAreaGroup);
+
+exports.DockableLayout = DockableLayout;
+
+/***/ }),
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12450,7 +14130,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.STOCHRSIIndicator = exports.PSYIndicator = exports.BOLLIndicator = exports.MTMIndicator = exports.ROCIndicator = exports.KDJIndicator = exports.SARIndicator = exports.WRIndicator = exports.RSIIndicator = exports.EMVIndicator = exports.OBVIndicator = exports.VRIndicator = exports.BRARIndicator = exports.TRIXIndicator = exports.DMAIndicator = exports.DMIIndicator = exports.MACDIndicator = exports.VOLUMEIndicator = exports.EMAIndicator = exports.MAIndicator = exports.HLCIndicator = exports.Indicator = void 0;
 
-var exprs = _interopRequireWildcard(__webpack_require__(10));
+var exprs = _interopRequireWildcard(__webpack_require__(16));
 
 var themes = _interopRequireWildcard(__webpack_require__(5));
 
@@ -13637,1719 +15317,664 @@ function (_Indicator21) {
 exports.STOCHRSIIndicator = STOCHRSIIndicator;
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.PercentageRange = exports.ZeroCenteredRange = exports.MainRange = exports.ZeroBasedPositiveRange = exports.PositiveRange = exports.Range = void 0;
-
-var _named_object = _interopRequireDefault(__webpack_require__(1));
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Range =
-/*#__PURE__*/
-function (_NamedObject) {
-  _inherits(Range, _NamedObject);
-
-  function Range(name) {
-    var _this;
-
-    _classCallCheck(this, Range);
-
-    _this = _possibleConstructorReturn(this, (Range.__proto__ || Object.getPrototypeOf(Range)).call(this, name));
-    _this._updated = true;
-    _this._minValue = Number.MAX_VALUE;
-    _this._maxValue = -Number.MAX_VALUE;
-    _this._outerMinValue = Number.MAX_VALUE;
-    _this._outerMaxValue = -Number.MAX_VALUE;
-    _this._ratio = 0;
-    _this._top = 0;
-    _this._bottom = 0;
-    _this._paddingTop = 0;
-    _this._paddingBottom = 0;
-    _this._minInterval = 36;
-    _this._selectedPosition = -1;
-    _this._selectedValue = -Number.MAX_VALUE;
-    _this._gradations = [];
-    return _this;
-  }
-
-  _createClass(Range, [{
-    key: "isUpdated",
-    value: function isUpdated() {
-      return this._updated;
-    }
-  }, {
-    key: "setUpdated",
-    value: function setUpdated(v) {
-      this._updated = v;
-    }
-  }, {
-    key: "getMinValue",
-    value: function getMinValue() {
-      return this._minValue;
-    }
-  }, {
-    key: "getMaxValue",
-    value: function getMaxValue() {
-      return this._maxValue;
-    }
-  }, {
-    key: "getRange",
-    value: function getRange() {
-      return this._maxValue - this._minValue;
-    }
-  }, {
-    key: "getOuterMinValue",
-    value: function getOuterMinValue() {
-      return this._outerMinValue;
-    }
-  }, {
-    key: "getOuterMaxValue",
-    value: function getOuterMaxValue() {
-      return this._outerMaxValue;
-    }
-  }, {
-    key: "getOuterRange",
-    value: function getOuterRange() {
-      return this._outerMaxValue - this._outerMinValue;
-    }
-  }, {
-    key: "getHeight",
-    value: function getHeight() {
-      return Math.max(0, this._bottom - this._top);
-    }
-  }, {
-    key: "getGradations",
-    value: function getGradations() {
-      return this._gradations;
-    }
-  }, {
-    key: "getMinInterval",
-    value: function getMinInterval() {
-      return this._minInterval;
-    }
-  }, {
-    key: "setMinInterval",
-    value: function setMinInterval(v) {
-      this._minInterval = v;
-    }
-  }, {
-    key: "getSelectedPosition",
-    value: function getSelectedPosition() {
-      if (this._selectedPosition >= 0) {
-        return this._selectedPosition;
-      }
-
-      if (this._selectedValue > -Number.MAX_VALUE) {
-        return this.toY(this._selectedValue);
-      }
-
-      return -1;
-    }
-  }, {
-    key: "getSelectedValue",
-    value: function getSelectedValue() {
-      if (this._selectedValue > -Number.MAX_VALUE) {
-        return this._selectedValue;
-      }
-
-      var mgr = new _chart_manager.default();
-      var area = mgr.getArea(this.getAreaName());
-
-      if (area === null) {
-        return -Number.MAX_VALUE;
-      }
-
-      if (this._selectedPosition < area.getTop() + 12 || this._selectedPosition >= area.getBottom() - 4) {
-        return -Number.MAX_VALUE;
-      }
-
-      return this.toValue(this._selectedPosition);
-    }
-  }, {
-    key: "setPaddingTop",
-    value: function setPaddingTop(p) {
-      this._paddingTop = p;
-    }
-  }, {
-    key: "setPaddingBottom",
-    value: function setPaddingBottom(p) {
-      this._paddingBottom = p;
-    }
-  }, {
-    key: "toValue",
-    value: function toValue(y) {
-      return this._maxValue - (y - this._top) / this._ratio;
-    }
-  }, {
-    key: "toY",
-    value: function toY(value) {
-      if (this._ratio > 0) {
-        return this._top + Math.floor((this._maxValue - value) * this._ratio + 0.5);
-      }
-
-      return this._top;
-    }
-  }, {
-    key: "toHeight",
-    value: function toHeight(value) {
-      return Math.floor(value * this._ratio + 1.5);
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var min = Number.MAX_VALUE;
-      var max = -Number.MAX_VALUE;
-      var mgr = new _chart_manager.default();
-      var dp,
-          dpNames = [".main", ".secondary"];
-
-      for (var i = 0; i < dpNames.length; i++) {
-        dp = mgr.getDataProvider(this.getName() + dpNames[i]);
-
-        if (dp !== null && dp !== undefined) {
-          min = Math.min(min, dp.getMinValue());
-          max = Math.max(max, dp.getMaxValue());
-        }
-      }
-
-      var r = {
-        "min": min,
-        "max": max
-      };
-      this.preSetRange(r);
-      this.setRange(r.min, r.max);
-    }
-  }, {
-    key: "select",
-    value: function select(v) {
-      this._selectedValue = v;
-      this._selectedPosition = -1;
-    }
-  }, {
-    key: "selectAt",
-    value: function selectAt(y) {
-      this._selectedPosition = y;
-      this._selectedValue = -Number.MAX_VALUE;
-    }
-  }, {
-    key: "unselect",
-    value: function unselect() {
-      this._selectedPosition = -1;
-      this._selectedValue = -Number.MAX_VALUE;
-    }
-  }, {
-    key: "preSetRange",
-    value: function preSetRange(r) {
-      if (r.min === r.max) {
-        r.min = -1.0;
-        r.max = 1.0;
-      }
-    }
-  }, {
-    key: "setRange",
-    value: function setRange(minValue, maxValue) {
-      var mgr = new _chart_manager.default();
-      var area = mgr.getArea(this.getAreaName());
-
-      if (this._minValue === minValue && this._maxValue === maxValue && !area.isChanged()) {
-        return;
-      }
-
-      this._updated = true;
-      this._minValue = minValue;
-      this._maxValue = maxValue;
-      this._gradations = [];
-
-      var top = area.getTop() + this._paddingTop;
-
-      var bottom = area.getBottom() - (this._paddingBottom + 1);
-
-      if (top >= bottom) {
-        this._minValue = this._maxValue;
-        return;
-      }
-
-      this._top = top;
-      this._bottom = bottom;
-      if (this._maxValue > this._minValue) this._ratio = (bottom - top) / (this._maxValue - this._minValue);else {
-        this._ratio = 1;
-      }
-      this._outerMinValue = this.toValue(area.getBottom());
-      this._outerMaxValue = this.toValue(area.getTop());
-      this.updateGradations();
-    }
-  }, {
-    key: "calcInterval",
-    value: function calcInterval() {
-      var H = this.getHeight();
-      var h = this.getMinInterval();
-
-      if (H / h <= 1) {
-        h = H >> 1;
-      }
-
-      var d = this.getRange();
-      var i = 0;
-
-      while (i > -2 && Math.floor(d) < d) {
-        d *= 10.0;
-        i--;
-      }
-
-      var m, c;
-
-      for (;; i++) {
-        c = Math.pow(10.0, i);
-        m = c;
-        if (this.toHeight(m) > h) break;
-        m = 2.0 * c;
-        if (this.toHeight(m) > h) break;
-        m = 5.0 * c;
-        if (this.toHeight(m) > h) break;
-      }
-
-      return m;
-    }
-  }, {
-    key: "updateGradations",
-    value: function updateGradations() {
-      this._gradations = [];
-      var interval = this.calcInterval();
-
-      if (interval <= 0.0) {
-        return;
-      }
-
-      var v = Math.floor(this.getMaxValue() / interval) * interval;
-
-      do {
-        this._gradations.push(v);
-
-        v -= interval;
-      } while (v > this.getMinValue());
-    }
-  }]);
-
-  return Range;
-}(_named_object.default);
-
-exports.Range = Range;
-
-var PositiveRange =
-/*#__PURE__*/
-function (_Range) {
-  _inherits(PositiveRange, _Range);
-
-  function PositiveRange(name) {
-    _classCallCheck(this, PositiveRange);
-
-    return _possibleConstructorReturn(this, (PositiveRange.__proto__ || Object.getPrototypeOf(PositiveRange)).call(this, name));
-  }
-
-  _createClass(PositiveRange, [{
-    key: "preSetRange",
-    value: function preSetRange(r) {
-      if (r.min < 0) r.min = 0;
-      if (r.max < 0) r.max = 0;
-    }
-  }]);
-
-  return PositiveRange;
-}(Range);
-
-exports.PositiveRange = PositiveRange;
-
-var ZeroBasedPositiveRange =
-/*#__PURE__*/
-function (_Range2) {
-  _inherits(ZeroBasedPositiveRange, _Range2);
-
-  function ZeroBasedPositiveRange(name) {
-    _classCallCheck(this, ZeroBasedPositiveRange);
-
-    return _possibleConstructorReturn(this, (ZeroBasedPositiveRange.__proto__ || Object.getPrototypeOf(ZeroBasedPositiveRange)).call(this, name));
-  }
-
-  _createClass(ZeroBasedPositiveRange, [{
-    key: "preSetRange",
-    value: function preSetRange(r) {
-      r.min = 0;
-      if (r.max < 0) r.max = 0;
-    }
-  }]);
-
-  return ZeroBasedPositiveRange;
-}(Range);
-
-exports.ZeroBasedPositiveRange = ZeroBasedPositiveRange;
-
-var MainRange =
-/*#__PURE__*/
-function (_Range3) {
-  _inherits(MainRange, _Range3);
-
-  function MainRange(name) {
-    _classCallCheck(this, MainRange);
-
-    return _possibleConstructorReturn(this, (MainRange.__proto__ || Object.getPrototypeOf(MainRange)).call(this, name));
-  }
-
-  _createClass(MainRange, [{
-    key: "preSetRange",
-    value: function preSetRange(r) {
-      var mgr = new _chart_manager.default();
-      var timeline = mgr.getTimeline(this.getDataSourceName());
-      var dIndex = timeline.getMaxIndex() - timeline.getLastIndex();
-
-      if (dIndex < 25) {
-        var ds = mgr.getDataSource(this.getDataSourceName());
-        var data = ds.getDataAt(ds.getDataCount() - 1);
-        var d = (r.max - r.min) / 4 * (1 - dIndex / 25);
-        r.min = Math.min(r.min, Math.max(data.low - d, 0));
-        r.max = Math.max(r.max, data.high + d);
-      }
-
-      if (r.min > 0) {
-        var a = r.max / r.min;
-
-        if (a < 1.016) {
-          var m = (r.max + r.min) / 2.0;
-          var c = (a - 1.0) * 1.5;
-          r.max = m * (1.0 + c);
-          r.min = m * (1.0 - c);
-        } else if (a < 1.048) {
-          var _m = (r.max + r.min) / 2.0;
-
-          r.max = _m * 1.024;
-          r.min = _m * 0.976;
-        }
-      }
-
-      if (r.min < 0) r.min = 0;
-      if (r.max < 0) r.max = 0;
-    }
-  }]);
-
-  return MainRange;
-}(Range);
-
-exports.MainRange = MainRange;
-
-var ZeroCenteredRange =
-/*#__PURE__*/
-function (_Range4) {
-  _inherits(ZeroCenteredRange, _Range4);
-
-  function ZeroCenteredRange(name) {
-    _classCallCheck(this, ZeroCenteredRange);
-
-    return _possibleConstructorReturn(this, (ZeroCenteredRange.__proto__ || Object.getPrototypeOf(ZeroCenteredRange)).call(this, name));
-  }
-
-  _createClass(ZeroCenteredRange, [{
-    key: "calcInterval",
-    value: function calcInterval(area) {
-      var h = this.getMinInterval();
-
-      if (area.getHeight() / h < 2) {
-        return 0.0;
-      }
-
-      var r = this.getRange();
-      var i;
-
-      for (i = 3;; i += 2) {
-        if (this.toHeight(r / i) <= h) break;
-      }
-
-      i -= 2;
-      return r / i;
-    }
-  }, {
-    key: "updateGradations",
-    value: function updateGradations() {
-      this._gradations = [];
-      var mgr = new _chart_manager.default();
-      var area = mgr.getArea(this.getAreaName());
-      var interval = this.calcInterval(area);
-
-      if (interval <= 0.0) {
-        return;
-      }
-
-      var v = interval / 2.0;
-
-      do {
-        this._gradations.push(v);
-
-        this._gradations.push(-v);
-
-        v += interval;
-      } while (v <= this.getMaxValue());
-    }
-  }, {
-    key: "preSetRange",
-    value: function preSetRange(r) {
-      var abs = Math.max(Math.abs(r.min), Math.abs(r.max));
-      r.min = -abs;
-      r.max = abs;
-    }
-  }]);
-
-  return ZeroCenteredRange;
-}(Range);
-
-exports.ZeroCenteredRange = ZeroCenteredRange;
-
-var PercentageRange =
-/*#__PURE__*/
-function (_Range5) {
-  _inherits(PercentageRange, _Range5);
-
-  function PercentageRange(name) {
-    _classCallCheck(this, PercentageRange);
-
-    return _possibleConstructorReturn(this, (PercentageRange.__proto__ || Object.getPrototypeOf(PercentageRange)).call(this, name));
-  }
-
-  _createClass(PercentageRange, [{
-    key: "updateGradations",
-    value: function updateGradations() {
-      this._gradations = [];
-      var mgr = new _chart_manager.default();
-      var area = mgr.getArea(this.getAreaName());
-      var interval = 10.0;
-      var h = Math.floor(this.toHeight(interval));
-      if (h << 2 > area.getHeight()) return;
-      var v = Math.ceil(this.getMinValue() / interval) * interval;
-      if (v === 0.0) v = 0;
-
-      if (h << 2 < 24) {
-        if (h << 1 < 8) return;
-
-        do {
-          if (v === 20.0 || v === 80.0) this._gradations.push(v);
-          v += interval;
-        } while (v < this.getMaxValue());
-      } else {
-        do {
-          if (h < 8) {
-            if (v === 20.0 || v === 50.0 || v === 80.0) this._gradations.push(v);
-          } else {
-            if (v === 0.0 || v === 20.0 || v === 50.0 || v === 80.0 || v === 100.0) this._gradations.push(v);
-          }
-
-          v += interval;
-        } while (v < this.getMaxValue());
-      }
-    }
-  }]);
-
-  return PercentageRange;
-}(Range);
-
-exports.PercentageRange = PercentageRange;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _named_object = _interopRequireDefault(__webpack_require__(1));
-
-var _cpoint = _interopRequireDefault(__webpack_require__(13));
-
-var ctools = _interopRequireWildcard(__webpack_require__(14));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CToolManager =
-/*#__PURE__*/
-function (_NamedObject) {
-  _inherits(CToolManager, _NamedObject);
-
-  function CToolManager(name) {
-    var _this;
-
-    _classCallCheck(this, CToolManager);
-
-    _this = _possibleConstructorReturn(this, (CToolManager.__proto__ || Object.getPrototypeOf(CToolManager)).call(this, name));
-    _this.selectedObject = -1;
-    _this.toolObjects = [];
-    return _this;
-  }
-
-  _createClass(CToolManager, [{
-    key: "getToolObjectCount",
-    value: function getToolObjectCount() {
-      return this.toolObjects.length;
-    }
-  }, {
-    key: "addToolObject",
-    value: function addToolObject(o) {
-      this.toolObjects.push(o);
-    }
-  }, {
-    key: "getToolObject",
-    value: function getToolObject(i) {
-      if (i < this.toolObjects.length && i >= 0) {
-        return this.toolObjects[i];
-      }
-
-      return null;
-    }
-  }, {
-    key: "getCurrentObject",
-    value: function getCurrentObject() {
-      return this.getToolObject(this.getToolObjectCount() - 1);
-    }
-  }, {
-    key: "getSelectedObject",
-    value: function getSelectedObject() {
-      return this.getToolObject(this.selectedObject);
-    }
-  }, {
-    key: "delCurrentObject",
-    value: function delCurrentObject() {
-      this.toolObjects.splice(this.getToolObjectCount() - 1, 1);
-    }
-  }, {
-    key: "delSelectedObject",
-    value: function delSelectedObject() {
-      this.toolObjects.splice(this.selectedObject, 1);
-      this.selectedObject = -1;
-    }
-  }, {
-    key: "acceptMouseMoveEvent",
-    value: function acceptMouseMoveEvent(x, y) {
-      if (this.selectedObject === -1) {
-        var curr = this.toolObjects[this.getToolObjectCount() - 1];
-        if (curr !== null && curr !== undefined && curr.getState() !== ctools.CToolObject.state.AfterDraw) return curr.acceptMouseMoveEvent(x, y);
-      } else {
-        var sel = this.toolObjects[this.selectedObject];
-
-        if (sel.getState() === ctools.CToolObject.state.Draw) {
-          return sel.acceptMouseMoveEvent(x, y);
-        }
-
-        sel.unselect();
-        this.selectedObject = -1;
-      }
-
-      for (var index in this.toolObjects) {
-        if (this.toolObjects[index].isSelected(x, y)) {
-          this.selectedObject = index;
-          return false;
-        }
-      }
-
-      return false;
-    }
-  }, {
-    key: "acceptMouseDownEvent",
-    value: function acceptMouseDownEvent(x, y) {
-      this.mouseDownMove = false;
-
-      if (this.selectedObject === -1) {
-        var curr = this.toolObjects[this.getToolObjectCount() - 1];
-        if (curr !== null && curr !== undefined && curr.getState() !== ctools.CToolObject.state.AfterDraw) return curr.acceptMouseDownEvent(x, y);
-      } else {
-        var sel = this.toolObjects[this.selectedObject];
-        if (sel.getState() !== ctools.CToolObject.state.BeforeDraw) return sel.acceptMouseDownEvent(x, y);
-      }
-
-      return false;
-    }
-  }, {
-    key: "acceptMouseDownMoveEvent",
-    value: function acceptMouseDownMoveEvent(x, y) {
-      this.mouseDownMove = true;
-
-      if (this.selectedObject === -1) {
-        var curr = this.toolObjects[this.getToolObjectCount() - 1];
-        if (curr !== null && curr !== undefined && curr.getState() === ctools.CToolObject.state.Draw) return curr.acceptMouseDownMoveEvent(x, y);
-        return false;
-      } else {
-        var sel = this.toolObjects[this.selectedObject];
-
-        if (sel.getState() !== ctools.CToolObject.state.BeforeDraw) {
-          if (sel.acceptMouseDownMoveEvent(x, y) === true) {
-            var point = this.toolObjects[this.selectedObject].points;
-
-            for (var i = 0; i < point.length; i++) {
-              if (point[i].state === _cpoint.default.state.Highlight || point[i].state === _cpoint.default.state.Show) {
-                return true;
-              }
-            }
-          }
-
-          return true;
-        }
-      }
-    }
-  }, {
-    key: "acceptMouseUpEvent",
-    value: function acceptMouseUpEvent(x, y) {
-      if (this.mouseDownMove === true) {
-        if (this.selectedObject === -1) {
-          var _curr = this.toolObjects[this.getToolObjectCount() - 1];
-          if (_curr !== null && _curr !== undefined && _curr.getState() === ctools.CToolObject.state.Draw) return _curr.acceptMouseUpEvent(x, y);
-          return true;
-        } else {
-          var sel = this.toolObjects[this.selectedObject];
-          if (sel.getState() !== ctools.CToolObject.state.BeforeDraw) return sel.acceptMouseUpEvent(x, y);
-        }
-      }
-
-      if (this.selectedObject !== -1) {
-        return true;
-      }
-
-      var curr = this.toolObjects[this.getToolObjectCount() - 1];
-
-      if (curr !== null && curr !== undefined) {
-        if (curr.getState() === ctools.CToolObject.state.Draw) return true;
-
-        if (!curr.isValidMouseXY(x, y)) {
-          return false;
-        }
-
-        if (curr.isSelected(x, y)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-  }]);
-
-  return CToolManager;
-}(_named_object.default);
-
-exports.default = CToolManager;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _named_object = _interopRequireDefault(__webpack_require__(1));
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-var _data_sources = __webpack_require__(4);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Timeline =
-/*#__PURE__*/
-function (_NamedObject) {
-  _inherits(Timeline, _NamedObject);
-
-  function Timeline(name) {
-    var _this;
-
-    _classCallCheck(this, Timeline);
-
-    _this = _possibleConstructorReturn(this, (Timeline.__proto__ || Object.getPrototypeOf(Timeline)).call(this, name));
-    _this._updated = false;
-    _this._innerLeft = 0;
-    _this._innerWidth = 0;
-    _this._firstColumnLeft = 0;
-    _this._scale = 3;
-    _this._lastScale = -1;
-    _this._maxItemCount = 0;
-    _this._maxIndex = 0;
-    _this._firstIndex = -1;
-    _this._selectedIndex = -1;
-    _this._savedFirstIndex = -1;
-    return _this;
-  }
-
-  _createClass(Timeline, [{
-    key: "isLatestShown",
-    value: function isLatestShown() {
-      return this.getLastIndex() === this._maxIndex;
-    }
-  }, {
-    key: "isUpdated",
-    value: function isUpdated() {
-      return this._updated;
-    }
-  }, {
-    key: "setUpdated",
-    value: function setUpdated(v) {
-      this._updated = v;
-    }
-  }, {
-    key: "getItemWidth",
-    value: function getItemWidth() {
-      return Timeline.itemWidth[this._scale];
-    }
-  }, {
-    key: "getSpaceWidth",
-    value: function getSpaceWidth() {
-      return Timeline.spaceWidth[this._scale];
-    }
-  }, {
-    key: "getColumnWidth",
-    value: function getColumnWidth() {
-      return this.getSpaceWidth() + this.getItemWidth();
-    }
-  }, {
-    key: "getInnerWidth",
-    value: function getInnerWidth() {
-      return this._innerWidth;
-    }
-  }, {
-    key: "getItemLeftOffset",
-    value: function getItemLeftOffset() {
-      return this.getSpaceWidth();
-    }
-  }, {
-    key: "getItemCenterOffset",
-    value: function getItemCenterOffset() {
-      return this.getSpaceWidth() + (this.getItemWidth() >> 1);
-    }
-  }, {
-    key: "getFirstColumnLeft",
-    value: function getFirstColumnLeft() {
-      return this._firstColumnLeft;
-    }
-  }, {
-    key: "getMaxItemCount",
-    value: function getMaxItemCount() {
-      return this._maxItemCount;
-    }
-  }, {
-    key: "getFirstIndex",
-    value: function getFirstIndex() {
-      return this._firstIndex;
-    }
-  }, {
-    key: "getLastIndex",
-    value: function getLastIndex() {
-      return Math.min(this._firstIndex + this._maxItemCount, this._maxIndex);
-    }
-  }, {
-    key: "getSelectedIndex",
-    value: function getSelectedIndex() {
-      return this._selectedIndex;
-    }
-  }, {
-    key: "getMaxIndex",
-    value: function getMaxIndex() {
-      return this._maxIndex;
-    }
-  }, {
-    key: "calcColumnCount",
-    value: function calcColumnCount(w) {
-      return Math.floor(w / this.getColumnWidth()) << 0;
-    }
-  }, {
-    key: "calcFirstColumnLeft",
-    value: function calcFirstColumnLeft(maxItemCount) {
-      return this._innerLeft + this._innerWidth - this.getColumnWidth() * maxItemCount;
-    }
-  }, {
-    key: "calcFirstIndexAlignRight",
-    value: function calcFirstIndexAlignRight(oldFirstIndex, oldMaxItemCount, newMaxItemCount) {
-      return Math.max(0, oldFirstIndex + Math.max(oldMaxItemCount, 1) - Math.max(newMaxItemCount, 1));
-    }
-  }, {
-    key: "calcFirstIndex",
-    value: function calcFirstIndex(newMaxItemCount) {
-      return this.validateFirstIndex(this.calcFirstIndexAlignRight(this._firstIndex, this._maxItemCount, newMaxItemCount), newMaxItemCount);
-    }
-  }, {
-    key: "updateMaxItemCount",
-    value: function updateMaxItemCount() {
-      var newMaxItemCount = this.calcColumnCount(this._innerWidth);
-      var newFirstIndex;
-
-      if (this._maxItemCount < 1) {
-        newFirstIndex = this.calcFirstIndex(newMaxItemCount);
-      } else if (this._lastScale === this._scale) {
-        newFirstIndex = this.validateFirstIndex(this._firstIndex - (newMaxItemCount - this._maxItemCount));
-      } else {
-        var focusedIndex = this._selectedIndex >= 0 ? this._selectedIndex : this.getLastIndex() - 1;
-        newFirstIndex = this.validateFirstIndex(focusedIndex - Math.round((focusedIndex - this._firstIndex) * newMaxItemCount / this._maxItemCount));
-      }
-
-      this._lastScale = this._scale;
-
-      if (this._firstIndex !== newFirstIndex) {
-        if (this._selectedIndex === this._firstIndex) this._selectedIndex = newFirstIndex;
-        this._firstIndex = newFirstIndex;
-        this._updated = true;
-      }
-
-      if (this._maxItemCount !== newMaxItemCount) {
-        this._maxItemCount = newMaxItemCount;
-        this._updated = true;
-      }
-
-      this._firstColumnLeft = this.calcFirstColumnLeft(newMaxItemCount);
-    }
-  }, {
-    key: "validateFirstIndex",
-    value: function validateFirstIndex(firstIndex, maxItemCount) {
-      if (this._maxIndex < 1) {
-        return -1;
-      }
-
-      if (firstIndex < 0) {
-        return 0;
-      }
-
-      var lastFirst = Math.max(0, this._maxIndex - 1
-      /*maxItemCount*/
-      );
-
-      if (firstIndex > lastFirst) {
-        return lastFirst;
-      }
-
-      return firstIndex;
-    }
-  }, {
-    key: "validateSelectedIndex",
-    value: function validateSelectedIndex() {
-      if (this._selectedIndex < this._firstIndex) this._selectedIndex = -1;else if (this._selectedIndex >= this.getLastIndex()) this._selectedIndex = -1;
-    }
-  }, {
-    key: "onLayout",
-    value: function onLayout() {
-      var mgr = new _chart_manager.default();
-      var area = mgr.getArea(this.getDataSourceName() + ".main");
-
-      if (area !== null) {
-        this._innerLeft = area.getLeft() + Timeline.PADDING_LEFT;
-        var w = Math.max(0, area.getWidth() - (Timeline.PADDING_LEFT + Timeline.PADDING_RIGHT));
-
-        if (this._innerWidth !== w) {
-          this._innerWidth = w;
-          this.updateMaxItemCount();
-        }
-      }
-    }
-  }, {
-    key: "toIndex",
-    value: function toIndex(x) {
-      return this._firstIndex + this.calcColumnCount(x - this._firstColumnLeft);
-    }
-  }, {
-    key: "toColumnLeft",
-    value: function toColumnLeft(index) {
-      return this._firstColumnLeft + this.getColumnWidth() * (index - this._firstIndex);
-    }
-  }, {
-    key: "toItemLeft",
-    value: function toItemLeft(index) {
-      return this.toColumnLeft(index) + this.getItemLeftOffset();
-    }
-  }, {
-    key: "toItemCenter",
-    value: function toItemCenter(index) {
-      return this.toColumnLeft(index) + this.getItemCenterOffset();
-    }
-  }, {
-    key: "selectAt",
-    value: function selectAt(x) {
-      this._selectedIndex = this.toIndex(x);
-      this.validateSelectedIndex();
-      return this._selectedIndex >= 0;
-    }
-  }, {
-    key: "unselect",
-    value: function unselect() {
-      this._selectedIndex = -1;
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var mgr = new _chart_manager.default();
-      var ds = mgr.getDataSource(this.getDataSourceName());
-      var oldMaxIndex = this._maxIndex;
-      this._maxIndex = ds.getDataCount();
-
-      switch (ds.getUpdateMode()) {
-        case _data_sources.DataSource.UpdateMode.Refresh:
-          if (this._maxIndex < 1) this._firstIndex = -1;else this._firstIndex = Math.max(this._maxIndex - this._maxItemCount, 0);
-          this._selectedIndex = -1;
-          this._updated = true;
-          break;
-
-        case _data_sources.DataSource.UpdateMode.Append:
-          var lastIndex = this.getLastIndex();
-          var erasedCount = ds.getErasedCount();
-
-          if (lastIndex < oldMaxIndex) {
-            if (erasedCount > 0) {
-              this._firstIndex = Math.max(this._firstIndex - erasedCount, 0);
-
-              if (this._selectedIndex >= 0) {
-                this._selectedIndex -= erasedCount;
-                this.validateSelectedIndex();
-              }
-
-              this._updated = true;
-            }
-          } else if (lastIndex === oldMaxIndex) {
-            this._firstIndex += this._maxIndex - oldMaxIndex;
-
-            if (this._selectedIndex >= 0) {
-              this._selectedIndex -= erasedCount;
-              this.validateSelectedIndex();
-            }
-
-            this._updated = true;
-          }
-
-          break;
-      }
-    }
-  }, {
-    key: "move",
-    value: function move(x) {
-      if (this.isLatestShown()) {
-        new _chart_manager.default().getArea(this.getDataSourceName() + ".mainRange").setChanged(true);
-      }
-
-      this._firstIndex = this.validateFirstIndex(this._savedFirstIndex - this.calcColumnCount(x), this._maxItemCount);
-      this._updated = true;
-      if (this._selectedIndex >= 0) this.validateSelectedIndex();
-    }
-  }, {
-    key: "startMove",
-    value: function startMove() {
-      this._savedFirstIndex = this._firstIndex;
-    }
-  }, {
-    key: "scale",
-    value: function scale(s) {
-      this._scale += s;
-
-      if (this._scale < 0) {
-        this._scale = 0;
-      } else if (this._scale >= Timeline.itemWidth.length) {
-        this._scale = Timeline.itemWidth.length - 1;
-      }
-
-      this.updateMaxItemCount();
-
-      if (this._selectedIndex >= 0) {
-        this.validateSelectedIndex();
-      }
-    }
-  }]);
-
-  return Timeline;
-}(_named_object.default);
-
-exports.default = Timeline;
-Timeline.itemWidth = [1, 3, 3, 5, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29];
-Timeline.spaceWidth = [1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 7, 7, 7];
-Timeline.PADDING_LEFT = 4;
-Timeline.PADDING_RIGHT = 8;
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.DockableLayout = exports.TableLayout = void 0;
-
-var areas = _interopRequireWildcard(__webpack_require__(7));
-
-var _chart_manager = _interopRequireDefault(__webpack_require__(0));
-
-var themes = _interopRequireWildcard(__webpack_require__(5));
-
-var _chart_settings = _interopRequireDefault(__webpack_require__(3));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return _get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TableLayout =
-/*#__PURE__*/
-function (_areas$ChartAreaGroup) {
-  _inherits(TableLayout, _areas$ChartAreaGroup);
-
-  function TableLayout(name) {
-    var _this;
-
-    _classCallCheck(this, TableLayout);
-
-    _this = _possibleConstructorReturn(this, (TableLayout.__proto__ || Object.getPrototypeOf(TableLayout)).call(this, name));
-    _this._nextRowId = 0;
-    _this._focusedRowIndex = -1;
-    return _this;
-  }
-
-  _createClass(TableLayout, [{
-    key: "getNextRowId",
-    value: function getNextRowId() {
-      return this._nextRowId++;
-    }
-  }, {
-    key: "measure",
-    value: function measure(context, width, height) {
-      this.setMeasuredDimension(width, height);
-      var rowH,
-          prevH = 0,
-          totalH = 0;
-      var h, rows;
-      var rh = [];
-      var i,
-          cnt = this._areas.length;
-
-      for (i = 0; i < cnt; i += 2) {
-        rowH = this._areas[i].getHeight();
-
-        if (rowH === 0) {
-          if (i === 0) {
-            rows = cnt + 1 >> 1;
-            var n = rows * 2 + 5;
-            var nh = height / n * 2 << 0;
-            h = height;
-
-            for (i = rows - 1; i > 0; i--) {
-              rh.unshift(nh);
-              h -= nh;
-            }
-
-            rh.unshift(h);
-            break;
-          } else if (i === 2) {
-            rowH = prevH / 3;
-          } else {
-            rowH = prevH;
-          }
-        }
-
-        totalH += rowH;
-        prevH = rowH;
-        rh.push(rowH);
-      }
-
-      if (totalH > 0) {
-        var rate = height / totalH;
-        rows = cnt + 1 >> 1;
-        h = height;
-
-        for (i = rows - 1; i > 0; i--) {
-          rh[i] *= rate;
-          h -= rh[i];
-        }
-
-        rh[0] = h;
-      }
-
-      var nw = 8; // chart depths sidebar
-
-      var minRW = 64;
-      var maxRW = Math.min(240, width >> 1);
-      var rw = minRW;
-      var mgr = new _chart_manager.default();
-      var timeline = mgr.getTimeline(this.getDataSourceName());
-
-      if (timeline.getFirstIndex() >= 0) {
-        var firstIndexes = [];
-
-        for (rw = minRW; rw < maxRW; rw += nw) {
-          firstIndexes.push(timeline.calcFirstIndex(timeline.calcColumnCount(width - rw)));
-        }
-
-        var lastIndex = timeline.getLastIndex();
-        var dpNames = [".main", ".secondary"];
-        var minmaxes = new Array(firstIndexes.length);
-        var iArea, iIndex;
-
-        for (iArea = 0, iIndex = 0, rw = minRW; iArea < this._areas.length && iIndex < firstIndexes.length; iArea += 2) {
-          var area = this._areas[iArea];
-          var plotter = mgr.getPlotter(area.getName() + "Range.main");
-
-          for (var iDp in dpNames) {
-            var dp = mgr.getDataProvider(area.getName() + dpNames[iDp]);
-
-            if (dp === undefined) {
-              continue;
-            }
-
-            dp.calcRange(firstIndexes, lastIndex, minmaxes, null);
-
-            while (iIndex < firstIndexes.length) {
-              var minW = plotter.getRequiredWidth(context, minmaxes[iIndex].min);
-              var maxW = plotter.getRequiredWidth(context, minmaxes[iIndex].max);
-
-              if (Math.max(minW, maxW) < rw) {
-                break;
-              }
-
-              iIndex++;
-              rw += nw;
-            }
-          }
-        }
-      }
-
-      for (i = 1; i < this._areas.length; i += 2) {
-        this._areas[i].measure(context, rw, rh[i >> 1]);
-      }
-
-      var lw = width - rw;
-
-      for (i = 0; i < this._areas.length; i += 2) {
-        this._areas[i].measure(context, lw, rh[i >> 1]);
-      }
-    }
-  }, {
-    key: "layout",
-    value: function layout(left, top, right, bottom, forceChange) {
-      _get(TableLayout.prototype.__proto__ || Object.getPrototypeOf(TableLayout.prototype), "layout", this).call(this, left, top, right, bottom, forceChange);
-
-      if (this._areas.length < 1) return;
-      var area;
-
-      var center = left + this._areas[0].getMeasuredWidth();
-
-      var t = top,
-          b;
-      if (!forceChange) forceChange = this.isChanged();
-      var i,
-          cnt = this._areas.length;
-
-      for (i = 0; i < cnt; i++) {
-        area = this._areas[i];
-        b = t + area.getMeasuredHeight();
-        area.layout(left, t, center, b, forceChange);
-        i++;
-        area = this._areas[i];
-        area.layout(center, t, this.getRight(), b, forceChange);
-        t = b;
-      }
-
-      this.setChanged(false);
-    }
-  }, {
-    key: "drawGrid",
-    value: function drawGrid(context) {
-      if (this._areas.length < 1) {
-        return;
-      }
-
-      var mgr = new _chart_manager.default();
-      var theme = mgr.getTheme(this.getFrameName());
-      context.fillStyle = theme.getColor(themes.Theme.Color.Grid1);
-      context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight());
-      var i,
-          cnt = this._areas.length - 2;
-
-      for (i = 0; i < cnt; i += 2) {
-        context.fillRect(this.getLeft(), this._areas[i].getBottom(), this.getWidth(), 1);
-      }
-
-      if (!mgr.getCaptureMouseWheelDirectly()) {
-        for (i = 0, cnt += 2; i < cnt; i += 2) {
-          if (this._areas[i].isSelected()) {
-            context.strokeStyle = theme.getColor(themes.Theme.Color.Indicator1);
-            context.strokeRect(this.getLeft() + 0.5, this.getTop() + 0.5, this.getWidth() - 1, this.getHeight() - 1);
-            break;
-          }
-        }
-      }
-    }
-  }, {
-    key: "highlight",
-    value: function highlight(area) {
-      this._highlightedArea = null;
-      var e,
-          i,
-          cnt = this._areas.length;
-
-      for (i = 0; i < cnt; i++) {
-        e = this._areas[i];
-
-        if (e === area) {
-          i &= ~1;
-          e = this._areas[i];
-          e.highlight(e);
-          this._highlightedArea = e;
-          i++;
-          e = this._areas[i];
-          e.highlight(null);
-          e.highlight(e);
-        } else {
-          e.highlight(null);
-        }
-      }
-
-      return this._highlightedArea !== null ? this : null;
-    }
-  }, {
-    key: "select",
-    value: function select(area) {
-      this._selectedArea = null;
-      var e,
-          i,
-          cnt = this._areas.length;
-
-      for (i = 0; i < cnt; i++) {
-        e = this._areas[i];
-
-        if (e === area) {
-          i &= ~1;
-          e = this._areas[i];
-          e.select(e);
-          this._selectedArea = e;
-          i++;
-          e = this._areas[i];
-          e.select(e);
-        } else {
-          e.select(null);
-        }
-      }
-
-      return this._selectedArea !== null ? this : null;
-    }
-  }, {
-    key: "onMouseMove",
-    value: function onMouseMove(x, y) {
-      if (this._focusedRowIndex >= 0) {
-        var upper = this._areas[this._focusedRowIndex];
-        var lower = this._areas[this._focusedRowIndex + 2];
-        var d = y - this._oldY;
-        if (d === 0) return this;
-        var upperBottom = this._oldUpperBottom + d;
-        var lowerTop = this._oldLowerTop + d;
-
-        if (upperBottom - upper.getTop() >= 60 && lower.getBottom() - lowerTop >= 60) {
-          upper.setBottom(upperBottom);
-          lower.setTop(lowerTop);
-        }
-
-        return this;
-      }
-
-      var i,
-          cnt = this._areas.length - 2;
-
-      for (i = 0; i < cnt; i += 2) {
-        var b = this._areas[i].getBottom();
-
-        if (y >= b - 4 && y < b + 4) {
-          new _chart_manager.default().showCursor('n-resize');
-          return this;
-        }
-      }
-
-      return null;
-    }
-  }, {
-    key: "onMouseLeave",
-    value: function onMouseLeave(x, y) {
-      this._focusedRowIndex = -1;
-    }
-  }, {
-    key: "onMouseDown",
-    value: function onMouseDown(x, y) {
-      var i,
-          cnt = this._areas.length - 2;
-
-      for (i = 0; i < cnt; i += 2) {
-        var b = this._areas[i].getBottom();
-
-        if (y >= b - 4 && y < b + 4) {
-          this._focusedRowIndex = i;
-          this._oldY = y;
-          this._oldUpperBottom = b;
-          this._oldLowerTop = this._areas[i + 2].getTop();
-          return this;
-        }
-      }
-
-      return null;
-    }
-  }, {
-    key: "onMouseUp",
-    value: function onMouseUp(x, y) {
-      if (this._focusedRowIndex >= 0) {
-        this._focusedRowIndex = -1;
-        var i,
-            cnt = this._areas.length;
-        var height = [];
-
-        for (i = 0; i < cnt; i += 2) {
-          height.push(this._areas[i].getHeight());
-        }
-
-        _chart_settings.default.get().charts.areaHeight = height;
-
-        _chart_settings.default.save();
-      }
-
-      return this;
-    }
-  }]);
-
-  return TableLayout;
-}(areas.ChartAreaGroup);
-
-exports.TableLayout = TableLayout;
-
-var DockableLayout =
-/*#__PURE__*/
-function (_areas$ChartAreaGroup2) {
-  _inherits(DockableLayout, _areas$ChartAreaGroup2);
-
-  function DockableLayout(name) {
-    _classCallCheck(this, DockableLayout);
-
-    return _possibleConstructorReturn(this, (DockableLayout.__proto__ || Object.getPrototypeOf(DockableLayout)).call(this, name));
-  }
-
-  _createClass(DockableLayout, [{
-    key: "measure",
-    value: function measure(context, width, height) {
-      _get(DockableLayout.prototype.__proto__ || Object.getPrototypeOf(DockableLayout.prototype), "measure", this).call(this, context, width, height);
-
-      width = this.getMeasuredWidth();
-      height = this.getMeasuredHeight();
-
-      for (var i in this._areas) {
-        var area = this._areas[i];
-        area.measure(context, width, height);
-
-        switch (area.getDockStyle()) {
-          case areas.ChartArea.DockStyle.left:
-          case areas.ChartArea.DockStyle.Right:
-            width -= area.getMeasuredWidth();
-            break;
-
-          case areas.ChartArea.DockStyle.Top:
-          case areas.ChartArea.DockStyle.Bottom:
-            height -= area.getMeasuredHeight();
-            break;
-
-          case areas.ChartArea.DockStyle.Fill:
-            width = 0;
-            height = 0;
-            break;
-        }
-      }
-    }
-  }, {
-    key: "layout",
-    value: function layout(left, top, right, bottom, forceChange) {
-      _get(DockableLayout.prototype.__proto__ || Object.getPrototypeOf(DockableLayout.prototype), "layout", this).call(this, left, top, right, bottom, forceChange);
-
-      left = this.getLeft();
-      top = this.getTop();
-      right = this.getRight();
-      bottom = this.getBottom();
-      var w, h;
-
-      if (!forceChange) {
-        forceChange = this.isChanged();
-      }
-
-      for (var i in this._areas) {
-        var area = this._areas[i];
-
-        switch (area.getDockStyle()) {
-          case areas.ChartArea.DockStyle.left:
-            w = area.getMeasuredWidth();
-            area.layout(left, top, left + w, bottom, forceChange);
-            left += w;
-            break;
-
-          case areas.ChartArea.DockStyle.Top:
-            h = area.getMeasuredHeight();
-            area.layout(left, top, right, top + h, forceChange);
-            top += h;
-            break;
-
-          case areas.ChartArea.DockStyle.Right:
-            w = area.getMeasuredWidth();
-            area.layout(right - w, top, right, bottom, forceChange);
-            right -= w;
-            break;
-
-          case areas.ChartArea.DockStyle.Bottom:
-            h = area.getMeasuredHeight();
-            area.layout(left, bottom - h, right, bottom, forceChange);
-            bottom -= h;
-            break;
-
-          case areas.ChartArea.DockStyle.Fill:
-            area.layout(left, top, right, bottom, forceChange);
-            left = right;
-            top = bottom;
-            break;
-        }
-      }
-
-      this.setChanged(false);
-    }
-  }, {
-    key: "drawGrid",
-    value: function drawGrid(context) {
-      var mgr = new _chart_manager.default();
-      var theme = mgr.getTheme(this.getFrameName());
-      var left = this.getLeft();
-      var top = this.getTop();
-      var right = this.getRight();
-      var bottom = this.getBottom();
-      context.fillStyle = theme.getColor(this._gridColor);
-
-      for (var i in this._areas) {
-        var area = this._areas[i];
-
-        switch (area.getDockStyle()) {
-          case areas.ChartArea.DockStyle.Left:
-            context.fillRect(area.getRight(), top, 1, bottom - top);
-            left += area.getWidth();
-            break;
-
-          case areas.ChartArea.DockStyle.Top:
-            context.fillRect(left, area.getBottom(), right - left, 1);
-            top += area.getHeight();
-            break;
-
-          case areas.ChartArea.DockStyle.Right:
-            context.fillRect(area.getLeft(), top, 1, bottom - top);
-            right -= area.getWidth();
-            break;
-
-          case areas.ChartArea.DockStyle.Bottom:
-            context.fillRect(left, area.getTop(), right - left, 1);
-            bottom -= area.getHeight();
-            break;
-        }
-      }
-    }
-  }]);
-
-  return DockableLayout;
-}(areas.ChartAreaGroup);
-
-exports.DockableLayout = DockableLayout;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var MEvent =
-/*#__PURE__*/
-function () {
-  function MEvent() {
-    _classCallCheck(this, MEvent);
-
-    this._handlers = [];
-  }
-
-  _createClass(MEvent, [{
-    key: "addHandler",
-    value: function addHandler(o, f) {
-      if (this.indexOf(o, f) < 0) this._handlers.push({
-        obj: o,
-        func: f
-      });
-    }
-  }, {
-    key: "removeHandler",
-    value: function removeHandler(o, f) {
-      var i = this._indexOf(o, f);
-
-      if (i >= 0) this._handlers.splice(i, 1);
-    }
-  }, {
-    key: "raise",
-    value: function raise(s, g) {
-      var a = this._handlers;
-      var e,
-          i,
-          c = a.length;
-
-      for (i = 0; i < c; i++) {
-        e = a[i];
-        e.func(s, g);
-      }
-    }
-  }, {
-    key: "indexOf",
-    value: function indexOf(o, f) {
-      var a = this._handlers;
-      var e,
-          i,
-          c = a.length;
-
-      for (i = 0; i < c; i++) {
-        e = a[i];
-        if (o === e.obj && f === e.func) return i;
-      }
-
-      return -1;
-    }
-  }]);
-
-  return MEvent;
-}();
-
-exports.default = MEvent;
-
-/***/ }),
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(26);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(38)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/_css-loader@0.28.7@css-loader/index.js!./main.css", function() {
+			var newContent = require("!!../../node_modules/_css-loader@0.28.7@css-loader/index.js!./main.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(27)(undefined);
+// imports
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+// module
+exports.push([module.i, "html,\nbody {\n    min-height: 100%;\n    margin: 0;\n    min-width: 100%\n}\n\n.chart_container {\n    cursor: default;\n    font-family: arial, sans, serif;\n    font-size: 12px;\n    height: 100%;\n    position: relative;\n    width: 100%\n}\n\n.chart_container div,\n.chart_container ul,\n.chart_container form {\n    margin: 0;\n    padding: 0\n}\n\n.chart_container a:hover {\n    text-decoration: none\n}\n\n.chart_container ul {\n    list-style: none;\n    border: 0;\n    margin: 0;\n    padding: 0\n}\n\n.chart_container button {\n    cursor: pointer\n}\n\n#chart_dom_elem_cache {\n    *font-weight: bold;\n    position: absolute;\n    visibility: hidden;\n    z-index: -1\n}\n\n#chart_toolbar {\n    border-bottom: 1px solid;\n    *font-weight: bold;\n    height: 29px;\n    position: absolute;\n    z-index: 3\n}\n\n.chart_container.dark #chart_toolbar {\n    background-color: #0a0a0a;\n    border-bottom-color: #404040\n}\n\n.chart_container.light #chart_toolbar {\n    background-color: #fff;\n    border-bottom-color: #afb1b3\n}\n\n.chart_container .chart_toolbar_sep {\n    float: left;\n    height: 100%;\n    width: 16px\n}\n\n.chart_container .chart_toolbar_minisep {\n    float: left;\n    height: 100%;\n    width: 4px\n}\n\n.chart_container .chart_dropdown {\n    display: inline-block;\n    float: left;\n    position: relative;\n    z-index: 100\n}\n\n.chart_container .chart_dropdown_t {\n    background-origin: content-box;\n    background-repeat: no-repeat;\n    border: 1px solid;\n    border-bottom-width: 0;\n    margin-top: 3px;\n    padding-right: 10px;\n    z-index: 101;\n    position: relative\n}\n\n.chart_container .chart_dropdown_t a {\n    display: inline-block;\n    padding: 3px 12px 5px 10px\n}\n\n.chart_container .chart_dropdown_data {\n    border: 1px solid;\n    display: none;\n    position: absolute;\n    padding: 6px 8px 6px 8px;\n    margin-top: -1px;\n    z-index: 100\n}\n\n.chart_container .chart_dropdown_data table {\n    border-collapse: collapse;\n    font-weight: normal;\n    white-space: nowrap\n}\n\n.chart_container .chart_dropdown_data td {\n    border-bottom: 1px solid;\n    padding: 8px 6px;\n    vertical-align: top\n}\n\n.market_chooser .chart_dropdown_data {\n    width: 370px\n}\n\n.market_chooser .chart_dropdown_data td {\n    border-bottom: 1px solid;\n    padding: 1px 6px !important;\n    vertical-align: top;\n    line-height: 24px\n}\n\n.market_chooser li {\n    float: left;\n    width: 80px;\n    height: 24px;\n    line-height: 24px\n}\n\n.chart_container .chart_dropdown_data td.marketName_ a.dark {\n    color: #fff\n}\n\n.chart_container .chart_dropdown_data td.marketName_ a.light {\n    color: #000\n}\n\n.chart_container .chart_dropdown_data table tr:last-child td {\n    border-bottom: 0\n}\n\n.chart_container .chart_dropdown_data li {\n    white-space: nowrap;\n    display: inline-block\n}\n\n.chart_container .chart_dropdown_data a {\n    text-decoration: none;\n    cursor: pointer;\n    padding: 5px 6px 5px 6px\n}\n\n.chart_container .chart_dropdown-hover.chart_dropdown_data {\n    display: block\n}\n\n#chart_dropdown_symbols .chart_dropdown_data td {\n    padding: 8px 6px 0 6px\n}\n\n#chart_dropdown_symbols .chart_dropdown_data li {\n    display: block;\n    height: 26px\n}\n\n#chart_dropdown_symbols .chart_dropdown_data a {\n    cursor: pointer\n}\n\n#chart_dropdown_themes .chart_dropdown_data td:first-child {\n    padding: 6px 1px 7px 6px\n}\n\n.chart_container.dark .chart_dropdown_t {\n    background-image: url(" + __webpack_require__(28) + ");\n    background-position: right 9px;\n    border-color: #0a0a0a;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_dropdown-hover.chart_dropdown_t {\n    background-color: #0a0a0a;\n    background-image: url(" + __webpack_require__(29) + ");\n    background-position: right 8px;\n    border-color: #606060;\n    color: #fff\n}\n\n.chart_container.dark .chart_dropdown_data {\n    background-color: rgba(10, 10, 10, 0.8);\n    border-color: #606060\n}\n\n.chart_container.dark .chart_dropdown_data td {\n    border-bottom-color: #404040;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_dropdown_data li a {\n    color: #1987da\n}\n\n.chart_container.dark .chart_dropdown_data li a:hover {\n    background-color: #383838\n}\n\n.chart_container.dark .chart_dropdown_data li a.selected {\n    color: #ffac00\n}\n\n.chart_container.light .chart_dropdown_t {\n    background-image: url(" + __webpack_require__(30) + ");\n    background-position: right 10px;\n    border-color: #fff;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown-hover.chart_dropdown_t {\n    background-color: #fff;\n    background-image: url(" + __webpack_require__(31) + ");\n    background-position: right 9px;\n    border-color: #4c4f53;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown_data {\n    background-color: #fff;\n    border-color: #4c4f53\n}\n\n.chart_container.light .chart_dropdown_data td {\n    border-bottom-color: #e4e5e6;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown_data li a {\n    color: #1478c8\n}\n\n.chart_container.light .chart_dropdown_data a:hover {\n    background-color: #f4f4f4\n}\n\n.chart_container.light .chart_dropdown_data a.selected {\n    color: #f27935\n}\n\n.chart_container .chart_toolbar_label {\n    cursor: default;\n    display: inline-block;\n    float: left;\n    padding: 7px 4px\n}\n\n.chart_container.dark .chart_toolbar_label {\n    border-color: #232323;\n    color: #e5e5e5\n}\n\n.chart_container.light .chart_toolbar_label {\n    border-color: #fff;\n    color: #393c40\n}\n\n.chart_container .chart_toolbar_button {\n    border: 1px solid;\n    cursor: pointer;\n    float: left;\n    margin: 3px 2px;\n    padding: 3px 10px;\n    position: relative;\n    z-index: 100\n}\n\n.chart_container.dark .chart_toolbar_button {\n    border-color: #404040;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_toolbar_button:hover {\n    background-color: #383838;\n    border-color: #606060;\n    color: #fff\n}\n\n.chart_container.dark .chart_toolbar_button.selected {\n    background-color: #383838;\n    border-color: #606060;\n    color: #ffac00\n}\n\n.chart_container.dark .chart_toolbar_button.selected:hover {\n    background-color: #474747;\n    border-color: #808080;\n    color: #ffac00\n}\n\n.chart_container.light .chart_toolbar_button {\n    border-color: #ccc;\n    color: #393c40\n}\n\n.chart_container.light .chart_toolbar_button:hover {\n    background-color: #f4f4f4;\n    color: #393c40\n}\n\n.chart_container.light .chart_toolbar_button.selected {\n    background-color: #f4f4f4;\n    border-color: #f27935;\n    color: #f27935\n}\n\n.chart_container .chart_toolbar_tabgroup {\n    float: left\n}\n\n.chart_container .chart_toolbar_tabgroup li {\n    display: inline-block;\n    padding: 4px 0;\n    margin: 3px 0\n}\n\n.chart_container .chart_toolbar_tabgroup li a {\n    cursor: pointer;\n    padding: 4px 4px\n}\n\n.chart_container .chart_toolbar_tabgroup li a:hover {\n    text-decoration: none\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a {\n    color: #1987da\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a:hover {\n    background-color: #383838\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a.selected {\n    color: #ffac00\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a {\n    color: #1478c8\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a:hover {\n    background-color: #f4f4f4\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a.selected {\n    color: #f27935\n}\n\n#chart_toolbar_periods_horz {\n    display: inline-block;\n    float: left;\n    position: relative;\n    z-index: 100\n}\n\n#chart_toolbar_periods_vert {\n    float: left\n}\n\n.chart_container a.chart_icon {\n    border: 1px solid;\n    height: 16px;\n    padding: 0;\n    width: 16px\n}\n\n.chart_container a.chart_icon:hover {\n    border-width: 2px;\n    height: 14px;\n    width: 14px\n}\n\n.chart_container .chart_dropdown_data a.chart_icon {\n    display: inline-block;\n    magin: 0 6px 0 6px\n}\n\n.chart_container a.chart_icon_theme_dark,\n.chart_container .chart_dropdown_data li a.chart_icon_theme_dark:hover {\n    background-color: #000\n}\n\n.chart_container a.chart_icon_theme_light,\n.chart_container .chart_dropdown_data li a.chart_icon_theme_light:hover {\n    background-color: #fff\n}\n\n.chart_container #chart_toolbar_theme {\n    float: left;\n    padding: 0 8px\n}\n\n.chart_container #chart_toolbar_theme a.chart_icon {\n    cursor: pointer;\n    float: left;\n    margin: 6px 4px\n}\n\n.chart_container #chart_select_theme td:last-child {\n    padding: 6px 6px 0 8px\n}\n\n.chart_container #chart_select_theme li {\n    padding: 0 4px 0 4px\n}\n\n.chart_container.dark a.chart_icon {\n    border-color: #aaa\n}\n\n.chart_container.dark a.chart_icon:hover {\n    border-color: #1987da\n}\n\n.chart_container.dark a.chart_icon.selected {\n    border-color: #ffac00\n}\n\n.chart_container.light a.chart_icon {\n    border-color: #aaa\n}\n\n.chart_container.light a.chart_icon.selected {\n    border-color: #f27935\n}\n\n.chart_container #chart_updated_time {\n    float: right;\n    margin: 4px 3px;\n    padding: 3px 10px\n}\n\n.chart_container.dark #chart_updated_time {\n    color: #e5e5e5\n}\n\n.chart_container.light #chart_updated_time {\n    color: #393c40\n}\n\n#chart_toolpanel {\n    border-right: 1px solid;\n    display: none;\n    position: absolute;\n    width: 32px;\n    z-index: 2\n}\n\n#chart_toolpanel .chart_toolpanel_separator {\n    position: relative;\n    height: 4px\n}\n\n#chart_toolpanel .chart_toolpanel_button {\n    position: relative;\n    z-index: 100\n}\n\n#chart_toolpanel .chart_toolpanel_icon {\n    background-origin: content-box;\n    background-repeat: no-repeat;\n    border: 1px solid;\n    cursor: pointer;\n    height: 16px;\n    margin: 1px 4px 1px 4px;\n    padding: 3px;\n    position: relative;\n    width: 16px;\n    z-index: 101\n}\n\n#chart_toolpanel .chart_toolpanel_tip {\n    border-radius: 4px;\n    border: 1px solid;\n    display: none;\n    *font-weight: bold;\n    position: absolute;\n    padding: 3px 6px 4px 6px;\n    margin-left: 36px;\n    margin-top: -25px;\n    white-space: nowrap;\n    z-index: 100\n}\n\n#chart_toolpanel .chart_toolpanel_button:hover .chart_toolpanel_tip {\n    display: block\n}\n\n.chart_container.dark #chart_toolpanel {\n    background-color: #0a0a0a;\n    border-right-color: #404040\n}\n\n.chart_container.dark .chart_toolpanel_icon {\n    background-color: #0a0a0a;\n    border-color: #0a0a0a\n}\n\n.chart_container.dark .chart_toolpanel_button:hover .chart_toolpanel_icon {\n    background-color: #404040;\n    border-color: #666\n}\n\n.chart_container.dark .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-color: #080808;\n    border-color: #666\n}\n\n.chart_container.dark .chart_toolpanel_tip {\n    background-color: #ffac00;\n    border-color: #ffac00;\n    color: #0a0a0a\n}\n\n.chart_container.light #chart_toolpanel {\n    background-color: #fff;\n    border-right-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_icon {\n    background-color: #fff;\n    border-color: #fff\n}\n\n.chart_container.light .chart_toolpanel_button:hover .chart_toolpanel_icon {\n    background-color: #eee;\n    border-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-color: #f4f4f4;\n    border-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_tip {\n    background-color: #f27938;\n    border-color: #f27938;\n    color: #eee\n}\n\n.chart_container.dark #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {\n    background-image: url(" + __webpack_require__(32) + ")\n}\n\n.chart_container.dark #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-image: url(" + __webpack_require__(33) + ")\n}\n\n.chart_container.dark #chart_toolbar .chart_BoxSize {\n    background: url(" + __webpack_require__(34) + ") no-repeat;\n}\n\n.chart_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {\n    background-image: url(" + __webpack_require__(35) + ")\n}\n\n.chart_container.light #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-image: url(" + __webpack_require__(36) + ")\n}\n\n.chart_container.light #chart_toolbar .chart_BoxSize {\n    background: url(" + __webpack_require__(37) + ") no-repeat;\n}\n\n.chart_container #chart_toolpanel #chart_Cursor {\n    background-position: 0 0\n}\n\n.chart_container #chart_toolpanel #chart_CrossCursor {\n    background-position: 0 -20px\n}\n\n.chart_container #chart_toolpanel #chart_SegLine {\n    background-position: 0 -40px\n}\n\n.chart_container #chart_toolpanel #chart_StraightLine {\n    background-position: 0 -60px\n}\n\n.chart_container #chart_toolpanel #chart_RayLine {\n    background-position: 0 -100px\n}\n\n.chart_container #chart_toolpanel #chart_ArrowLine {\n    background-position: 0 -80px\n}\n\n.chart_container #chart_toolpanel #chart_HoriSegLine {\n    background-position: 0 -160px\n}\n\n.chart_container #chart_toolpanel #chart_HoriStraightLine {\n    background-position: 0 -120px\n}\n\n.chart_container #chart_toolpanel #chart_HoriRayLine {\n    background-position: 0 -140px\n}\n\n.chart_container #chart_toolpanel #chart_VertiStraightLine {\n    background-position: 0 -180px\n}\n\n.chart_container #chart_toolpanel #chart_PriceLine {\n    background-position: 0 -200px\n}\n\n.chart_container #chart_toolpanel #chart_TriParallelLine {\n    background-position: 0 -220px\n}\n\n.chart_container #chart_toolpanel #chart_BiParallelLine {\n    background-position: 0 -240px\n}\n\n.chart_container #chart_toolpanel #chart_BiParallelRayLine {\n    background-position: 0 -260px\n}\n\n.chart_container .chart_toolpanel_button #chart_DrawFibRetrace {\n    background-position: 0 -280px\n}\n\n.chart_container #chart_toolpanel #chart_DrawFibFans {\n    background-position: 0 -300px\n}\n\n#chart_tabbar {\n    border-top: 1px solid;\n    cursor: default;\n    display: none;\n    *font-weight: bold;\n    height: 22px;\n    overflow: hidden;\n    position: absolute;\n    z-index: 1\n}\n\n#chart_tabbar ul {\n    height: 100%;\n    list-style: none;\n    padding: 0 0 0 4px\n}\n\n#chart_tabbar li {\n    display: inline-block;\n    height: 100%;\n    margin: 0\n}\n\n#chart_tabbar a {\n    cursor: pointer;\n    display: inline-block;\n    height: 100%;\n    margin: 0;\n    padding: 3px 4px 0 4px;\n    overflow: hidden\n}\n\n#chart_tabbar a:hover {\n    text-decoration: none\n}\n\n.chart_container.dark #chart_tabbar {\n    background-color: #0a0a0a;\n    border-top-color: #404040\n}\n\n.chart_container.dark #chart_tabbar a {\n    color: #e5e5e5\n}\n\n.chart_container.dark #chart_tabbar a:hover {\n    background-color: #383838;\n    color: #fff\n}\n\n.chart_container.dark #chart_tabbar a.selected {\n    color: #ffac00\n}\n\n.chart_container.light #chart_tabbar {\n    background-color: #fff;\n    border-top-color: #afb1b3\n}\n\n.chart_container.light #chart_tabbar a {\n    color: #393c40\n}\n\n.chart_container.light #chart_tabbar a:hover {\n    background-color: #f4f4f4;\n    color: #393c40\n}\n\n.chart_container.light #chart_tabbar a.selected {\n    color: #f27935\n}\n\n#chart_canvasGroup {\n    position: absolute;\n    z-index: 0\n}\n\n#chart_mainCanvas {\n    overflow: hidden;\n    position: absolute;\n    z-index: 0\n}\n\n#chart_overlayCanvas {\n    overflow: hidden;\n    position: absolute;\n    z-index: 2\n}\n\n#chart_loading {\n    border: 1px solid;\n    border-radius: 4px;\n    font-size: 18px;\n    font-weight: bold;\n    line-height: 48px;\n    overflow: hidden;\n    position: absolute;\n    text-align: center;\n    visibility: hidden;\n    width: 200px;\n    z-index: 200\n}\n\n#chart_loading.activated {\n    visibility: visible\n}\n\n.chart_container.dark #chart_loading {\n    border-color: #aaa;\n    background-color: rgba(0, 0, 0, 0.6);\n    color: #ccc\n}\n\n.chart_container.light #chart_loading {\n    border-color: #afb1b3;\n    background-color: rgba(244, 244, 244, 0.8);\n    color: #393c40\n}\n\n#chart_parameter_settings {\n    border-radius: 4px;\n    border: 1px solid;\n    width: 640px;\n    position: absolute;\n    overflow: hidden;\n    visibility: hidden;\n    z-index: 500\n}\n\n#chart_parameter_settings.clicked {\n    visibility: visible\n}\n\n#chart_parameter_settings h2 {\n    padding: 8px 12px;\n    margin: 0\n}\n\n#chart_parameter_settings table {\n    border-collapse: collapse;\n    width: 100%\n}\n\n#chart_parameter_settings tr {\n    line-height: 32px\n}\n\n#chart_parameter_settings th {\n    text-align: right;\n    padding: 0 4px 0 16px\n}\n\n#chart_parameter_settings input {\n    width: 2em;\n    margin: 0 2px 0 2px\n}\n\n#chart_parameter_settings #close_settings {\n    border-radius: 4px;\n    cursor: pointer;\n    font-weight: bold;\n    text-align: center;\n    margin: 8px auto;\n    padding: 5px 24px 5px 24px;\n    width: 84px\n}\n\n#chart_parameter_settings .chart_str_default {\n    margin-right: 24px\n}\n\n.chart_container.dark #chart_parameter_settings {\n    background-color: rgba(0, 0, 0, 0.9);\n    border-color: rgba(0, 0, 0, 0.9);\n    color: #ccc;\n}\n\n.chart_container.dark #chart_parameter_settings #close_settings {\n    background: #1887da;\n    color: #eee\n}\n\n.chart_container.light #chart_parameter_settings {\n    background-color: rgba(244, 244, 244, 0.8);\n    border-color: #afb1b3;\n    color: #393c40\n}\n\n.chart_container.light #chart_parameter_settings #close_settings {\n    background: #1478c8;\n    color: #eee\n}\n\n.chart_container input,\n.chart_container button {\n    border-radius: 4px;\n    border: 1px solid;\n    padding: 4px\n}\n\n.chart_container input[type=text] {\n    width: 12em\n}\n\n.chart_container input[type=button],\n.chart_container input[type=submit],\n.chart_container button {\n    font-family: arial, sans, serif;\n    padding: 4px 8px;\n    cursor: pointer\n}\n\n.chart_container.dark input,\n.chart_container.dark button {\n    background-color: #151515;\n    border-color: #333;\n    color: #ccc\n}\n\n.chart_container.light input,\n.chart_container.light button {\n    background-color: #ddd;\n    border-color: #ddd;\n    color: #222\n}\n\n.trade_container {\n    width: 250px;\n    height: 100%;\n    float: right;\n    z-index: 99999;\n    font-size: 12px;\n    overflow: hidden\n}\n\n.trade_container.dark {\n    background: #0a0a0a;\n    color: #f1f1f1\n}\n\n.m_righttop {\n    position: fixed;\n    top: 0;\n    height: 41px;\n    line-height: 41px;\n    width: 230px;\n    text-align: right;\n    padding-right: 20px;\n    font-size: 16px;\n    color: #f78d15;\n    font-family: Gotham, \"Helvetica Neue\", Helvetica, Arial, sans-serif\n}\n\n.m_righttop em {\n    width: 123px;\n    height: 28px;\n    background-position: 0 0;\n    display: block;\n    float: right;\n    margin-top: 5px\n}\n\n.dark .m_righttop em {\n    background-position: 0 0\n}\n\n.m_rightbot {\n    height: 22px;\n    line-height: 22px;\n    border-top: 1px solid #404040;\n    width: 230px;\n    text-align: right;\n    padding-right: 20px;\n    background-color: #0a0a0a;\n    border-bottom-color: #404040\n}\n\n.m_guadan {\n    margin-top: 29px;\n    overflow: hidden;\n    border-left: 1px solid #404040;\n    border-top: 1px solid #404040\n}\n\n.m_guadan a {\n    font-weight: bold;\n    color: #FFF;\n    text-decoration: none\n}\n\n.light .m_guadan {\n    margin-top: 29px;\n    overflow: hidden;\n    border-left: 1px solid #afb1b3;\n    border-top: 1px solid #afb1b3\n}\n\n#orderbook #asks,\n#orderbook #gasks,\n#orderbook #bids,\n#orderbook #gbids {\n    height: 195px;\n    position: relative;\n    display: inline-block;\n    overflow: hidden\n}\n\n.symbol-title {\n    font-size: 14px;\n    font-weight: bold;\n    text-align: center;\n    height: 16px;\n    line-height: 16px;\n    font-family: Arial, sans, serif;\n    padding: 5px\n}\n\n.symbol-title .dark {\n    color: #6BF\n}\n\n.symbol-title .infoDepth {\n    margin-left: 8px;\n    color: #f78d15\n}\n\n.symbol-title a:hover {\n    text-decoration: underline\n}\n\n#asks,\n#bids {\n    width: 150px\n}\n\n#orderbook {\n    padding-left: 3px;\n    border-bottom: 1px solid #222;\n    padding-bottom: 2px;\n    margin-left: 5px;\n    margin-bottom: 2px\n}\n\n#orderbook .table {\n    position: absolute;\n    border-collapse: collapse;\n    padding: 0;\n    margin: 0\n}\n\n#gasks .table,\n#asks .table {\n    bottom: 0\n}\n\n#orderbook .table .row {\n    padding: 0;\n    margin: 0;\n    height: 13px;\n    line-height: 13px;\n    font-family: Consolas, monospace\n}\n\n#orderbook .table .row {\n    line-height: 13px\n}\n\n#orderbook .table .g {\n    color: #666\n}\n\n#gasks,\n#gbids {\n    width: 80px\n}\n\n#gasks .amount,\n#gbids .amount {\n    float: right\n}\n\n#gasks .price,\n#gbids .price {\n    float: left;\n    text-align: right\n}\n\n.price {\n    margin-right: 10px\n}\n\n.price h {\n    visibility: hidden\n}\n\n.price g,\n.amount g {\n    color: #666\n}\n\n#price {\n    text-align: center;\n    font-size: 16px;\n    font-weight: bold;\n    height: 25px;\n    line-height: 25px\n}\n\n.trade_container .green {\n    color: #0F0\n}\n\n.trade_container .red {\n    color: #F00\n}\n\n.trade_container.dark #orderbook div.table div.remove g,\n.trade_container.dark #orderbook div.table div.remove span {\n    color: #444\n}\n\n.trade_container.light #orderbook div.table div.remove g,\n.trade_container.light #orderbook div.table div.remove span {\n    color: #ddd\n}\n\n.trade_container.dark #orderbook div.table div.add {\n    display: none;\n    background-color: rgba(238, 238, 238, 0.2)\n}\n\n.trade_container.light #orderbook div.table div.add {\n    display: none;\n    background-color: rgba(100, 100, 100, 0.2)\n}\n\n#trades {\n    overflow-y: auto;\n    text-align: left;\n    color: #666;\n    padding-top: 5px\n}\n\n.trade_container.light {\n    background: #fff;\n    border-left: 1px solid #afb1b3;\n    color: #000\n}\n\n.trade_container.light .m_righttop em {\n    background-position: 0 -32px\n}\n\n.trade_container.light .m_righttop {\n    position: fixed;\n    top: 0;\n    height: 40px;\n    line-height: 40px;\n    background: #FFF;\n    width: 230px;\n    border-bottom: 1px solid #afb1b3;\n    text-align: right;\n    padding-right: 20px\n}\n\n.trade_container.light #trades.trades table {\n    color: #333\n}\n\n.trade_container.light #trades.trades .v {\n    color: #333\n}\n\n.trade_container.light #trades.trades .v g {\n    color: #333\n}\n\n.trade_container.light .m_rightbot {\n    background: #fff;\n    border-top: 1px solid #afb1b3\n}\n\n.trade_container.light #orderbook {\n    border-bottom: 1px solid #afb1b3\n}\n\n.trades_list {\n    padding-left: 25px\n}\n\n.trades_list ul {\n    width: 200px;\n    height: 14px;\n    line-height: 14px;\n    text-align: left;\n    list-style: none;\n    clear: both;\n    zoom: 1;\n    margin: 0;\n    padding: 0\n}\n\n.trades_list ul li {\n    height: 14px;\n    line-height: 14px;\n    color: #999;\n    font-size: 12px;\n    list-style: none;\n    float: left;\n    *display: inline;\n    margin: 0;\n    padding: 0;\n    font-family: Consolas, monospace\n}\n\n.trades_list ul li.tm {\n    width: 62px;\n    color: #999\n}\n\n.trades_list ul li.pr-green {\n    width: 65px;\n    color: #6c6\n}\n\n.trades_list ul li.pr-red {\n    width: 65px;\n    color: #c66\n}\n\n.trades_list ul li.vl {\n    width: 60px;\n    color: #ccc\n}\n\n.trades_list ul li.vl g {\n    color: #666\n}\n\n.trade_container.dark .trades_list ul.newul {\n    display: none;\n    background-color: rgba(238, 238, 238, 0.2)\n}\n\n.trade_container.light .trades_list ul.newul {\n    display: none;\n    background-color: rgba(100, 100, 100, 0.2)\n}\n\n.light .trades_list ul li.tm {\n    color: #333\n}\n\n.light .trades_list ul li.pr-green {\n    color: #6c6\n}\n\n.light .trades_list ul li.pr-red {\n    color: #c66\n}\n\n.light .trades_list ul li.vl {\n    color: #333\n}\n\n.light .trades_list ul li.vl g {\n    color: #333\n}\n\n.container .nav {\n    margin: 0;\n    list-style: none;\n    padding: 0 0 0 3px;\n    height: 41px\n}\n\n.container .nav li {\n    display: inline-block;\n    margin-right: 9px\n}\n\n.container a {\n    text-decoration: none;\n    color: #6BF;\n    font-family: Arial, sans, serif\n}\n\n.container a:hover {\n    text-decoration: underline\n}\n\n.container a.active {\n    color: #FC9\n}\n\n.container span {\n    margin-left: 3px;\n    font-family: Consolas, monospace;\n    color: #ccc\n}\n\n.light .container span {\n    color: #333\n}\n\n.light .container a {\n    text-decoration: none;\n    color: #1478c8;\n    font-family: Arial, sans, serif\n}\n\n.chart_BoxSize {\n    width: 20px;\n    height: 20px\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAFCAYAAABmWJ3mAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAJn2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgICAgICAgICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIKICAgICAgICAgICAgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iCiAgICAgICAgICAgIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiCiAgICAgICAgICAgIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyI+CiAgICAgICAgIDx0aWZmOlJlc29sdXRpb25Vbml0PjI8L3RpZmY6UmVzb2x1dGlvblVuaXQ+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgICAgIDxleGlmOlBpeGVsWERpbWVuc2lvbj42PC9leGlmOlBpeGVsWERpbWVuc2lvbj4KICAgICAgICAgPGV4aWY6Q29sb3JTcGFjZT42NTUzNTwvZXhpZjpDb2xvclNwYWNlPgogICAgICAgICA8ZXhpZjpQaXhlbFlEaW1lbnNpb24+NTwvZXhpZjpQaXhlbFlEaW1lbnNpb24+CiAgICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2UvcG5nPC9kYzpmb3JtYXQ+CiAgICAgICAgIDx4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ+eG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDY8L3htcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOkhpc3Rvcnk+CiAgICAgICAgICAgIDxyZGY6U2VxPgogICAgICAgICAgICAgICA8cmRmOmxpIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OnNvZnR3YXJlQWdlbnQ+QWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OmNoYW5nZWQ+Lzwvc3RFdnQ6Y2hhbmdlZD4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OndoZW4+MjAxNC0xMi0wM1QxNzo1Njo1MiswODowMDwvc3RFdnQ6d2hlbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDozNjIzYmJlYi1iNGU2LWNhNDktOTRjZi05MTIyY2Q1Y2NiZTk8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDphY3Rpb24+c2F2ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgIDwvcmRmOlNlcT4KICAgICAgICAgPC94bXBNTTpIaXN0b3J5PgogICAgICAgICA8eG1wTU06SW5zdGFuY2VJRD54bXAuaWlkOjM2MjNiYmViLWI0ZTYtY2E0OS05NGNmLTkxMjJjZDVjY2JlOTwveG1wTU06SW5zdGFuY2VJRD4KICAgICAgICAgPHhtcE1NOkRvY3VtZW50SUQ+eG1wLmRpZDo2QzE5MkVEOTY1N0UxMUU0QUUwMkE5RkYyNDYyQTBBODwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOkRlcml2ZWRGcm9tIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+eG1wLmlpZDo4MzE3OTEwZi1kOTE5LTY4NDAtYWVhOS0zNzI5NWE2NGI1NmU8L3N0UmVmOmluc3RhbmNlSUQ+CiAgICAgICAgICAgIDxzdFJlZjpkb2N1bWVudElEPnhtcC5kaWQ6MWYwY2U2ZjQtZTRlNS1jODQ3LWIyOTgtNGNkNjRiYzBkYzA2PC9zdFJlZjpkb2N1bWVudElEPgogICAgICAgICA8L3htcE1NOkRlcml2ZWRGcm9tPgogICAgICAgICA8eG1wOk1ldGFkYXRhRGF0ZT4yMDE0LTEyLTAzVDE3OjU2OjUyKzA4OjAwPC94bXA6TWV0YWRhdGFEYXRlPgogICAgICAgICA8eG1wOkNyZWF0ZURhdGU+MjAxNC0xMi0wM1QxNzo1NjoyOCswODowMDwveG1wOkNyZWF0ZURhdGU+CiAgICAgICAgIDx4bXA6TW9kaWZ5RGF0ZT4yMDE0LTEyLTAzVDE3OjU2OjUyKzA4OjAwPC94bXA6TW9kaWZ5RGF0ZT4KICAgICAgICAgPHhtcDpDcmVhdG9yVG9vbD5BZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpPC94bXA6Q3JlYXRvclRvb2w+CiAgICAgICAgIDxwaG90b3Nob3A6Q29sb3JNb2RlPjM8L3Bob3Rvc2hvcDpDb2xvck1vZGU+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgqC9xe+AAAAWUlEQVQIHWO8cOHCFgYGBm8gRgZbmRgZGXOBIj+QRH8wMTHlMenr69////9/J0wCxNbT07vHCBK4f/8+x8ePH6+B2Pz8/FqKioo/mEAcEAOoEmRkHogNEgMA0qYfb8X3frQAAAAASUVORK5CYII="
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAFCAYAAABmWJ3mAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA21pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6M0E5Qjc0ODc3QUQ0MTFFNDhCN0ZBNEVBQTM1QTBFNjgiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6M0E5Qjc0ODY3QUQ0MTFFNDhCN0ZBNEVBQTM1QTBFNjgiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjM2MjNiYmViLWI0ZTYtY2E0OS05NGNmLTkxMjJjZDVjY2JlOSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2QzE5MkVEOTY1N0UxMUU0QUUwMkE5RkYyNDYyQTBBOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvrZrC8AAABOSURBVHjaYvz//z8DCFy8eNEbSDHq6+tvAfEZQRJAQQ4g+xoDBGgBJX8wQTkVQKwIxRVgHRcuXFCEquaAKvoBxNogHZORBBmg7EkAAQYAImEV+46peUgAAAAASUVORK5CYII="
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAFCAYAAABmWJ3mAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3FpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NkMxOTJFRDk2NTdFMTFFNEFFMDJBOUZGMjQ2MkEwQTgiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NkMxOTJFRDg2NTdFMTFFNEFFMDJBOUZGMjQ2MkEwQTgiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjgzMTc5MTBmLWQ5MTktNjg0MC1hZWE5LTM3Mjk1YTY0YjU2ZSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5MkIK1AAAAPklEQVR42mJ0CUvewsDA4M2ACrYyAYlcIP6BJAhi54Ek7gNxJ5IEiH2PCcrpgCq4D2UzsCBpBxnJCDMWIMAAVuANgw9cJ2UAAAAASUVORK5CYII="
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAFCAYAAABmWJ3mAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAADcWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjFmMGNlNmY0LWU0ZTUtYzg0Ny1iMjk4LTRjZDY0YmMwZGMwNiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2QzE5MkVEOTY1N0UxMUU0QUUwMkE5RkYyNDYyQTBBOCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2QzE5MkVEODY1N0UxMUU0QUUwMkE5RkYyNDYyQTBBOCIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODMxNzkxMGYtZDkxOS02ODQwLWFlYTktMzcyOTVhNjRiNTZlIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjFmMGNlNmY0LWU0ZTUtYzg0Ny1iMjk4LTRjZDY0YmMwZGMwNiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkyQgrUAAABCSURBVBhXY3QJS2aAAh8g/g/EW0EcJhABBBxAPAmIJ0PZcIkKIFaEYhAbLKEExOUgDhSA2IogCZARYO1QAGQzTAYAPbkH1E4jJr8AAAAASUVORK5CYII="
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAFACAYAAAC1CvwiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2lpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6N0EwQTE5MkI4MTFEMTFFNEI4Njg4OEVFQzVGMTEyOTIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6N0EwQTE5MkE4MTFEMTFFNEI4Njg4OEVFQzVGMTEyOTIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjYzNEUzRUIyODExOTExRTRBNkJDQzhDODM5MEQxQTkwIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjYzNEUzRUIzODExOTExRTRBNkJDQzhDODM5MEQxQTkwIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+VsD84AAABMxJREFUeNrsXEloFEEU7QztBgoKkmgueogajSQRBEEQJ3jITVDUgxL1YoggHlSU6MHlKkEQ3FFREEEviogexJlTDqIxcQl60Is4oujFDVFhfN+p1kqlu7ZZMhN+w6My1f1fVXf9ev2r+6eDfD4fRMhkMpeBaXKdCalg5NYFPMpms0sDy62OWKINhtGPn8ABoC+dTud1BKmE+onAUeAOSBt8CKKtExgESafrKagb1fcB+3FKv1x68K8hYA/Qj0aafAiijUZnACRdUUVoYfQbuA8MAy+BF8BzG4LPwARgCtCLcx9wGYVXwHLgqvjd6zKMGWAZWqRunhF1a3HeC2wITtHYw/gT/UD5AMWQOG6v0Q/iNrTcI4jJvZtA+sZ1GK8AX4V773J1ZTqNLyjOi16ccD4Fp+lcmwRavYM+Zlw10XljghIQ1NFQafa3k6xr5kkH+8H48AOWtDEgGBUGuQSVYoLl5b8r6wfofqu43QcuMZJsfARYAiEZdOqBZHxINrYNMBKNjQQmYy2BjXEiga1xLIGLcVy0HhkfhPGQ7Y1FPYd2W+NCWKr4tuvcKHouhIaVCktaOQlw4etRvE95GpPHngUafVR5xFyxVST1oP+y5iPlJXVlW00cUsK7uirVRO3Vtlmx+IhL6UbBdLW1BD5qLKvyLJSnfYwjTXwHNMD4A0taBQkw7ItQbAXmWhMIo/UCLaK6L3RoeAP5ilJ30TVOpOcoPeLnMHynJeWoxrOlh1PXrZc8irhQDw4D1zhO5DiR48SaeZ5oiJvqqfQV1chjt1cmTtRNNBdZj52lJkUyx0y+EWr5I1XbmIk1kTWRCZig/ASqeyet4HTvWNKRkSDLOt0bbad56Pjkgv2ACZiACewjFJunV6MIrLRPF2AoPejgCIUJmIAJakMTVfEJZSPaCWRMrcrHO2tibA9cNVE+nv2ACaqDgPPSqjqtzHbtXPTStzRPsopZO7MncoIjE5SDALMvJ8SjMfpbEpTYurgZmHOpCzVakLOpS+xBXKtOPVBbjLsGVTSMscPjShAZCbL+omQdZOucCWLHmKdzrROY3vpp8xMtjEfnJ9omtankYdJ6UDbWkVvfXIk8akAmD6VueT1TC5OywZVzTiQPA807VhP53w3q2paguq3ADaBdt98rP1EeSufwVu2ZU4ykzT8wvWvX5h+Y3nhrc/dN+YmmiWWTn6h9F8+ayJrImlikJkbgnG3O2WZNLLUmOhrH5ycmGetmaWg7hZMEN6UTzKIfxtlqYuLOymui7VBqPZHzEz2f6vLb/zHOjCs+sc3mFanoUaYspzBOXlxn2JXZlVnSKkSAEZmB4gKwG6PxWt5ne2vbCdxWjbUxUsztblJ5XNn34qGHZDvZ650r6ueh2AfcSgqyiPgccAkXLqvUbwZWAcew72HSKGwEcorx/KDwr4nTgW1kHDsKOHAOijVAt/hNn/vaAqwUrQ7oojSasseBezjwJn43B4UPbD2h9QHqvpv8YHVQ+DbaXRhTD1YEhe/Gxa0b6LtZzfLSd6a4cPQtrE3AY9HqD7F/KorFAMWS9F+mRDAcLX1HxYrAW6BNGC0EiOgZ8JRKEH8bcQpKpugO4KMwoI+tnVS/FSc/Q4nz8W7T9/LU1bt3sitrYhD8EWAAdoU1AmCjen8AAAAASUVORK5CYII="
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAFACAYAAAC1CvwiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2lpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjI0MkEyMUI4MTIwMTFFNDgxNjhGRjc0RjJGMjMwQkQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjI0MkEyMUE4MTIwMTFFNDgxNjhGRjc0RjJGMjMwQkQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjZDNzdDQUY4NjU3RTExRTRBRTAyQTlGRjI0NjJBMEE4IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjZDNzdDQUY5NjU3RTExRTRBRTAyQTlGRjI0NjJBMEE4Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+s3AxtQAABPZJREFUeNrsXE1oHkUYnvkYq0IFC5ImubRI1WolSUEoFIqWHnIr6KqHStWLtaceJFhyUryG4ElKf8RaKELNYkFETyYXPYhNW3+CHtqL+NX+XdoKxQrTZ3bny7ffdv43+Wziu/BssrP7Pjs7M++z7+683zIpJVvEDDsBPNJT5kGL9S57gTMs58+xwKVlKHsC+A4kEwBPIVDLGmAK+Bok61MIOss4cA4k46kEahnUNZkCHkghUItqiwnge5BsSiHoLKp35kGyt1MgAoz+Bb4FFoDfgd+AX0MIbgDqmh8GJlkm52Ma8QKwHfhMb0/G9MIssA1nVNU8rMtewnU/FUJwqOj7TF4vtjL5A9bn9XHvGrtHOYRzyfl+TfwPsAmkf8R240nglh7e79R3+rsxkzdRi481wUfxl5DojauGIOez//s2WBEEHLcyV1eNFbJu95Od7nsfyGPvjdSN/804IElrTCCiLXIum9cgk7xA/8dBzkf07T6hDUrjD4CtqH5XZIKC6hk2ApwGxur7Ghn7CTzGboIAYztBoLGZIML4XoKu8WjoI4+oj+3iZpLJ88HjA2eTlRrImAeuJbmxCJOLkqgutyZ29WEA68utRGMlLkeAYRY7cOq+IlKkvEfWAs9qHe596IWywazDXSRJeY87N9REEdzaVkEJbO1lFpSA1vYpUqe14wRVi+pgrJTXe+ESsB5nvkKa2E9NzPkzWL8JbBSRRq9obNGl0zE1eBV4r1b2SWycqN7m7NdbCxg7W1qRUj5UeTn1eXgjdn3l/UIfcv4X/j8VpsoUJ1KcSHHi/U5QxomsWZyY86HGcWIj4zgCi5f6ojR/zJQaofYhUg2MmURyhGptA9JE0kQioGjdJ6j6Jey9Q9k+x/LColFJNhf77Bzk5rH3BfJGIiACInBoYqD2uUW1qn0BKQNuVVaT0RShEAEREMHK0MTa8WmaWDk+XhONNYjVxMrxpIlEsBIIKD+xPwR2PQjUypZX+zwiu8yTdSFaSRmSlOBIBMvhjTlvax0YXvy/qw3mMoMHtmPKXK8D2yFlwiNpw9ZtTeZTpLazDe4LXxDGxqlfe9A46BgpspzPNJP1TL4cT2Dqd1KkFU+gpgxzfhoYs+wfULf/ltW4mndi3l/kJwpHMLHVYdwhvyRsz4M9xg7y8EasBlwV8mpeWtI7NeGdoPWRO+dYg3JxUo31/l53TunK6JmdWs3ifMEwQsPzE23DO2jG25m778tP9OZkqcaaYQOOgNs5F0+qTJpImthUE43ORDnblLNNmpisicmRifl3LLYzO7xUBLuwRXBbLsFs/jIuwEtFYFjj+B1LQ02knG1G+YmMMuOW5O2+CE4bsRzXeIJiFYwDEZt7syrbgIYySVrfCHK+DvgCeDy1BgeAr9CVF9OHMmMP+h+6ljzd2N0uyvahtDnXnKtPoh0EvhQO9uPAp2i4uVr568Au4EPs+9HWC3uAds34SVb+NPFR4C1lbO6FnG/A+kVgn95Wn/t6A3hen3XePg7KT7xNFNXP5FVsb9ZnXQu8bfpeWL0Gu1n5bbRvYKxqsAOYtjx0qM9ebe7qQc4fw/ooK7+F9RpwtngqyeRtvV/V4llAxc/qV6aKYKEkMMWKjP0JjGqjpwFF9Avwc/E3k393Fal8iKhmyR8DrmmDn5j6yFom79hE1TTG98EgSOvMlxCR7EqiythdAQYAbEvqZUahHBUAAAAASUVORK5CYII="
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T7WTYVEDMRSEv1VAJYCDOmgdgAPAASigKGhx0CoACcUBEsDBVcFj9ibpvF6TDn/IzM0kL9l9t5usImIFvHA6niVtcikinoB1qg3AmyIiSnEslPle0n5CsAT8eZjsChgqwaEUtpIeJ39zsoyILXAPjJhK8Apcl40uSQLvgG9LPxJIWqUDZyQZLOmhemcC6/mqmlskU7A1RYT9mKultwDuLEvSEBE2+MOdp+ebBKXDzOBLhnrvfwiKhFvgJkl4b13xJRN3VXPH2Dmw6F3jEVw9mJLka/RTzg/pDNwiAX7yQ7LbM6ALbpCMGEvwZAwGUBP42QnTIoXJDQ8mcJxrumqjv8TZYdr8Ai/uwaXkPGIcAAAAAElFTkSuQmCC"
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAFACAYAAAC1CvwiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2lpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEI1Q0Q4QzI4MTIxMTFFNEFGNzk4NUQxNjVEMjU2RTYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEI1Q0Q4QzE4MTIxMTFFNEFGNzk4NUQxNjVEMjU2RTYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkMwNTdERDc2N0U4RDExRTRCOUQ1Q0FDNDRFM0JBN0QwIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMwNTdERDc3N0U4RDExRTRCOUQ1Q0FDNDRFM0JBN0QwIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+R+XfywAABNVJREFUeNrsXEloFEEU7QztBgoKkmgueogajSQRBFEMJnjITVDUgxL1YogXDypK9OBylSAI4r6CCOpBEdGDOAEhB9GYuIR40Is4QdGLG6LC+H6mWsua7lq6Z8aZ8Bsela7u/7q669ebX10/7WWzWS/A0uWtl4Apcp0JKe/frQN4vKylbbFnuVURS7DBMNj5AewDevoepLM6glRE/XjgMHAHpDVxCIKtHRgASbvrLagb1fcAe3FLP11a8OdCwC6gDxepi0MQbNQ7/SDpCCp8C6NfwH1gCHgJDAMvbAg+AeOASUA37r3fpRde0TMFroj9bpduTANLcEVq5klRtwb3Pc+G4Dj1PYw/0g7KhygGxXm7jX4QtuHKXYKY3LsOpG9cu/Ey8EW49w5XV6bb+IzirGjFMedbcBrOlUmg1TvoY9pVE503JigAQRV1leZ4M8m6Zpy0sR+MDT9gSUtO4Lsa5IVBLkGlGGBZ+e/S+gGa3yh+7t2fgTA+BCyCkAw4tUAyPiAb2wYYkcZGApOxlsDGOJLA1jiUwMU4LFoPjPfDeND2h0W9h2Zb49FN9W3XsZF4LPiGmQprYjE0UXK6ahTvUjGNyWNPAbV+TONgrIzYKpJ60l9ZiyPlBXVlW00cVMK7qjLVRO3TtpmxxBGXwvWC6WlrCeKosazKM1CeiGMcDOcRoAbG71kTS6iJ6PYFKLYAs61bIIzWCTSI6h6XFqwnX1HqzrvGifQepUvsDsF3GlKOajxTejl1zXrKo4gLteAgcJXjRI4TOU6smPeJhripmspYLZA8dltp4kTdQHOR9dBRalIkc8wUN0ItfqRqGzOxJrImMgETFJ9Ade+oGZxujaU1MBJkvU6/jbbD3Hd8c8F+wARMwAT2EYrN26s8Aivts32HMroYzREKEzABE1SEJqri48tGdBBIm64qn++siaEtcNVE+Xz2AyYoDwLOSyvrtDLbuXPiqW9h3mQlmTuzJ3KCIxMUgwCjLyPEozb4WxKU0LqwEZhxqfM1WpCxqYtsQdhVnVqgXjHsGZRRN4Z2j6sqB0ZEBlxPJOsgW+tMENrHPJwrhEA3nLWrftr8RAvj/PxE26Q2dd3Zj5oPysY6cusfVyIPLiCT+1KzYr1T86OywZV7jiT3Pc0aq4l8dIO6NkWobiNwA2jWHY+Vnyh3pXN4q7bMKUbS5h+Y1tq1+QemFW9t7r4pP9E0sGzyE7Vr8ayJrImsiQk1MQDnbHPONmtioTXR0Tg8PzHKWDdKfdshHCW4KZ1gJn4ZZ6uJkQdLr4m2Xal1Zc5PjDmcefX/P2fGJU9ss1kiFS1KF+UWxsjCdZpdmV2ZJa1EBOiRaSjOATvRG6/lY7Y/bduB26qxKVJVmzahOK4c9+GhhWQ7MdaaK+rnoNgD3PI17BeAi3hwvUr9JmAlcATHHkX1wgYgoxjP9XL/mjgV2ErGob2AE2ehWA10in363NdmYIW4ar8uSqMhexS4hxNvYr/ey31g6ynND1D3zeQHq7zct9Huwpha0OLlvhsXNm+g72bVy1Pf6ShOe7lvYW0EnoirfhfHJ6NYCFAsSf9lSgRDwdQ3L1YE3gJNwmg+QETPgWdUgvirPHdWM0XPAB+EAd3/sPqtOPkdSpiPd5q+l6fO3mMnu7Imet5vAQYAtaODAARZxFkAAAAASUVORK5CYII="
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAFACAYAAAC1CvwiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2lpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZjBjZTZmNC1lNGU1LWM4NDctYjI5OC00Y2Q2NGJjMGRjMDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEY5QjlCQTA4MTIyMTFFNEIwQUVBMkM3NjgwODE3OTYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEY5QjlCOUY4MTIyMTFFNEIwQUVBMkM3NjgwODE3OTYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkMwNTdERDdBN0U4RDExRTRCOUQ1Q0FDNDRFM0JBN0QwIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMwNTdERDdCN0U4RDExRTRCOUQ1Q0FDNDRFM0JBN0QwIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+2tcnMAAABOxJREFUeNrsXDtoFUEU3SzjDwwoiNE0WsS/aAQ/IIiKRTpBUQvBT+MPxEKDEhs1hU0IVvEHahREUAtBRCu10UI0RtSghTbiE39NoiAqPM9NZnWzmZm9My/vaeIdOGx2svfs7Myds3d37tuoWCxGCbqbFl0AqtN1eYij/mUT8Kjn4OKFEbPEhrppwD2QNAJVIQRURgItwE2Q1IQQJKUB6ARJQygBlUm6JS3AiBACKtQXjcB9kNSFECSFRqcDJJuSCsUw+gncBrqAl8AL4DmHoBugax4DNFUffdDh04mvgKXAJb3f5DMKd4AlOCM185SuW4vrnsEhOEFjD+PPtIPtA2ye6OP2G4eHJoSr4Mw7NfF3oA6kb3yH8SLwRbv3Xm9Hwhl7sDmjW9HmfQmhs3G4EGAI7/zvfTA0CKpwK3MNVT3JumOerHTe94jc994ow/hX/EAkrXQC5WsAnSyW3ALMwipC5f0AzZ+nb/f+faCNm4EFaH6nVx+kjA+njVkELmPOrc1p7CTgGFsJuMZGAh/jAcOYMj4E4yfcG0vWk+q5xn0BMQhSN5KizwPXoNxYlGmKiqiWWRNTTjcRm/dxoDF57GmgNg40TubKO8U0yo71H1njuKvL3cs/Cvqare6uQqR8UDVRsXvbVri9XV5B4fR2niIlHeYnqFqV6SXLSR8pz7bgHVAD4w+iiRXURAz7bGy2AlOVp9F6jTm6utWnBRvIVzJ153zjRHqPslPvdsF35sQexuTuk1Mvp66ExonUgiPAZe6LKIkTJU6UOPGfJtBxYlgnpjx2V8lxYlyCcadXH9hmaV6Ulh8zhUao5Y9UuTGTCo1QRRNFE4VACHwUqZ+LJi9hTdPZtsayIjHSZHdzn1xDnmJ97wsyG4VACISAH6HYtM8pqmnt46QMOFW5dzFaIhQhEAIh+CtxIjcetAVeQZqYPt5bE40t8NXE9PGiiUIwBAgkP7FScaJND7haGedpX57IlnexjqWVkiEpCY5CUIbZiNlX0DpQm/yd0gZjnWkGFnzqXK8DC5w6lSNptbb9hCxPkQquPvg35oIydU722ll+kBgRGXC1JFkH2TpvAlMPiyINSUHJTCTnqp8zP5Fh/Ds/UTmCiQUOY3N+Yvp5MG3sImd3YjrgGrDuHJrUljw7OxdoOfmJ1jVWzuqvYhi7hrK533QOGUrvlR3UzwOuAfXecaLpstj5ic78g7z8RFeH5uYn5o0GJz/RuRYvqiyaKJqoC2bjfI7y2BCkidZnZ8nZlpzt/1gT40BjsybajF2zVHGnsE1wY5dglvwyjquJnLCmQprIHUqnK0t+YvgLCFn9L5MmVubtvuKmjdiOK3mBYhj4gfLNvRmOfSCuLJIWVeq3fRiR8dicBfZhNF6HtGAPcCNr7OXKKKNyH7oGPd04p1/IdnTQmivq6ZNoB4DrysHeDpxHx93N1G8GVgHH8L+HtlHYCBQyxtOjvp8mjgO2kbFxFHDgFGzWANv1Pn3uawuwXJ+1w+oH+hNv9Fmzdhz4Efsz9VnHAjtM3wvLtmB11PdttFswphYsA1otzw303ayZ6UffCVHfT0/b9IPoY32t3/T/qRVzAYol6VemRNDVKyiG4aKPCr0F5mujWQARPQOe0hbEX/tdQiZLfjfwSRvQx9aO4/8/bKJq8vHtMGBpnfESfJJdRVSj6JcAAwDMequ4kXXO2QAAAABJRU5ErkJggg=="
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABKElEQVQ4T7VTwU0DMRCcrYArwby9j3QQOoAOgA5CBYQKCB0kFUAJoQMe9v/o4JD8X7SWfVo5vhMfLJ1krT3jm9kdYuY9gGeYJSJPMcaDrXnvd0T0amoTgDdiZinFXCj7cwjhbAmY+QaAfrp2AK4ATJXgRwsicowxPlpgu/feH4noHkDGVIIXEXF6sEZSwSJyIqJRpc8EIYS9uXDxJxYcY3yo3lEx56tq7pG0YJWlnojIhnp6C+AupeTGcZyYeRKRD325vd8l0EvOuUHBa4bq2f8QFAm3KaVrI+G91+I1E09V84KxGyLaLrVxBlcPWpK5jWWU7SBdgHskRPRtB0ndHnTCeq1qQlVHOWNUgm5yMADUBH4uhGlrwjRoHpRA41zTlc//GGcN0+EXyGXo9iBlz1cAAAAASUVORK5CYII="
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
 });
-exports.default = void 0;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var getElement = (function (fn) {
+	var memo = {};
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			var styleTarget = fn.call(this, selector);
+			// Special case to return head of iframe instead of iframe itself
+			if (styleTarget instanceof window.HTMLIFrameElement) {
+				try {
+					// This will throw an exception if access to iframe is blocked
+					// due to cross-origin restrictions
+					styleTarget = styleTarget.contentDocument.head;
+				} catch(e) {
+					styleTarget = null;
+				}
+			}
+			memo[selector] = styleTarget;
+		}
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
 
-var Util =
-/*#__PURE__*/
-function () {
-  function Util() {
-    _classCallCheck(this, Util);
+var	fixUrls = __webpack_require__(39);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
+		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
+		target.insertBefore(style, nextSibling);
+	} else {
+		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
   }
 
-  _createClass(Util, null, [{
-    key: "fromFloat",
-    value: function fromFloat(v, fractionDigits) {
-      var text = v.toFixed(fractionDigits);
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
 
-      for (var i = text.length - 1; i >= 0; i--) {
-        if (text[i] === '.') return text.substring(0, i);
-        if (text[i] !== '0') return text.substring(0, i + 1);
-      }
-    }
-  }, {
-    key: "formatTime",
-    value: function formatTime(v) {
-      return v < 10 ? "0" + v.toString() : v.toString();
-    }
-  }, {
-    key: "isInstance",
-    value: function isInstance(obj, clazz) {
-      if (obj === null || obj === undefined) {
-        return false;
-      }
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
 
-      return obj instanceof clazz;
-    }
-  }]);
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
 
-  return Util;
-}();
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
 
-exports.default = Util;
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"trade_container dark hide\">\n    <div class=\"m_cent\">\n        <div class=\"m_guadan\">\n            <div class=\"symbol-title\">\n                <a class=\"dark\"></a>\n            </div>\n            <div id=\"orderbook\">\n                <div id=\"asks\">\n                    <div class=\"table\"></div>\n\n                </div>\n\n                <div id=\"gasks\">\n                    <div class=\"table\"></div>\n\n                </div>\n\n                <div id=\"price\" class=\"green\"></div>\n\n                <div id=\"bids\">\n                    <div class=\"table\"></div>\n\n                </div>\n\n                <div id=\"gbids\">\n                    <div class=\"table\"></div>\n\n                </div>\n\n            </div>\n\n            <div id=\"trades\" class=\"trades\">\n                <div class=\"trades_list\"></div>\n\n            </div>\n\n        </div>\n\n    </div>\n</div>\n\n<div class=\"chart_container dark\">\n    <div id=\"chart_dom_elem_cache\"></div>\n    <!-- ToolBar -->\n    <div id=\"chart_toolbar\">\n        <div class=\"chart_toolbar_minisep\"></div>\n        <!-- Periods -->\n        <div class=\"chart_dropdown\" id=\"chart_toolbar_periods_vert\">\n            <div class=\"chart_dropdown_t\"><a class=\"chart_str_period\">周期</a></div>\n            <div class=\"chart_dropdown_data\" style=\"margin-left: -58px;\">\n                <table>\n                    <tbody>\n                    <tr>\n                        <td>\n                            <ul>\n                                <li id=\"chart_period_1w_v\" style=\"display:none;\" name=\"1w\"><a\n                                        class=\"chart_str_period_1w\">周线</a></li>\n\n                                <li id=\"chart_period_3d_v\" style=\"display:none;\" name=\"3d\"><a\n                                        class=\"chart_str_period_3d\">3日</a></li>\n\n                                <li id=\"chart_period_1d_v\" style=\"display:none;\" name=\"1d\"><a\n                                        class=\"chart_str_period_1d\">日线</a></li>\n\n                                <li id=\"chart_period_12h_v\" style=\"display:none;\" name=\"12h\"><a\n                                        class=\"chart_str_period_12h\">12小时</a></li>\n\n                                <li id=\"chart_period_6h_v\" style=\"display:none;\" name=\"6h\"><a\n                                        class=\"chart_str_period_6h\">6小时</a></li>\n\n                                <li id=\"chart_period_4h_v\" style=\"display:none;\" name=\"4h\"><a\n                                        class=\"chart_str_period_4h\">4小时</a></li>\n\n                                <li id=\"chart_period_2h_v\" style=\"display:none;\" name=\"2h\"><a\n                                        class=\"chart_str_period_2h\">2小时</a></li>\n\n                                <li id=\"chart_period_1h_v\" style=\"display:none;\" name=\"1h\"><a\n                                        class=\"chart_str_period_1h\">1小时</a></li>\n\n                            </ul>\n\n                        </td>\n\n                    </tr>\n\n                    <tr>\n                        <td>\n                            <ul>\n                                <li id=\"chart_period_30m_v\" style=\"display:none;\" name=\"30m\"><a\n                                        class=\"chart_str_period_30m\">30分钟</a></li>\n\n                                <li id=\"chart_period_15m_v\" style=\"display:none;\" name=\"15m\"><a\n                                        class=\"chart_str_period_15m\">15分钟</a></li>\n\n                                <li id=\"chart_period_5m_v\" style=\"display:none;\" name=\"5m\"><a\n                                        class=\"chart_str_period_5m\">5分钟</a></li>\n\n                                <li id=\"chart_period_3m_v\" style=\"display:none;\" name=\"3m\"><a\n                                        class=\"chart_str_period_3m\">3分钟</a></li>\n\n                                <li id=\"chart_period_1m_v\" style=\"display:none;\" name=\"1m\"><a class=\"chart_str_period_1m\n                      selected\">1分钟</a></li>\n\n                                <li id=\"chart_period_line_v\" style=\"display:none;\" name=\"line\"><a\n                                        class=\"chart_str_period_line\">分时</a>\n                                </li>\n\n                            </ul>\n\n                        </td>\n\n                    </tr>\n\n                    </tbody>\n\n                </table>\n\n            </div>\n\n        </div>\n        <div id=\"chart_toolbar_periods_horz\">\n            <ul class=\"chart_toolbar_tabgroup\" style=\"padding-left:5px; padding-right:11px;\">\n                <li id=\"chart_period_1w_h\" name=\"1w\" style=\"display: none;\">\n                    <a class=\"chart_str_period_1w\">周线</a>\n                </li>\n                <li id=\"chart_period_3d_h\" name=\"3d\" style=\"display: none;\">\n                    <a class=\"chart_str_period_3d\">3日</a>\n                </li>\n                <li id=\"chart_period_1d_h\" name=\"1d\" style=\"display: none;\">\n                    <a class=\"chart_str_period_1d\">日线</a>\n                </li>\n                <li id=\"chart_period_12h_h\" name=\"12h\" style=\"display: none;\">\n                    <a class=\"chart_str_period_12h\">12小时</a>\n                </li>\n                <li id=\"chart_period_6h_h\" name=\"6h\" style=\"display: none;\">\n                    <a class=\"chart_str_period_6h\">6小时</a>\n                </li>\n                <li id=\"chart_period_4h_h\" name=\"4h\" style=\"display: none;\">\n                    <a class=\"chart_str_period_4h\">4小时</a>\n                </li>\n                <li id=\"chart_period_2h_h\" name=\"2h\" style=\"display: none;\">\n                    <a class=\"chart_str_period_2h\">2小时</a>\n                </li>\n                <li id=\"chart_period_1h_h\" name=\"1h\" style=\"display: none;\">\n                    <a class=\"chart_str_period_1h\">1小时</a>\n                </li>\n                <li id=\"chart_period_30m_h\" name=\"30m\" style=\"display: none;\">\n                    <a class=\"chart_str_period_30m\">30分钟</a>\n                </li>\n                <li id=\"chart_period_15m_h\" name=\"15m\" style=\"display: none;\">\n                    <a class=\"chart_str_period_15m\">15分钟</a>\n                </li>\n                <li id=\"chart_period_5m_h\" name=\"5m\" style=\"display: none;\">\n                    <a class=\"chart_str_period_5m\">5分钟</a>\n                </li>\n                <li id=\"chart_period_3m_h\" name=\"3m\" style=\"display: none;\">\n                    <a class=\"chart_str_period_3m\">3分钟</a>\n                </li>\n                <li id=\"chart_period_1m_h\" name=\"1m\" style=\"display: none;\">\n                    <a class=\"chart_str_period_1m selected\">1分钟</a>\n                </li>\n                <li id=\"chart_period_line_h\" name=\"line\" style=\"display: none;\">\n                    <a class=\"chart_str_period_line\">分时</a>\n                </li>\n            </ul>\n        </div>\n        <div id=\"chart_show_indicator\" class=\"chart_toolbar_button chart_str_indicator_cap selected\">技术指标</div>\n        <div id=\"chart_show_tools\" class=\"chart_toolbar_button chart_str_tools_cap\">画线工具</div>\n        <div id=\"chart_toolbar_theme\">\n            <div class=\"chart_toolbar_label chart_str_theme_cap\">\n                主题选择\n            </div>\n            <a name=\"dark\" class=\"chart_icon chart_icon_theme_dark selected\"></a>\n            <a name=\"light\" class=\"chart_icon chart_icon_theme_light\"></a>\n        </div>\n        <div class=\"chart_dropdown\" id=\"chart_dropdown_settings\">\n            <div class=\"chart_dropdown_t\"><a class=\"chart_str_settings\">更多</a></div>\n\n            <div class=\"chart_dropdown_data\" style=\"margin-left: -142px;\">\n                <table>\n                    <tbody>\n                    <tr id=\"chart_select_main_indicator\">\n                        <td class=\"chart_str_main_indicator\">主指标</td>\n                        <td>\n                            <ul>\n                                <li><a name=\"MA\" class=\"selected\">MA</a></li>\n                                <li><a name=\"EMA\" class=\"\">EMA</a></li>\n                                <li><a name=\"BOLL\" class=\"\">BOLL</a></li>\n                                <li><a name=\"SAR\" class=\"\">SAR</a></li>\n                                <li><a name=\"NONE\" class=\"\">None</a></li>\n                            </ul>\n                        </td>\n                    </tr>\n\n                    <tr id=\"chart_select_chart_style\">\n                        <td class=\"chart_str_chart_style\">主图样式</td>\n                        <td>\n                            <ul>\n                                <li><a class=\"selected\">CandleStick</a></li>\n                                <li><a>CandleStickHLC</a></li>\n                                <li><a class=\"\">OHLC</a></li>\n                            </ul>\n                        </td>\n                    </tr>\n\n                    <tr id=\"chart_select_theme\" style=\"display: none;\">\n                        <td class=\"chart_str_theme\">主题选择</td>\n                        <td>\n                            <ul>\n                                <li>\n                                    <a name=\"dark\" class=\"chart_icon chart_icon_theme_dark selected\"></a>\n                                </li>\n\n                                <li>\n                                    <a name=\"light\" class=\"chart_icon chart_icon_theme_light\"></a>\n                                </li>\n                            </ul>\n                        </td>\n                    </tr>\n                    <tr id=\"chart_enable_tools\" style=\"display: none;\">\n                        <td class=\"chart_str_tools\">画线工具</td>\n                        <td>\n                            <ul>\n                                <li><a name=\"on\" class=\"chart_str_on\">开启</a></li>\n                                <li><a name=\"off\" class=\"chart_str_off selected\">关闭</a></li>\n\n                            </ul>\n\n                        </td>\n                    </tr>\n                    <tr id=\"chart_enable_indicator\" style=\"display: none;\">\n                        <td class=\"chart_str_indicator\">技术指标</td>\n                        <td>\n                            <ul>\n                                <li><a name=\"on\" class=\"chart_str_on selected\">开启</a></li>\n                                <li><a name=\"off\" class=\"chart_str_off\">关闭</a></li>\n                            </ul>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td></td>\n                        <td>\n                            <ul>\n                                <li>\n                                    <a id=\"chart_btn_parameter_settings\" class=\"chart_str_indicator_parameters\">指标参数设置</a>\n                                </li>\n                            </ul>\n                        </td>\n                    </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n\n        <div class=\"chart_dropdown\" id=\"chart_language_setting_div\" style=\"padding-left: 5px;\">\n            <div class=\"chart_dropdown_t\">\n                <a class=\"chart_language_setting\">语言(LANG)</a>\n            </div>\n            <div class=\"chart_dropdown_data\" style=\"padding-top: 15px; margin-left: -12px;\">\n                <ul>\n                    <li style=\"height: 25px;\">\n                        <a name=\"zh-cn\" class=\"selected\">简体中文(zh-CN)</a>\n                    </li>\n                    <li style=\"height: 25px;\">\n                        <a name=\"en-us\">English(en-US)</a>\n                    </li>\n                    <li style=\"height: 25px;\">\n                        <a name=\"zh-tw\">繁體中文(zh-HK)</a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n        <div id=\"chart_updated_time\">\n            <div id=\"sizeIcon\" class=\"chart_BoxSize\"></div>\n\n        </div>\n    </div>\n               <!-- ToolPanel -->\n    <div id=\"chart_toolpanel\">\n        <div class=\"chart_toolpanel_separator\"></div>\n\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_Cursor\" name=\"Cursor\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_cursor\">\n                光标\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_CrossCursor\" name=\"CrossCursor\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_cross_cursor\">\n                十字光标\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_SegLine\" name=\"SegLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_seg_line\">\n                线段\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_StraightLine\" name=\"StraightLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_straight_line\">\n                直线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_RayLine\" name=\"RayLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_ray_line\">\n                射线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_ArrowLine\" name=\"ArrowLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_arrow_line\">\n                箭头\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_HoriSegLine\" name=\"HoriSegLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_horz_seg_line\">\n                水平线段\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_HoriStraightLine\" name=\"HoriStraightLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_horz_straight_line\">\n                水平直线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_HoriRayLine\" name=\"HoriRayLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_horz_ray_line\">\n                水平射线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_VertiStraightLine\" name=\"VertiStraightLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_vert_straight_line\">\n                垂直直线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_PriceLine\" name=\"PriceLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_price_line\">\n                价格线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_TriParallelLine\" name=\"TriParallelLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_tri_parallel_line\">\n                价格通道线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_BiParallelLine\" name=\"BiParallelLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_bi_parallel_line\">\n                平行直线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_BiParallelRayLine\" name=\"BiParallelRayLine\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_bi_parallel_ray\">\n                平行射线\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_DrawFibRetrace\" name=\"DrawFibRetrace\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_fib_retrace\">\n                斐波纳契回调\n            </div>\n        </div>\n        <div class=\"chart_toolpanel_button\">\n            <div class=\"chart_toolpanel_icon\" id=\"chart_DrawFibFans\" name=\"DrawFibFans\"></div>\n            <div class=\"chart_toolpanel_tip chart_str_fib_fans\">\n                斐波纳契扇形\n            </div>\n        </div>\n        <div style=\"padding-left: 3px;padding-top: 10px;\">\n            <button style=\"color: red;\" id=\"clearCanvas\" title=\"Clear All\">X</button>\n        </div>\n    </div>\n    <div id=\"chart_canvasGroup\" class=\"temp\">\n        <canvas class=\"chart_canvas\" id=\"chart_mainCanvas\" style=\"cursor: default;\"></canvas>\n        <canvas class=\"chart_canvas\" id=\"chart_overlayCanvas\" style=\"cursor: default;\"></canvas>\n    </div>\n    <div id=\"chart_tabbar\">\n        <ul>\n            <li><a name=\"MACD\" class=\"\">MACD</a></li>\n\n            <li><a name=\"KDJ\" class=\"\">KDJ</a></li>\n\n            <li><a name=\"StochRSI\" class=\"\">StochRSI</a></li>\n\n            <li><a name=\"RSI\" class=\"\">RSI</a></li>\n\n            <li><a name=\"DMI\" class=\"\">DMI</a></li>\n\n            <li><a name=\"OBV\" class=\"\">OBV</a></li>\n\n            <li><a name=\"BOLL\" class=\"\">BOLL</a></li>\n\n            <li><a name=\"SAR\" class=\"\">SAR</a></li>\n\n            <li><a name=\"DMA\" class=\"\">DMA</a></li>\n\n            <li><a name=\"TRIX\" class=\"\">TRIX</a></li>\n\n            <li><a name=\"BRAR\" class=\"\">BRAR</a></li>\n\n            <li><a name=\"VR\" class=\"\">VR</a></li>\n\n            <li><a name=\"EMV\" class=\"\">EMV</a></li>\n\n            <li><a name=\"WR\" class=\"\">WR</a></li>\n\n            <li><a name=\"ROC\" class=\"\">ROC</a></li>\n\n            <li><a name=\"MTM\" class=\"\">MTM</a></li>\n\n            <li><a name=\"PSY\">PSY</a></li>\n\n        </ul>\n\n    </div>\n\n    <div id=\"chart_parameter_settings\">\n        <h2 class=\"chart_str_indicator_parameters\">指标参数设置</h2>\n        <table>\n            <tbody>\n            <tr>\n                <th>MA</th>\n                <td><input name=\"MA\"><input name=\"MA\"><input name=\"MA\"><input name=\"MA\"><br><input\n                        name=\"MA\"><input\n                        name=\"MA\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>DMA</th>\n                <td><input name=\"DMA\"><input name=\"DMA\"><input name=\"DMA\"></td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>EMA</th>\n                <td>\n                    <input name=\"EMA\"><input name=\"EMA\"><input name=\"EMA\"><input name=\"EMA\"><br>\n                    <input name=\"EMA\"><input name=\"EMA\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>TRIX</th>\n                <td><input name=\"TRIX\"><input name=\"TRIX\"></td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>VOLUME</th>\n                <td><input name=\"VOLUME\"><input name=\"VOLUME\"></td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>BRAR</th>\n                <td><input name=\"BRAR\"></td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>MACD</th>\n                <td>\n                    <input name=\"MACD\"><input name=\"MACD\"><input name=\"MACD\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>VR</th>\n                <td><input name=\"VR\"><input name=\"VR\"></td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>KDJ</th>\n                <td>\n                    <input name=\"KDJ\"><input name=\"KDJ\"><input name=\"KDJ\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>EMV</th>\n                <td>\n                    <input name=\"EMV\"><input name=\"EMV\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>StochRSI</th>\n                <td>\n                    <input name=\"StochRSI\"><input name=\"StochRSI\"><input name=\"StochRSI\"><input name=\"StochRSI\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>WR</th>\n                <td>\n                    <input name=\"WR\"><input name=\"WR\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>RSI</th>\n                <td>\n                    <input name=\"RSI\"><input name=\"RSI\"><input name=\"RSI\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>ROC</th>\n                <td>\n                    <input name=\"ROC\"><input name=\"ROC\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>DMI</th>\n                <td>\n                    <input name=\"DMI\"><input name=\"DMI\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>MTM</th>\n                <td>\n                    <input name=\"MTM\"><input name=\"MTM\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>OBV</th>\n                <td>\n                    <input name=\"OBV\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n\n                <th>PSY</th>\n                <td>\n                    <input name=\"PSY\"><input name=\"PSY\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n\n            <tr>\n                <th>BOLL</th>\n                <td>\n                    <input name=\"BOLL\">\n                </td>\n                <td>\n                    <button class=\"chart_str_default\">默认值</button>\n                </td>\n            </tr>\n            </tbody>\n        </table>\n\n        <div id=\"close_settings\"><a class=\"chart_str_close\">关闭</a></div>\n\n    </div>\n\n    <!-- Loading -->\n    <div id=\"chart_loading\" class=\"chart_str_loading\">正在读取数据...</div>\n</div>\n\n<div style=\"display: none\" id=\"chart_language_switch_tmp\">\n    <span name=\"chart_str_period\" zh_tw=\"週期\" zh_cn=\"周期\" en_us=\"TIME\"></span>\n    <span name=\"chart_str_period_line\" zh_tw=\"分時\" zh_cn=\"分时\" en_us=\"Line\"></span>\n    <span name=\"chart_str_period_1m\" zh_tw=\"1分鐘\" zh_cn=\"1分钟\" en_us=\"1m\"></span>\n    <span name=\"chart_str_period_3m\" zh_tw=\"3分鐘\" zh_cn=\"3分钟\" en_us=\"3m\"></span>\n    <span name=\"chart_str_period_5m\" zh_tw=\"5分鐘\" zh_cn=\"5分钟\" en_us=\"5m\"></span>\n    <span name=\"chart_str_period_15m\" zh_tw=\"15分鐘\" zh_cn=\"15分钟\" en_us=\"15m\"></span>\n    <span name=\"chart_str_period_30m\" zh_tw=\"30分鐘\" zh_cn=\"30分钟\" en_us=\"30m\"></span>\n    <span name=\"chart_str_period_1h\" zh_tw=\"1小時\" zh_cn=\"1小时\" en_us=\"1h\"></span>\n    <span name=\"chart_str_period_2h\" zh_tw=\"2小時\" zh_cn=\"2小时\" en_us=\"2h\"></span>\n    <span name=\"chart_str_period_4h\" zh_tw=\"4小時\" zh_cn=\"4小时\" en_us=\"4h\"></span>\n    <span name=\"chart_str_period_6h\" zh_tw=\"6小時\" zh_cn=\"6小时\" en_us=\"6h\"></span>\n    <span name=\"chart_str_period_12h\" zh_tw=\"12小時\" zh_cn=\"12小时\" en_us=\"12h\"></span>\n    <span name=\"chart_str_period_1d\" zh_tw=\"日線\" zh_cn=\"日线\" en_us=\"1d\"></span>\n    <span name=\"chart_str_period_3d\" zh_tw=\"3日\" zh_cn=\"3日\" en_us=\"3d\"></span>\n    <span name=\"chart_str_period_1w\" zh_tw=\"周線\" zh_cn=\"周线\" en_us=\"1w\"></span>\n    <span name=\"chart_str_settings\" zh_tw=\"更多\" zh_cn=\"更多\" en_us=\"MORE\"></span>\n    <span name=\"chart_setting_main_indicator\" zh_tw=\"均線設置\" zh_cn=\"均线设置\" en_us=\"Main Indicator\"></span>\n    <span name=\"chart_setting_main_indicator_none\" zh_tw=\"關閉均線\" zh_cn=\"关闭均线\" en_us=\"None\"></span>\n    <span name=\"chart_setting_indicator_parameters\" zh_tw=\"指標參數設置\" zh_cn=\"指标参数设置\" en_us=\"Indicator Parameters\"></span>\n    <span name=\"chart_str_chart_style\" zh_tw=\"主圖樣式\" zh_cn=\"主图样式\" en_us=\"Chart Style\"></span>\n    <span name=\"chart_str_main_indicator\" zh_tw=\"主指標\" zh_cn=\"主指标\" en_us=\"Main Indicator\"></span>\n    <span name=\"chart_str_indicator\" zh_tw=\"技術指標\" zh_cn=\"技术指标\" en_us=\"Indicator\"></span>\n    <span name=\"chart_str_indicator_cap\" zh_tw=\"技術指標\" zh_cn=\"技术指标\" en_us=\"INDICATOR\"></span>\n    <span name=\"chart_str_tools\" zh_tw=\"畫線工具\" zh_cn=\"画线工具\" en_us=\"Tools\"></span>\n    <span name=\"chart_str_tools_cap\" zh_tw=\"畫線工具\" zh_cn=\"画线工具\" en_us=\"TOOLS\"></span>\n    <span name=\"chart_str_theme\" zh_tw=\"主題選擇\" zh_cn=\"主题选择\" en_us=\"Theme\"></span>\n    <span name=\"chart_str_theme_cap\" zh_tw=\"主題選擇\" zh_cn=\"主题选择\" en_us=\"THEME\"></span>\n    <span name=\"chart_language_setting\" zh_tw=\"語言(LANG)\" zh_cn=\"语言(LANG)\" en_us=\"LANGUAGE\"></span>\n    <span name=\"chart_exchanges_setting\" zh_tw=\"更多市場\" zh_cn=\"更多市场\" en_us=\"MORE MARKETS\"></span>\n    <span name=\"chart_othercoin_setting\" zh_tw=\"其它市場\" zh_cn=\"其它市场\" en_us=\"OTHER MARKETS\"></span>\n\n    <span name=\"chart_str_none\" zh_tw=\"關閉\" zh_cn=\"关闭\" en_us=\"None\"></span>\n    <span name=\"chart_str_theme_dark\" zh_tw=\"深色主題\" zh_cn=\"深色主题\" en_us=\"Dark\"></span>\n    <span name=\"chart_str_theme_light\" zh_tw=\"淺色主題\" zh_cn=\"浅色主题\" en_us=\"Light\"></span>\n    <span name=\"chart_str_on\" zh_tw=\"開啟\" zh_cn=\"开启\" en_us=\"On\"></span>\n    <span name=\"chart_str_off\" zh_tw=\"關閉\" zh_cn=\"关闭\" en_us=\"Off\"></span>\n    <span name=\"chart_str_close\" zh_tw=\"關閉\" zh_cn=\"关闭\" en_us=\"CLOSE\"></span>\n    <span name=\"chart_str_default\" zh_tw=\"默認值\" zh_cn=\"默认值\" en_us=\"default\"></span>\n    <span name=\"chart_str_loading\" zh_tw=\"正在讀取數據...\" zh_cn=\"正在读取数据...\" en_us=\"Loading...\"></span>\n    <span name=\"chart_str_indicator_parameters\" zh_tw=\"指標參數設置\" zh_cn=\"指标参数设置\" en_us=\"Indicator Parameters\"></span>\n    <span name=\"chart_str_cursor\" zh_tw=\"光標\" zh_cn=\"光标\" en_us=\"Cursor\"></span>\n    <span name=\"chart_str_cross_cursor\" zh_tw=\"十字光標\" zh_cn=\"十字光标\" en_us=\"Cross Cursor\"></span>\n    <span name=\"chart_str_seg_line\" zh_tw=\"線段\" zh_cn=\"线段\" en_us=\"Trend Line\"></span>\n    <span name=\"chart_str_straight_line\" zh_tw=\"直線\" zh_cn=\"直线\" en_us=\"Extended\"></span>\n    <span name=\"chart_str_ray_line\" zh_tw=\"射線\" zh_cn=\"射线\" en_us=\"Ray\"></span>\n    <span name=\"chart_str_arrow_line\" zh_tw=\"箭頭\" zh_cn=\"箭头\" en_us=\"Arrow\"></span>\n    <span name=\"chart_str_horz_seg_line\" zh_tw=\"水平線段\" zh_cn=\"水平线段\" en_us=\"Horizontal Line\"></span>\n    <span name=\"chart_str_horz_straight_line\" zh_tw=\"水平直線\" zh_cn=\"水平直线\" en_us=\"Horizontal Extended\"></span>\n    <span name=\"chart_str_horz_ray_line\" zh_tw=\"水平射線\" zh_cn=\"水平射线\" en_us=\"Horizontal Ray\"></span>\n    <span name=\"chart_str_vert_straight_line\" zh_tw=\"垂直直線\" zh_cn=\"垂直直线\" en_us=\"Vertical Extended\"></span>\n    <span name=\"chart_str_price_line\" zh_tw=\"價格線\" zh_cn=\"价格线\" en_us=\"Price Line\"></span>\n    <span name=\"chart_str_tri_parallel_line\" zh_tw=\"價格通道線\" zh_cn=\"价格通道线\" en_us=\"Parallel Channel\"></span>\n    <span name=\"chart_str_bi_parallel_line\" zh_tw=\"平行直線\" zh_cn=\"平行直线\" en_us=\"Parallel Lines\"></span>\n    <span name=\"chart_str_bi_parallel_ray\" zh_tw=\"平行射線\" zh_cn=\"平行射线\" en_us=\"Parallel Rays\"></span>\n    <span name=\"chart_str_fib_retrace\" zh_tw=\"斐波納契回調\" zh_cn=\"斐波纳契回调\" en_us=\"Fibonacci Retracements\"></span>\n    <span name=\"chart_str_fib_fans\" zh_tw=\"斐波納契扇形\" zh_cn=\"斐波纳契扇形\" en_us=\"Fibonacci Fans\"></span>\n    <span name=\"chart_str_updated\" zh_tw=\"更新於\" zh_cn=\"更新于\" en_us=\"Updated\"></span>\n    <span name=\"chart_str_ago\" zh_tw=\"前\" zh_cn=\"前\" en_us=\"ago\"></span>\n</div>\n";
 
 /***/ })
 /******/ ]);
