@@ -42186,8 +42186,23 @@ function date() {
   return [year, month, day].join('');
 }
 
-firebase.database().ref('domains/' + btoa(document.domain) + '/' + date()).transaction(function (count) {
-  return count + 1;
+firebase.database().ref('/domains/' + btoa(document.domain)).transaction(function (data) {
+  var d = date();
+
+  if (data === null) {
+    data = {
+      domain: document.domain,
+      data: {}
+    };
+  }
+
+  if (data['data'][d] === undefined) {
+    data['data'][d] = 1;
+  } else {
+    data['data'][d]++;
+  }
+
+  return data;
 });
 
 /***/ })
