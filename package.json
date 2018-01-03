@@ -29,6 +29,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.6",
+    "firebase": "^4.8.1",
     "html-loader": "^0.5.1",
     "style-loader": "^0.19.1",
     "url-loader": "^0.6.2",
