@@ -1,7 +1,7 @@
 import * as areas from './areas'
-import ChartManager from './chart_manager'
+import {ChartManager} from './chart_manager'
 import * as themes from './themes'
-import ChartSettings from './chart_settings'
+import {ChartSettings} from './chart_settings'
 
 export class TableLayout extends areas.ChartAreaGroup {
 

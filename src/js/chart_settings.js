@@ -1,6 +1,6 @@
-import ChartManager from './chart_manager'
+import {ChartManager} from './chart_manager'
 
-export default class ChartSettings {
+export class ChartSettings {
 
     static checkVersion() {
         if (ChartSettings._data.ver < 2) {
@@ -27,7 +27,7 @@ export default class ChartSettings {
             let charts = ChartSettings._data.charts;
             charts.areaHeight = [];
         }
-    };
+    }
 
     static get () {
         if (ChartSettings._data === undefined) {
@@ -67,7 +67,7 @@ export default class ChartSettings {
             theme: "Dark"
         };
         ChartSettings.checkVersion();
-    };
+    }
 
     static load() {
         if (document.cookie.length <= 0)
@@ -81,12 +81,12 @@ export default class ChartSettings {
             end = document.cookie.length;
         let json = unescape(document.cookie.substring(start, end));
         ChartSettings._data = JSON.parse(json);
-    };
+    }
 
     static save() {
         let exdate = new Date();
         exdate.setDate(exdate.getDate() + 2);
         document.cookie = "chartSettings=" + escape(JSON.stringify(ChartSettings._data)) +
             ";expires=" + exdate.toGMTString();
-    };
+    }
 }

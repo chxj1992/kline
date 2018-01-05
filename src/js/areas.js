@@ -1,6 +1,6 @@
-import NamedObject from './named_object'
-import ChartManager from './chart_manager'
-import MEvent from './mevent'
+import {NamedObject} from './named_object'
+import {ChartManager} from './chart_manager'
+import {MEvent} from './mevent'
 
 export class ChartArea extends NamedObject {
 

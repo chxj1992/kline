@@ -1,9 +1,9 @@
-import ChartManager from './chart_manager'
-import Control from './control'
+import {ChartManager} from './chart_manager'
+import {Control} from './control'
 import Kline from './kline'
 import {Template} from './templates'
 
-export default class Chart {
+export class Chart {
 
     static strPeriod = {
         'zh-cn': {
@@ -71,24 +71,24 @@ export default class Chart {
         this.strIsLine = false;
         this._range = Kline.instance.range;
         this._symbol = Kline.instance.symbol;
-    };
-    
-    setTitle () {
+    }
+
+    setTitle() {
         let lang = new ChartManager().getLanguage();
         let title = Kline.instance.symbolName;
         title += ' ';
         title += this.strIsLine ? Chart.strPeriod[lang]['line'] : Chart.strPeriod[lang][this._range];
         title += (this._contract_unit + '/' + this._money_type).toUpperCase();
         new ChartManager().setTitle('frame0.k0', title);
-    };
-    
-    
-    setSymbol (symbol) {
+    }
+
+
+    setSymbol(symbol) {
         this._symbol = symbol;
         this.updateDataAndDisplay();
-    };
+    }
 
-    updateDataAndDisplay () {
+    updateDataAndDisplay() {
         Kline.instance.symbol = this._symbol;
         Kline.instance.range = this._range;
         new ChartManager().setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
@@ -105,35 +105,35 @@ export default class Chart {
             Control.RequestData();
         }
         new ChartManager().redraw('All', false);
-    };
-    
-    
-    setCurrentContractUnit (contractUnit) {
+    }
+
+
+    setCurrentContractUnit(contractUnit) {
         this._contract_unit = contractUnit;
         this.updateDataAndDisplay();
-    };
-    
-    setCurrentMoneyType (moneyType) {
+    }
+
+    setCurrentMoneyType(moneyType) {
         this._money_type = moneyType;
         this.updateDataAndDisplay();
-    };
-    
-    setCurrentPeriod (period) {
+    }
+
+    setCurrentPeriod(period) {
         this._range = Kline.instance.periodMap[period];
-        if (Kline.instance.type === "socket" && Kline.instance.socketClient.ws.readyState === 1) {
+        if (Kline.instance.type === "stomp" && Kline.instance.stompClient.ws.readyState === 1) {
             Kline.instance.subscribed.unsubscribe();
-            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + this._range, Control.subscribeCallback);
+            Kline.instance.subscribed = Kline.instance.stompClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + this._range, Control.subscribeCallback);
         }
         this.updateDataAndDisplay();
         Kline.instance.onRangeChange(this._range);
-    };
-    
-    updateDataSource (data) {
+    }
+
+    updateDataSource(data) {
         this._data = data;
         new ChartManager().updateData("frame0.k0", this._data);
-    };
-    
-    updateDepth (array) {
+    }
+
+    updateDepth(array) {
         if (array === null) {
             this._depthData.array = [];
             new ChartManager().redraw('All', false);
@@ -176,9 +176,9 @@ export default class Chart {
             }
         }
         new ChartManager().redraw('All', false);
-    };
-    
-    setMainIndicator (indicName) {
+    }
+
+    setMainIndicator(indicName) {
         this._mainIndicator = indicName;
         if (indicName === 'NONE') {
             new ChartManager().removeMainIndicator('frame0.k0');
@@ -186,9 +186,9 @@ export default class Chart {
             new ChartManager().setMainIndicator('frame0.k0', indicName);
         }
         new ChartManager().redraw('All', true);
-    };
-    
-    setIndicator (index, indicName) {
+    }
+
+    setIndicator(index, indicName) {
         if (indicName === 'NONE') {
             let index = 2;
             if (Template.displayVolume === false)
@@ -208,14 +208,14 @@ export default class Chart {
             }
         }
         new ChartManager().redraw('All', true);
-    };
-    
-    addIndicator  (indicName) {
+    }
+
+    addIndicator(indicName) {
         new ChartManager().addIndicator(indicName);
         new ChartManager().redraw('All', true);
-    };
-    
-    removeIndicator (indicName) {
+    }
+
+    removeIndicator(indicName) {
         let areaName = new ChartManager().getIndicatorAreaName(2);
         new ChartManager().removeIndicator(areaName);
         new ChartManager().redraw('All', true);

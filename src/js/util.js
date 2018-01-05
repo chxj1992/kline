@@ -1,4 +1,4 @@
-export default class Util {
+export class Util {
 
     static fromFloat(v, fractionDigits) {
         let text = v.toFixed(fractionDigits);

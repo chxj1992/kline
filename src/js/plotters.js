@@ -1,9 +1,9 @@
-import NamedObject from './named_object'
+import {NamedObject} from './named_object'
 import * as themes from './themes'
-import ChartManager from './chart_manager'
+import {ChartManager} from './chart_manager'
 import Kline from './kline'
 import * as exprs from './exprs'
-import Util from './util'
+import {Util} from './util'
 import * as data_providers from './data_providers'
 import * as data_sources from './data_sources'
 

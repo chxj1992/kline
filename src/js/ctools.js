@@ -1,6 +1,6 @@
-import ChartManager from './chart_manager'
-import NamedObject from './named_object'
-import CPoint from './cpoint'
+import {ChartManager} from './chart_manager'
+import {NamedObject} from './named_object'
+import {CPoint} from './cpoint'
 import * as data_sources from './data_sources'
 import * as plotters from './plotters'
 

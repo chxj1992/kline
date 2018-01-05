@@ -1,4 +1,4 @@
-export default class MEvent {
+export class MEvent {
 
     constructor() {
         this._handlers = [];
@@ -10,7 +10,7 @@ export default class MEvent {
     }
 
     removeHandler(o, f) {
-        let i = this._indexOf(o, f);
+        let i = this.indexOf(o, f);
         if (i >= 0)
             this._handlers.splice(i, 1);
     }

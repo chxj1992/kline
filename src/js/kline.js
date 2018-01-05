@@ -1,8 +1,7 @@
-import Control from './control'
-import KlineTrade from './kline_trade'
-import MEvent from './mevent'
-import ChartManager from './chart_manager'
-import ChartSettings from './chart_settings'
+import {Control} from './control'
+import {KlineTrade} from './kline_trade'
+import {ChartManager} from './chart_manager'
+import {ChartSettings} from './chart_settings'
 import {Template} from './templates'
 import '../css/main.css'
 import tpl from '../view/tpl.html'
@@ -33,7 +32,7 @@ export default class Kline {
         this.type = "poll";
         this.subscribePath = "";
         this.sendPath = "";
-        this.socketClient = null;
+        this.stompClient = null;
         this.intervalTime = 5000;
         this.debug = true;
         this.language = "zh-cn";
@@ -109,39 +108,11 @@ export default class Kline {
         $(this.element).html(view);
 
         setInterval(Control.refreshFunction, this.intervalTime);
-        if (this.type === "socket") {
-            socketConnect();
+        if (this.type === "stomp") {
+            Control.socketConnect();
         }
-        window._setMarketFrom = function (content) {
-            Template.displayVolume = false;
-            Control.refreshTemplate();
-            Control.readCookie();
-            new ChartManager().getChart().setSymbol(content);
-        };
-        window._set_current_language = function (content) {
-            Control.chartSwitchLanguage(content);
-        };
-        window._set_current_depth = function (content) {
-            new ChartManager().getChart().updateDepth(content);
-        };
-        window._set_current_url = function (content) {
-            this.url = content;
-        };
-        window._set_current_contract_unit = function (str) {
-            new ChartManager().getChart().setCurrentContractUnit(str);
-        };
-        window._set_money_type = function (str) {
-            new ChartManager().getChart().setCurrentMoneyType(str);
-        };
-        window._set_usd_cny_rate = function (rate) {
-            new ChartManager().getChart()._usd_cny_rate = rate;
-        };
-        window._setCaptureMouseWheelDirectly = function (b) {
-            new ChartManager().setCaptureMouseWheelDirectly(b);
-        };
-        window._current_future_change = new MEvent();
-        window._current_theme_change = new MEvent();
-        this.mouseEvent();
+
+        this.registerMouseEvent();
         let chartManager = new ChartManager();
         chartManager.bindCanvas("main", document.getElementById("chart_mainCanvas"));
         chartManager.bindCanvas("overlay", document.getElementById("chart_overlayCanvas"));
@@ -222,9 +193,9 @@ export default class Kline {
     }
 
     connect() {
-        if (this.type !== 'socket') {
+        if (this.type !== 'stomp') {
             if (this.debug) {
-                console.log('DEBUG: this is for socket type');
+                console.log('DEBUG: this is for stomp type');
             }
             return;
         }
@@ -232,14 +203,14 @@ export default class Kline {
     }
 
     disconnect() {
-        if (this.type !== 'socket') {
+        if (this.type !== 'stomp') {
             if (this.debug) {
-                console.log('DEBUG: this is for socket type');
+                console.log('DEBUG: this is for stomp type');
             }
             return;
         }
-        if (this.socketClient) {
-            this.socketClient.disconnect();
+        if (this.stompClient) {
+            this.stompClient.disconnect();
             this.socketConnected = false;
         }
         if (this.debug) {
@@ -282,15 +253,15 @@ export default class Kline {
         }
     }
 
-    mouseEvent() {
+    registerMouseEvent() {
         $(document).ready(function () {
             function __resize() {
                 if (navigator.userAgent.indexOf('Firefox') >= 0) {
                     setTimeout(function () {
-                        on_size(this.width, this.height)
+                        Control.onSize(this.width, this.height)
                     }, 200);
                 } else {
-                    on_size(this.width, this.height);
+                    Control.onSize(this.width, this.height)
                 }
             }
 

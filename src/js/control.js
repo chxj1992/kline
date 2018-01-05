@@ -1,10 +1,11 @@
 import Kline from './kline'
-import KlineTrade from './kline_trade'
-import ChartManager from './chart_manager'
-import ChartSettings from './chart_settings'
+import {KlineTrade} from './kline_trade'
+import {ChartManager} from './chart_manager'
+import {ChartSettings} from './chart_settings'
 import {DefaultTemplate, Template} from './templates'
+import {MEvent} from './mevent'
 
-export default class Control {
+export class Control {
 
     static refreshCounter = 0;
     static refreshHandler = null;
@@ -60,7 +61,7 @@ export default class Control {
         if (showLoading === true) {
             $("#chart_loading").addClass("activated");
         }
-        if (Kline.instance.type === "socket" && Kline.instance.socketClient) {
+        if (Kline.instance.type === "stomp" && Kline.instance.stompClient) {
             this.requestOverSocket();
         } else {
             this.requestOverHttp();
@@ -78,8 +79,8 @@ export default class Control {
             }
             return;
         }
-        if (Kline.instance.socketClient && Kline.instance.socketClient.ws.readyState === 1) {
-            Kline.instance.socketClient.send(Kline.instance.sendPath, {}, JSON.stringify(Control.parseRequestParam(Kline.instance.requestParam)));
+        if (Kline.instance.stompClient && Kline.instance.stompClient.ws.readyState === 1) {
+            Kline.instance.stompClient.send(Kline.instance.sendPath, {}, JSON.stringify(Control.parseRequestParam(Kline.instance.requestParam)));
             return;
         }
         if (Kline.instance.debug) {
@@ -175,7 +176,7 @@ export default class Control {
     }
 
     static AbortRequest() {
-        if (Kline.instance.type !== "socket" || !Kline.instance.socketClient) {
+        if (Kline.instance.type !== "stomp" || !Kline.instance.stompClient) {
             if (Kline.instance.G_HTTP_REQUEST && Kline.instance.G_HTTP_REQUEST.readyState !== 4) {
                 Kline.instance.G_HTTP_REQUEST.abort();
             }
@@ -239,8 +240,8 @@ export default class Control {
     }
 
 
-    static setHttpRequestParam(mark_from, range, limit, since) {
-        let str = "symbol=" + mark_from + "&range=" + range;
+    static setHttpRequestParam(symbol, range, limit, since) {
+        let str = "symbol=" + symbol + "&range=" + range;
         if (limit !== null)
             str += "&limit=" + limit;
         else
@@ -278,10 +279,10 @@ export default class Control {
     }
 
     static chartSwitchLanguage(lang) {
-        let lang_tmp = lang.replace(/-/, '_');
+        let langTmp = lang.replace(/-/, '_');
         $('#chart_language_switch_tmp').find('span').each(function () {
             let name = $(this).attr('name');
-            let attr = $(this).attr(lang_tmp);
+            let attr = $(this).attr(langTmp);
             name = '.' + name;
             let obj = $(name)[0];
 
@@ -474,7 +475,7 @@ export default class Control {
         a.content = name;
         $('#chart_output_interface_text').val(JSON.stringify(a));
         $('#chart_output_interface_submit').submit();
-        window._current_theme_change.raise(name);
+        new MEvent().raise(name);
         new ChartManager().redraw();
 
         Kline.instance.onThemeChange(name);
@@ -602,9 +603,9 @@ export default class Control {
 
 
     static switchSymbol(symbol) {
-        if (Kline.instance.type === "socket" && Kline.instance.socketClient.ws.readyState === 1) {
+        if (Kline.instance.type === "stomp" && Kline.instance.stompClient.ws.readyState === 1) {
             Kline.instance.subscribed.unsubscribe();
-            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + symbol + '/' + Kline.instance.range, Control.subscribeCallback);
+            Kline.instance.subscribed = Kline.instance.stompClient.subscribe(Kline.instance.subscribePath + '/' + symbol + '/' + Kline.instance.range, Control.subscribeCallback);
         }
         Control.switchSymbolSelected(symbol);
         let settings = ChartSettings.get();
@@ -633,38 +634,38 @@ export default class Control {
     }
 
     static subscribeCallback(res) {
-        this.requestSuccessHandler(JSON.parse(res.body));
+        Control.requestSuccessHandler(JSON.parse(res.body));
     }
 
     static socketConnect() {
         Kline.instance.socketConnected = true;
 
-        if (!Kline.instance.socketClient) {
+        if (!Kline.instance.stompClient) {
             if (Kline.instance.enableSockjs) {
                 let socket = new SockJS(Kline.instance.url);
-                Kline.instance.socketClient = Stomp.over(socket);
+                Kline.instance.stompClient = Stomp.over(socket);
             } else {
-                Kline.instance.socketClient = Stomp.client(Kline.instance.url);
+                Kline.instance.stompClient = Stomp.client(Kline.instance.url);
             }
         }
 
-        if (Kline.instance.socketClient.ws.readyState === 1) {
+        if (Kline.instance.stompClient.ws.readyState === 1) {
             console.log('DEBUG: already connected');
             return;
         }
 
         if (!Kline.instance.debug) {
-            Kline.instance.socketClient.debug = null;
+            Kline.instance.stompClient.debug = null;
         }
-        Kline.instance.socketClient.connect({}, function () {
-            Kline.instance.socketClient.subscribe('/user' + Kline.instance.subscribePath, Control.subscribeCallback);
-            Kline.instance.subscribed = Kline.instance.socketClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + Kline.instance.range, Control.subscribeCallback);
+        Kline.instance.stompClient.connect({}, function () {
+            Kline.instance.stompClient.subscribe('/user' + Kline.instance.subscribePath, Control.subscribeCallback);
+            Kline.instance.subscribed = Kline.instance.stompClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + Kline.instance.range, Control.subscribeCallback);
             Control.RequestData(true);
         }, function () {
-            Kline.instance.socketClient.disconnect();
+            Kline.instance.stompClient.disconnect();
             console.log("DEBUG: reconnect in 5 seconds ...");
             setTimeout(function () {
-                socketConnect();
+                Control.socketConnect();
             }, 5000);
         });
     }

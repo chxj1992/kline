@@ -91,18 +91,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(60));
 __export(__webpack_require__(61));
 __export(__webpack_require__(41));
-__export(__webpack_require__(130));
 __export(__webpack_require__(131));
 __export(__webpack_require__(132));
 __export(__webpack_require__(133));
-__export(__webpack_require__(62));
 __export(__webpack_require__(134));
-__export(__webpack_require__(63));
+__export(__webpack_require__(62));
 __export(__webpack_require__(135));
+__export(__webpack_require__(63));
 __export(__webpack_require__(136));
-__export(__webpack_require__(138));
+__export(__webpack_require__(137));
 __export(__webpack_require__(139));
 __export(__webpack_require__(140));
+__export(__webpack_require__(141));
 
 //# sourceMappingURL=index.js.map
 
@@ -1205,11 +1205,11 @@ exports.PRIORITY_INDEX = new PriorityIndex();
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.ChartManager = void 0;
 
-var _control = _interopRequireDefault(__webpack_require__(36));
+var _control = __webpack_require__(36);
 
-var _chart = _interopRequireDefault(__webpack_require__(99));
+var _chart = __webpack_require__(99);
 
 var indicators = _interopRequireWildcard(__webpack_require__(103));
 
@@ -1219,7 +1219,7 @@ var templates = _interopRequireWildcard(__webpack_require__(24));
 
 var data_sources = _interopRequireWildcard(__webpack_require__(11));
 
-var _chart_settings = _interopRequireDefault(__webpack_require__(18));
+var _chart_settings = __webpack_require__(18);
 
 var data_providers = _interopRequireWildcard(__webpack_require__(38));
 
@@ -1231,11 +1231,9 @@ var ctools = _interopRequireWildcard(__webpack_require__(55));
 
 var areas = _interopRequireWildcard(__webpack_require__(39));
 
-var _util = _interopRequireDefault(__webpack_require__(25));
+var _util = __webpack_require__(25);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1266,7 +1264,7 @@ function () {
     this._fakeIndicators = {};
     this._captureMouseWheelDirectly = true;
     this._chart = {};
-    this._chart.defaultFrame = new _chart.default();
+    this._chart.defaultFrame = new _chart.Chart();
     this._drawingTool = ChartManager.DrawingTool["CrossCursor"];
     this._beforeDrawingTool = this._drawingTool;
     this._language = "zh-cn";
@@ -1309,7 +1307,7 @@ function () {
       } else if (layer === "overlay") {
         this._overlayCanvas = canvas;
         this._overlayContext = canvas.getContext("2d");
-        if (this._captureMouseWheelDirectly) $(this._overlayCanvas).bind('mousewheel', _control.default.mouseWheel);
+        if (this._captureMouseWheelDirectly) $(this._overlayCanvas).bind('mousewheel', _control.Control.mouseWheel);
       }
     }
   }, {
@@ -1321,7 +1319,7 @@ function () {
     key: "setCaptureMouseWheelDirectly",
     value: function setCaptureMouseWheelDirectly(v) {
       this._captureMouseWheelDirectly = v;
-      if (v) $(this._overlayCanvas).bind('mousewheel', _control.default.mouseWheel);else $(this._overlayCanvas).unbind('mousewheel');
+      if (v) $(this._overlayCanvas).bind('mousewheel', _control.Control.mouseWheel);else $(this._overlayCanvas).unbind('mousewheel');
     }
   }, {
     key: "getChart",
@@ -1397,13 +1395,13 @@ function () {
         case "OHLC":
           dp = this.getDataProvider(dpName);
 
-          if (dp === undefined || !_util.default.isInstance(dp, data_providers.MainDataProvider)) {
+          if (dp === undefined || !_util.Util.isInstance(dp, data_providers.MainDataProvider)) {
             dp = new data_providers.MainDataProvider(dpName);
             this.setDataProvider(dpName, dp);
             dp.updateData();
           }
 
-          this.setMainIndicator(dsName, _chart_settings.default.get().charts.mIndic);
+          this.setMainIndicator(dsName, _chart_settings.ChartSettings.get().charts.mIndic);
 
           switch (style) {
             case "CandleStick":
@@ -1806,7 +1804,7 @@ function () {
 
       if (!drawn) {
         for (var it in this._areas) {
-          if (this._areas[it].getFrameName() === frameName && !_util.default.isInstance(this._areas[it], areas.ChartAreaGroup)) this.drawAreaMain(context, this._areas[it]);
+          if (this._areas[it].getFrameName() === frameName && !_util.Util.isInstance(this._areas[it], areas.ChartAreaGroup)) this.drawAreaMain(context, this._areas[it]);
         }
       }
 
@@ -1832,14 +1830,14 @@ function () {
     value: function drawOverlay(frameName, context) {
       for (var n in this._areas) {
         var area = this._areas[n];
-        if (_util.default.isInstance(area, areas.ChartAreaGroup)) if (area.getFrameName() === frameName) {
+        if (_util.Util.isInstance(area, areas.ChartAreaGroup)) if (area.getFrameName() === frameName) {
           area.drawGrid(context);
         }
       }
 
       for (var _n in this._areas) {
         var _area = this._areas[_n];
-        if (_util.default.isInstance(_area, areas.ChartAreaGroup) === false) if (_area.getFrameName() === frameName) {
+        if (_util.Util.isInstance(_area, areas.ChartAreaGroup) === false) if (_area.getFrameName() === frameName) {
           this.drawAreaOverlay(context, _area);
         }
       }
@@ -1865,7 +1863,7 @@ function () {
 
       for (var n in this._areas) {
         area = this._areas[n];
-        if (_util.default.isInstance(area, areas.ChartAreaGroup)) continue;
+        if (_util.Util.isInstance(area, areas.ChartAreaGroup)) continue;
         if (area.getDataSourceName() !== dsName) continue;
         areaName = area.getName();
 
@@ -1887,7 +1885,7 @@ function () {
 
       for (var n in this._areas) {
         area = this._areas[n];
-        if (_util.default.isInstance(area, areas.ChartAreaGroup)) continue;
+        if (_util.Util.isInstance(area, areas.ChartAreaGroup)) continue;
         if (area.getDataSourceName() !== dsName) continue;
         areaName = area.getName();
 
@@ -1929,8 +1927,6 @@ function () {
   }, {
     key: "SelectRange",
     value: function SelectRange(pArea, y) {
-      var it;
-
       for (var ee in this._ranges) {
         var _1 = this._ranges[ee].getAreaName();
 
@@ -2021,7 +2017,7 @@ function () {
       for (var n in this._dataSources) {
         if (n.indexOf(frameName) === 0) {
           var ds = this._dataSources[n];
-          if (_util.default.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseMoveEvent(x, y)) ret = true;
+          if (_util.Util.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseMoveEvent(x, y)) ret = true;
         }
       }
 
@@ -2036,7 +2032,7 @@ function () {
       for (var n in this._dataSources) {
         if (n.indexOf(frameName) === 0) {
           var ds = this._dataSources[n];
-          if (_util.default.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseDownEvent(x, y)) ret = true;
+          if (_util.Util.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseDownEvent(x, y)) ret = true;
         }
       }
 
@@ -2051,7 +2047,7 @@ function () {
       for (var n in this._dataSources) {
         if (n.indexOf(frameName) === 0) {
           var ds = this._dataSources[n];
-          if (_util.default.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseUpEvent(x, y)) ret = true;
+          if (_util.Util.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseUpEvent(x, y)) ret = true;
         }
       }
 
@@ -2066,7 +2062,7 @@ function () {
       for (var n in this._dataSources) {
         if (n.indexOf(frameName) === 0) {
           var ds = this._dataSources[n];
-          if (_util.default.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseDownMoveEvent(x, y)) ret = true;
+          if (_util.Util.isInstance(ds, data_sources.MainDataSource)) if (ds.toolManager.acceptMouseDownMoveEvent(x, y)) ret = true;
         }
       }
 
@@ -2099,7 +2095,7 @@ function () {
         a = a.onMouseMove(x, y);
 
         if (a !== null) {
-          if (!_util.default.isInstance(a, areas.ChartAreaGroup)) {
+          if (!_util.Util.isInstance(a, areas.ChartAreaGroup)) {
             frame.highlight(a);
             this._highlightedFrame = frame;
           }
@@ -2161,7 +2157,7 @@ function () {
             frame.select(null);
             this._selectedFrame = null;
           } else {
-            if (this._selectedFrame !== frame) if (!this._captureMouseWheelDirectly) $(this._overlayCanvas).bind('mousewheel', _control.default.mouseWheel);
+            if (this._selectedFrame !== frame) if (!this._captureMouseWheelDirectly) $(this._overlayCanvas).bind('mousewheel', _control.Control.mouseWheel);
             frame.select(this._capturingMouseArea);
             this._selectedFrame = frame;
           }
@@ -2331,7 +2327,7 @@ function () {
       }
 
       if (!notLoadSettings) {
-        indic.setParameters(_chart_settings.default.get().indics[indicName]);
+        indic.setParameters(_chart_settings.ChartSettings.get().indics[indicName]);
       }
 
       return {
@@ -2344,7 +2340,7 @@ function () {
     value: function setMainIndicator(dsName, indicName) {
       var areaName = dsName + ".main";
       var dp = this.getDataProvider(areaName + ".main");
-      if (dp === undefined || !_util.default.isInstance(dp, data_providers.MainDataProvider)) return false;
+      if (dp === undefined || !_util.Util.isInstance(dp, data_providers.MainDataProvider)) return false;
       var indic;
 
       switch (indicName) {
@@ -2368,7 +2364,7 @@ function () {
           return false;
       }
 
-      indic.setParameters(_chart_settings.default.get().indics[indicName]);
+      indic.setParameters(_chart_settings.ChartSettings.get().indics[indicName]);
       var indicDpName = areaName + ".secondary";
       var indicDp = this.getDataProvider(indicDpName);
 
@@ -2399,7 +2395,7 @@ function () {
 
       var dp = this.getDataProvider(areaName + ".secondary");
 
-      if (dp === null || dp === undefined || !_util.default.isInstance(dp, data_providers.IndicatorDataProvider)) {
+      if (dp === null || dp === undefined || !_util.Util.isInstance(dp, data_providers.IndicatorDataProvider)) {
         return false;
       }
 
@@ -2421,10 +2417,10 @@ function () {
       range.setPaddingBottom(4);
       range.setMinInterval(20);
 
-      if (_util.default.isInstance(indic, indicators.VOLUMEIndicator)) {
+      if (_util.Util.isInstance(indic, indicators.VOLUMEIndicator)) {
         var plotter = new plotters.LastVolumePlotter(areaName + "Range.decoration");
         this.setPlotter(plotter.getName(), plotter);
-      } else if (_util.default.isInstance(indic, indicators.BOLLIndicator) || _util.default.isInstance(indic, indicators.SARIndicator)) {
+      } else if (_util.Util.isInstance(indic, indicators.BOLLIndicator) || _util.Util.isInstance(indic, indicators.SARIndicator)) {
         var _dp = new data_providers.MainDataProvider(areaName + ".main");
 
         this.setDataProvider(_dp.getName(), _dp);
@@ -2444,7 +2440,7 @@ function () {
       var areaName = dsName + ".main";
       var indicDpName = areaName + ".secondary";
       var indicDp = this.getDataProvider(indicDpName);
-      if (indicDp === undefined || !_util.default.isInstance(indicDp, data_providers.IndicatorDataProvider)) return;
+      if (indicDp === undefined || !_util.Util.isInstance(indicDp, data_providers.IndicatorDataProvider)) return;
       this.removeDataProvider(indicDpName);
       this.removePlotter(indicDpName);
       this.getArea(areaName).setChanged(true);
@@ -2455,7 +2451,7 @@ function () {
       var area = this.getArea(areaName);
       if (area === undefined || area.getNameObject().getCompAt(2) === "main") return;
       var dp = this.getDataProvider(areaName + ".secondary");
-      if (dp === undefined || !_util.default.isInstance(dp, data_providers.IndicatorDataProvider)) return;
+      if (dp === undefined || !_util.Util.isInstance(dp, data_providers.IndicatorDataProvider)) return;
       var rangeAreaName = areaName + "Range";
       var rangeArea = this.getArea(rangeAreaName);
       if (rangeArea === undefined) return;
@@ -2510,7 +2506,7 @@ function () {
 
       for (n in this._dataProviders) {
         var dp = this._dataProviders[n];
-        if (_util.default.isInstance(dp, data_providers.IndicatorDataProvider) === false) continue;
+        if (_util.Util.isInstance(dp, data_providers.IndicatorDataProvider) === false) continue;
         indic = dp.getIndicator();
 
         if (indic.getName() === indicName) {
@@ -2543,7 +2539,7 @@ function () {
   return ChartManager;
 }();
 
-exports.default = ChartManager;
+exports.ChartManager = ChartManager;
 ChartManager.DrawingTool = {
   Cursor: 0,
   CrossCursor: 1,
@@ -3205,11 +3201,9 @@ function isNativeBlobDefined() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.NamedObject = void 0;
 
-var _cname = _interopRequireDefault(__webpack_require__(53));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _cname = __webpack_require__(53);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3224,7 +3218,7 @@ function () {
     _classCallCheck(this, NamedObject);
 
     this._name = name;
-    this._nameObj = new _cname.default(name);
+    this._nameObj = new _cname.CName(name);
   }
 
   _createClass(NamedObject, [{
@@ -3257,7 +3251,7 @@ function () {
   return NamedObject;
 }();
 
-exports.default = NamedObject;
+exports.NamedObject = NamedObject;
 
 /***/ }),
 /* 9 */
@@ -3516,7 +3510,7 @@ function internalError(message) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "firebase", function() { return firebase; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_firebaseApp__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_firebaseApp__ = __webpack_require__(130);
 /**
  * Copyright 2017 Google Inc.
  *
@@ -3552,9 +3546,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MainDataSource = exports.DataSource = void 0;
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
-var _ctool_manager = _interopRequireDefault(__webpack_require__(100));
+var _ctool_manager = __webpack_require__(100);
 
 var _kline = _interopRequireDefault(__webpack_require__(15));
 
@@ -3611,7 +3605,7 @@ function (_NamedObject) {
   }]);
 
   return DataSource;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.DataSource = DataSource;
 DataSource.UpdateMode = {
@@ -3635,7 +3629,7 @@ function (_DataSource) {
     _this._erasedCount = 0;
     _this._dataItems = [];
     _this._decimalDigits = 0;
-    _this.toolManager = new _ctool_manager.default(name);
+    _this.toolManager = new _ctool_manager.CToolManager(name);
     return _this;
   }
 
@@ -4368,15 +4362,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _control = _interopRequireDefault(__webpack_require__(36));
+var _control = __webpack_require__(36);
 
-var _kline_trade = _interopRequireDefault(__webpack_require__(52));
+var _kline_trade = __webpack_require__(52);
 
-var _mevent = _interopRequireDefault(__webpack_require__(57));
+var _chart_manager = __webpack_require__(4);
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
-
-var _chart_settings = _interopRequireDefault(__webpack_require__(18));
+var _chart_settings = __webpack_require__(18);
 
 var _templates = __webpack_require__(24);
 
@@ -4384,7 +4376,7 @@ __webpack_require__(104);
 
 var _tpl = _interopRequireDefault(__webpack_require__(119));
 
-__webpack_require__(202);
+__webpack_require__(120);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4418,7 +4410,7 @@ function () {
     this.type = "poll";
     this.subscribePath = "";
     this.sendPath = "";
-    this.socketClient = null;
+    this.stompClient = null;
     this.intervalTime = 5000;
     this.debug = true;
     this.language = "zh-cn";
@@ -4481,7 +4473,7 @@ function () {
   _createClass(Kline, [{
     key: "draw",
     value: function draw() {
-      new _kline_trade.default();
+      new _kline_trade.KlineTrade();
       var view = $.parseHTML(_tpl.default);
 
       for (var k in this.ranges) {
@@ -4492,62 +4484,22 @@ function () {
       }
 
       $(this.element).html(view);
-      setInterval(_control.default.refreshFunction, this.intervalTime);
+      setInterval(_control.Control.refreshFunction, this.intervalTime);
 
-      if (this.type === "socket") {
-        socketConnect();
+      if (this.type === "stomp") {
+        _control.Control.socketConnect();
       }
 
-      window._setMarketFrom = function (content) {
-        _templates.Template.displayVolume = false;
-
-        _control.default.refreshTemplate();
-
-        _control.default.readCookie();
-
-        new _chart_manager.default().getChart().setSymbol(content);
-      };
-
-      window._set_current_language = function (content) {
-        _control.default.chartSwitchLanguage(content);
-      };
-
-      window._set_current_depth = function (content) {
-        new _chart_manager.default().getChart().updateDepth(content);
-      };
-
-      window._set_current_url = function (content) {
-        this.url = content;
-      };
-
-      window._set_current_contract_unit = function (str) {
-        new _chart_manager.default().getChart().setCurrentContractUnit(str);
-      };
-
-      window._set_money_type = function (str) {
-        new _chart_manager.default().getChart().setCurrentMoneyType(str);
-      };
-
-      window._set_usd_cny_rate = function (rate) {
-        new _chart_manager.default().getChart()._usd_cny_rate = rate;
-      };
-
-      window._setCaptureMouseWheelDirectly = function (b) {
-        new _chart_manager.default().setCaptureMouseWheelDirectly(b);
-      };
-
-      window._current_future_change = new _mevent.default();
-      window._current_theme_change = new _mevent.default();
-      this.mouseEvent();
-      var chartManager = new _chart_manager.default();
+      this.registerMouseEvent();
+      var chartManager = new _chart_manager.ChartManager();
       chartManager.bindCanvas("main", document.getElementById("chart_mainCanvas"));
       chartManager.bindCanvas("overlay", document.getElementById("chart_overlayCanvas"));
 
-      _control.default.refreshTemplate();
+      _control.Control.refreshTemplate();
 
-      _control.default.onSize(this.width, this.height);
+      _control.Control.onSize(this.width, this.height);
 
-      _control.default.readCookie();
+      _control.Control.readCookie();
 
       this.setTheme(this.theme);
       this.setLanguage(this.language);
@@ -4561,7 +4513,7 @@ function () {
       this.width = width;
       this.height = height;
 
-      _control.default.onSize(this.width, this.height);
+      _control.Control.onSize(this.width, this.height);
     }
   }, {
     key: "setSymbol",
@@ -4569,7 +4521,7 @@ function () {
       this.symbol = symbol;
       this.symbolName = symbolName;
 
-      _control.default.switchSymbol(symbol);
+      _control.Control.switchSymbol(symbol);
 
       this.onSymbolChange(symbol, symbolName);
     }
@@ -4578,14 +4530,14 @@ function () {
     value: function setTheme(style) {
       this.theme = style;
 
-      _control.default.switchTheme(style);
+      _control.Control.switchTheme(style);
     }
   }, {
     key: "setLanguage",
     value: function setLanguage(lang) {
       this.language = lang;
 
-      _control.default.chartSwitchLanguage(lang);
+      _control.Control.chartSwitchLanguage(lang);
     }
   }, {
     key: "setShowTrade",
@@ -4598,7 +4550,7 @@ function () {
         $(".trade_container").hide();
       }
 
-      _control.default.onSize(this.width, this.height);
+      _control.Control.onSize(this.width, this.height);
     }
   }, {
     key: "toggleTrade",
@@ -4611,7 +4563,7 @@ function () {
         $(".trade_container").hide();
       }
 
-      _control.default.onSize(this.width, this.height);
+      _control.Control.onSize(this.width, this.height);
     }
   }, {
     key: "setIntervalTime",
@@ -4640,34 +4592,34 @@ function () {
 
       this.paused = false;
 
-      _control.default.RequestData(true);
+      _control.Control.RequestData(true);
     }
   }, {
     key: "connect",
     value: function connect() {
-      if (this.type !== 'socket') {
+      if (this.type !== 'stomp') {
         if (this.debug) {
-          console.log('DEBUG: this is for socket type');
+          console.log('DEBUG: this is for stomp type');
         }
 
         return;
       }
 
-      _control.default.socketConnect();
+      _control.Control.socketConnect();
     }
   }, {
     key: "disconnect",
     value: function disconnect() {
-      if (this.type !== 'socket') {
+      if (this.type !== 'stomp') {
         if (this.debug) {
-          console.log('DEBUG: this is for socket type');
+          console.log('DEBUG: this is for stomp type');
         }
 
         return;
       }
 
-      if (this.socketClient) {
-        this.socketClient.disconnect();
+      if (this.stompClient) {
+        this.stompClient.disconnect();
         this.socketConnected = false;
       }
 
@@ -4715,16 +4667,16 @@ function () {
       }
     }
   }, {
-    key: "mouseEvent",
-    value: function mouseEvent() {
+    key: "registerMouseEvent",
+    value: function registerMouseEvent() {
       $(document).ready(function () {
         function __resize() {
           if (navigator.userAgent.indexOf('Firefox') >= 0) {
             setTimeout(function () {
-              on_size(this.width, this.height);
+              _control.Control.onSize(this.width, this.height);
             }, 200);
           } else {
-            on_size(this.width, this.height);
+            _control.Control.onSize(this.width, this.height);
           }
         }
 
@@ -4777,7 +4729,7 @@ function () {
             var name = $(this).html();
             var index = 0;
 
-            var tmp = _chart_settings.default.get();
+            var tmp = _chart_settings.ChartSettings.get();
 
             var value = tmp.indics[name];
             $(this.nextElementSibling).find("input").each(function () {
@@ -4793,19 +4745,19 @@ function () {
           $('#chart_parameter_settings').removeClass("clicked");
         });
         $(".chart_container .chart_toolbar_tabgroup a").click(function () {
-          _control.default.switchPeriod($(this).parent().attr('name'));
+          _control.Control.switchPeriod($(this).parent().attr('name'));
         });
         $("#chart_toolbar_periods_vert ul a").click(function () {
-          _control.default.switchPeriod($(this).parent().attr('name'));
+          _control.Control.switchPeriod($(this).parent().attr('name'));
         });
         $(".market_chooser ul a").click(function () {
-          _control.default.switchSymbol($(this).attr('name'));
+          _control.Control.switchSymbol($(this).attr('name'));
         });
         $('#chart_show_tools').click(function () {
           if ($(this).hasClass('selected')) {
-            _control.default.switchTools('off');
+            _control.Control.switchTools('off');
           } else {
-            _control.default.switchTools('on');
+            _control.Control.switchTools('on');
           }
         });
         $("#chart_toolpanel .chart_toolpanel_button").click(function () {
@@ -4813,13 +4765,13 @@ function () {
           $("#chart_toolpanel .chart_toolpanel_button").removeClass("selected");
           $(this).addClass("selected");
           var name = $(this).children().attr('name');
-          Kline.instance.chartMgr.setRunningMode(_chart_manager.default.DrawingTool[name]);
+          Kline.instance.chartMgr.setRunningMode(_chart_manager.ChartManager.DrawingTool[name]);
         });
         $('#chart_show_indicator').click(function () {
           if ($(this).hasClass('selected')) {
-            _control.default.switchIndic('off');
+            _control.Control.switchIndic('off');
           } else {
-            _control.default.switchIndic('on');
+            _control.Control.switchIndic('on');
           }
         });
         $("#chart_tabbar li a").click(function () {
@@ -4827,25 +4779,25 @@ function () {
           $(this).addClass('selected');
           var name = $(this).attr('name');
 
-          var tmp = _chart_settings.default.get();
+          var tmp = _chart_settings.ChartSettings.get();
 
           tmp.charts.indics[1] = name;
 
-          _chart_settings.default.save();
+          _chart_settings.ChartSettings.save();
 
-          if (_templates.Template.displayVolume === false) new _chart_manager.default().getChart().setIndicator(1, name);else new _chart_manager.default().getChart().setIndicator(2, name);
+          if (_templates.Template.displayVolume === false) new _chart_manager.ChartManager().getChart().setIndicator(1, name);else new _chart_manager.ChartManager().getChart().setIndicator(2, name);
         });
         $("#chart_select_chart_style a").click(function () {
           $("#chart_select_chart_style a").removeClass('selected');
           $(this).addClass("selected");
 
-          var tmp = _chart_settings.default.get();
+          var tmp = _chart_settings.ChartSettings.get();
 
           tmp.charts.chartStyle = $(this)[0].innerHTML;
 
-          _chart_settings.default.save();
+          _chart_settings.ChartSettings.save();
 
-          var mgr = new _chart_manager.default();
+          var mgr = new _chart_manager.ChartManager();
           mgr.setChartStyle("frame0.k0", $(this).html());
           mgr.redraw();
         });
@@ -4854,9 +4806,9 @@ function () {
           var name = $(this).attr('name');
 
           if (name === 'chart_themes_dark') {
-            _control.default.switchTheme('dark');
+            _control.Control.switchTheme('dark');
           } else if (name === 'chart_themes_light') {
-            _control.default.switchTheme('light');
+            _control.Control.switchTheme('light');
           }
         });
         $("#chart_select_main_indicator a").click(function () {
@@ -4864,13 +4816,13 @@ function () {
           $(this).addClass("selected");
           var name = $(this).attr('name');
 
-          var tmp = _chart_settings.default.get();
+          var tmp = _chart_settings.ChartSettings.get();
 
           tmp.charts.mIndic = name;
 
-          _chart_settings.default.save();
+          _chart_settings.ChartSettings.save();
 
-          var mgr = new _chart_manager.default();
+          var mgr = new _chart_manager.ChartManager();
           if (!mgr.setMainIndicator("frame0.k0", name)) mgr.removeMainIndicator("frame0.k0");
           mgr.redraw();
         });
@@ -4878,70 +4830,70 @@ function () {
           $('#chart_toolbar_theme a').removeClass('selected');
 
           if ($(this).attr('name') === 'dark') {
-            _control.default.switchTheme('dark');
+            _control.Control.switchTheme('dark');
           } else if ($(this).attr('name') === 'light') {
-            _control.default.switchTheme('light');
+            _control.Control.switchTheme('light');
           }
         });
         $('#chart_select_theme li a').click(function () {
           $('#chart_select_theme a').removeClass('selected');
 
           if ($(this).attr('name') === 'dark') {
-            _control.default.switchTheme('dark');
+            _control.Control.switchTheme('dark');
           } else if ($(this).attr('name') === 'light') {
-            _control.default.switchTheme('light');
+            _control.Control.switchTheme('light');
           }
         });
         $('#chart_enable_tools li a').click(function () {
           $('#chart_enable_tools a').removeClass('selected');
 
           if ($(this).attr('name') === 'on') {
-            _control.default.switchTools('on');
+            _control.Control.switchTools('on');
           } else if ($(this).attr('name') === 'off') {
-            _control.default.switchTools('off');
+            _control.Control.switchTools('off');
           }
         });
         $('#chart_enable_indicator li a').click(function () {
           $('#chart_enable_indicator a').removeClass('selected');
 
           if ($(this).attr('name') === 'on') {
-            _control.default.switchIndic('on');
+            _control.Control.switchIndic('on');
           } else if ($(this).attr('name') === 'off') {
-            _control.default.switchIndic('off');
+            _control.Control.switchIndic('off');
           }
         });
         $('#chart_language_setting_div li a').click(function () {
           $('#chart_language_setting_div a').removeClass('selected');
 
           if ($(this).attr('name') === 'zh-cn') {
-            _control.default.chartSwitchLanguage('zh-cn');
+            _control.Control.chartSwitchLanguage('zh-cn');
           } else if ($(this).attr('name') === 'en-us') {
-            _control.default.chartSwitchLanguage('en-us');
+            _control.Control.chartSwitchLanguage('en-us');
           } else if ($(this).attr('name') === 'zh-tw') {
-            _control.default.chartSwitchLanguage('zh-tw');
+            _control.Control.chartSwitchLanguage('zh-tw');
           }
         });
         $(document).keyup(function (e) {
           if (e.keyCode === 46) {
-            new _chart_manager.default().deleteToolObject();
-            new _chart_manager.default().redraw('OverlayCanvas', false);
+            new _chart_manager.ChartManager().deleteToolObject();
+            new _chart_manager.ChartManager().redraw('OverlayCanvas', false);
           }
         });
         $("#clearCanvas").click(function () {
-          var pDPTool = new _chart_manager.default().getDataSource("frame0.k0");
+          var pDPTool = new _chart_manager.ChartManager().getDataSource("frame0.k0");
           var len = pDPTool.getToolObjectCount();
 
           for (var i = 0; i < len; i++) {
             pDPTool.delToolObject();
           }
 
-          new _chart_manager.default().redraw('OverlayCanvas', false);
+          new _chart_manager.ChartManager().redraw('OverlayCanvas', false);
         });
         $("#chart_overlayCanvas").mousemove(function (e) {
           var r = e.target.getBoundingClientRect();
           var x = e.clientX - r.left;
           var y = e.clientY - r.top;
-          var mgr = new _chart_manager.default();
+          var mgr = new _chart_manager.ChartManager();
 
           if (Kline.instance.buttonDown === true) {
             mgr.onMouseMove("frame0", x, y, true);
@@ -4954,7 +4906,7 @@ function () {
           var r = e.target.getBoundingClientRect();
           var x = e.clientX - r.left;
           var y = e.clientY - r.top;
-          var mgr = new _chart_manager.default();
+          var mgr = new _chart_manager.ChartManager();
           mgr.onMouseLeave("frame0", x, y, false);
           mgr.redraw("OverlayCanvas");
         }).mouseup(function (e) {
@@ -4966,13 +4918,13 @@ function () {
           var r = e.target.getBoundingClientRect();
           var x = e.clientX - r.left;
           var y = e.clientY - r.top;
-          var mgr = new _chart_manager.default();
+          var mgr = new _chart_manager.ChartManager();
           mgr.onMouseUp("frame0", x, y);
           mgr.redraw("All");
         }).mousedown(function (e) {
           if (e.which !== 1) {
-            new _chart_manager.default().deleteToolObject();
-            new _chart_manager.default().redraw('OverlayCanvas', false);
+            new _chart_manager.ChartManager().deleteToolObject();
+            new _chart_manager.ChartManager().redraw('OverlayCanvas', false);
             return;
           }
 
@@ -4980,13 +4932,13 @@ function () {
           var r = e.target.getBoundingClientRect();
           var x = e.clientX - r.left;
           var y = e.clientY - r.top;
-          new _chart_manager.default().onMouseDown("frame0", x, y);
+          new _chart_manager.ChartManager().onMouseDown("frame0", x, y);
         });
         $("#chart_parameter_settings :input").change(function () {
           var name = $(this).attr("name");
           var index = 0;
           var valueArray = [];
-          var mgr = new _chart_manager.default();
+          var mgr = new _chart_manager.ChartManager();
           $("#chart_parameter_settings :input").each(function () {
             if ($(this).attr("name") === name) {
               if ($(this).val() !== "" && $(this).val() !== null && $(this).val() !== undefined) {
@@ -5014,11 +4966,11 @@ function () {
               }
             });
 
-            var tmp = _chart_settings.default.get();
+            var tmp = _chart_settings.ChartSettings.get();
 
             tmp.indics[name] = cookieArray;
 
-            _chart_settings.default.save();
+            _chart_settings.ChartSettings.save();
 
             mgr.redraw('All', false);
           }
@@ -5026,7 +4978,7 @@ function () {
         $("#chart_parameter_settings button").click(function () {
           var name = $(this).parents("tr").children("th").html();
           var index = 0;
-          var value = new _chart_manager.default().getIndicatorParameters(name);
+          var value = new _chart_manager.ChartManager().getIndicatorParameters(name);
           var valueArray = [];
           $(this).parent().prev().children('input').each(function () {
             if (value !== null && index < value.length) {
@@ -5036,15 +4988,15 @@ function () {
 
             index++;
           });
-          new _chart_manager.default().setIndicatorParameters(name, valueArray);
+          new _chart_manager.ChartManager().setIndicatorParameters(name, valueArray);
 
-          var tmp = _chart_settings.default.get();
+          var tmp = _chart_settings.ChartSettings.get();
 
           tmp.indics[name] = valueArray;
 
-          _chart_settings.default.save();
+          _chart_settings.ChartSettings.save();
 
-          new _chart_manager.default().redraw('All', false);
+          new _chart_manager.ChartManager().redraw('All', false);
         });
         $('body').on('click', '#sizeIcon', function () {
           Kline.instance.isSized = !Kline.instance.isSized;
@@ -5061,7 +5013,7 @@ function () {
               zIndex: '10000'
             });
 
-            _control.default.onSize();
+            _control.Control.onSize();
 
             $('html,body').css({
               width: '100%',
@@ -5072,7 +5024,7 @@ function () {
             $(Kline.instance.element).attr('style', '');
             $('html,body').attr('style', '');
 
-            _control.default.onSize(Kline.instance.width, Kline.instance.height);
+            _control.Control.onSize(Kline.instance.width, Kline.instance.height);
 
             $(Kline.instance.element).css({
               visibility: 'visible',
@@ -5248,11 +5200,9 @@ function clone(obj) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.ChartSettings = void 0;
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _chart_manager = __webpack_require__(4);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5314,7 +5264,7 @@ function () {
       var _name = ['MA', 'EMA', 'VOLUME', 'MACD', 'KDJ', 'StochRSI', 'RSI', 'DMI', 'OBV', 'BOLL', 'DMA', 'TRIX', 'BRAR', 'VR', 'EMV', 'WR', 'ROC', 'MTM', 'PSY'];
 
       for (var i = 0; i < _name.length; i++) {
-        var _value = new _chart_manager.default().createIndicatorAndRange('', _name[i], true);
+        var _value = new _chart_manager.ChartManager().createIndicatorAndRange('', _name[i], true);
 
         if (_value === null) continue;
         _indic_param[_name[i]] = [];
@@ -5368,7 +5318,7 @@ function () {
   return ChartSettings;
 }();
 
-exports.default = ChartSettings;
+exports.ChartSettings = ChartSettings;
 
 /***/ }),
 /* 19 */
@@ -6094,9 +6044,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TemplateMeasuringHandler = exports.DefaultTemplate = exports.Template = void 0;
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
-var _chart_settings = _interopRequireDefault(__webpack_require__(18));
+var _chart_settings = __webpack_require__(18);
 
 var data_sources = _interopRequireWildcard(__webpack_require__(11));
 
@@ -6106,9 +6056,9 @@ var areas = _interopRequireWildcard(__webpack_require__(39));
 
 var plotters = _interopRequireWildcard(__webpack_require__(37));
 
-var _timeline = _interopRequireDefault(__webpack_require__(101));
+var _timeline = __webpack_require__(101);
 
-var _cname = _interopRequireDefault(__webpack_require__(53));
+var _cname = __webpack_require__(53);
 
 var layouts = _interopRequireWildcard(__webpack_require__(102));
 
@@ -6117,8 +6067,6 @@ var themes = _interopRequireWildcard(__webpack_require__(19));
 var ranges = _interopRequireWildcard(__webpack_require__(58));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -6147,7 +6095,7 @@ function () {
   }, {
     key: "createDataSource",
     value: function createDataSource(dsName, dsAlias, createFunc) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       if (mgr.getCachedDataSource(dsAlias) === null) mgr.setCachedDataSource(dsAlias, createFunc(dsAlias));
       mgr.setCurrentDataSource(dsName, dsAlias);
       mgr.updateData(dsName, null);
@@ -6166,7 +6114,7 @@ function () {
   }, {
     key: "createMainChartComps",
     value: function createMainChartComps(dsName) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var tableLayout = mgr.getArea(dsName + ".charts");
       var areaName = dsName + ".main";
       var rangeAreaName = areaName + "Range";
@@ -6211,7 +6159,7 @@ function () {
   }, {
     key: "createIndicatorChartComps",
     value: function createIndicatorChartComps(dsName, indicName) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var tableLayout = mgr.getArea(dsName + ".charts");
       var areaName = dsName + ".indic" + tableLayout.getNextRowId();
       var rangeAreaName = areaName + "Range";
@@ -6220,7 +6168,7 @@ function () {
       tableLayout.addArea(area);
       var rowIndex = tableLayout.getAreaCount() >> 1;
 
-      var heights = _chart_settings.default.get().charts.areaHeight;
+      var heights = _chart_settings.ChartSettings.get().charts.areaHeight;
 
       if (heights.length > rowIndex) {
         var a, i;
@@ -6266,9 +6214,9 @@ function () {
   }, {
     key: "createTimelineComps",
     value: function createTimelineComps(dsName) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var plotter;
-      var timeline = new _timeline.default(dsName);
+      var timeline = new _timeline.Timeline(dsName);
       mgr.setTimeline(timeline.getName(), timeline);
       plotter = new plotters.TimelineAreaBackgroundPlotter(dsName + ".timeline.background");
       mgr.setPlotter(plotter.getName(), plotter);
@@ -6280,7 +6228,7 @@ function () {
   }, {
     key: "createLiveOrderComps",
     value: function createLiveOrderComps(dsName) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var plotter;
       plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
       mgr.setPlotter(plotter.getName(), plotter);
@@ -6290,7 +6238,7 @@ function () {
   }, {
     key: "createLiveTradeComps",
     value: function createLiveTradeComps(dsName) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var plotter;
       plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
       mgr.setPlotter(plotter.getName(), plotter);
@@ -6319,11 +6267,11 @@ function (_Template) {
   _createClass(DefaultTemplate, null, [{
     key: "loadTemplate",
     value: function loadTemplate(dsName, dsAlias) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
 
-      var settings = _chart_settings.default.get();
+      var settings = _chart_settings.ChartSettings.get();
 
-      var frameName = new _cname.default(dsName).getCompAt(0);
+      var frameName = new _cname.CName(dsName).getCompAt(0);
       mgr.unloadTemplate(frameName);
       this.createDataSource(dsName, dsAlias, this.createCandlestickDataSource);
       var frame = new layouts.DockableLayout(frameName);
@@ -6385,7 +6333,7 @@ exports.TemplateMeasuringHandler = TemplateMeasuringHandler;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.Util = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6429,7 +6377,7 @@ function () {
   return Util;
 }();
 
-exports.default = Util;
+exports.Util = Util;
 
 /***/ }),
 /* 26 */
@@ -6453,8 +6401,8 @@ exports.default = Util;
  * limitations under the License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var DOMStorageWrapper_1 = __webpack_require__(145);
-var MemoryStorage_1 = __webpack_require__(146);
+var DOMStorageWrapper_1 = __webpack_require__(146);
+var MemoryStorage_1 = __webpack_require__(147);
 /**
  * Helper to create a DOMStorageWrapper or else fall back to MemoryStorage.
  * TODO: Once MemoryStorage and DOMStorageWrapper have a shared interface this method annotation should change
@@ -7555,18 +7503,18 @@ var ServerValues_1 = __webpack_require__(75);
 var nodeFromJSON_1 = __webpack_require__(21);
 var Path_1 = __webpack_require__(2);
 var SparseSnapshotTree_1 = __webpack_require__(76);
-var SyncTree_1 = __webpack_require__(151);
-var SnapshotHolder_1 = __webpack_require__(162);
+var SyncTree_1 = __webpack_require__(152);
+var SnapshotHolder_1 = __webpack_require__(163);
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(1);
 var util_3 = __webpack_require__(0);
-var AuthTokenProvider_1 = __webpack_require__(163);
+var AuthTokenProvider_1 = __webpack_require__(164);
 var StatsManager_1 = __webpack_require__(46);
-var StatsReporter_1 = __webpack_require__(165);
+var StatsReporter_1 = __webpack_require__(166);
 var StatsListener_1 = __webpack_require__(81);
-var EventQueue_1 = __webpack_require__(166);
+var EventQueue_1 = __webpack_require__(167);
 var PersistentConnection_1 = __webpack_require__(82);
-var ReadonlyRestClient_1 = __webpack_require__(171);
+var ReadonlyRestClient_1 = __webpack_require__(172);
 var Database_1 = __webpack_require__(64);
 var INTERRUPT_REASON = 'repo_interrupt';
 /**
@@ -8469,17 +8417,19 @@ var Location = /** @class */ (function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.Control = void 0;
 
 var _kline = _interopRequireDefault(__webpack_require__(15));
 
-var _kline_trade = _interopRequireDefault(__webpack_require__(52));
+var _kline_trade = __webpack_require__(52);
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
-var _chart_settings = _interopRequireDefault(__webpack_require__(18));
+var _chart_settings = __webpack_require__(18);
 
 var _templates = __webpack_require__(24);
+
+var _mevent = __webpack_require__(57);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8500,7 +8450,7 @@ function () {
     key: "refreshFunction",
     value: function refreshFunction() {
       Control.refreshCounter++;
-      var lang = new _chart_manager.default().getLanguage();
+      var lang = new _chart_manager.ChartManager().getLanguage();
 
       if (Control.refreshCounter > 3600) {
         var num = Number(Control.refreshCounter / 3600);
@@ -8535,7 +8485,7 @@ function () {
     value: function clearRefreshCounter() {
       window.clearInterval(Control.refreshHandler);
       Control.refreshCounter = 0;
-      var lang = new _chart_manager.default().getLanguage();
+      var lang = new _chart_manager.ChartManager().getLanguage();
 
       if (lang === "en-us") {
         $("#chart_updated_time_text").html(Control.refreshCounter + "s");
@@ -8559,7 +8509,7 @@ function () {
         $("#chart_loading").addClass("activated");
       }
 
-      if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient) {
+      if (_kline.default.instance.type === "stomp" && _kline.default.instance.stompClient) {
         this.requestOverSocket();
       } else {
         this.requestOverHttp();
@@ -8581,8 +8531,8 @@ function () {
         return;
       }
 
-      if (_kline.default.instance.socketClient && _kline.default.instance.socketClient.ws.readyState === 1) {
-        _kline.default.instance.socketClient.send(_kline.default.instance.sendPath, {}, JSON.stringify(Control.parseRequestParam(_kline.default.instance.requestParam)));
+      if (_kline.default.instance.stompClient && _kline.default.instance.stompClient.ws.readyState === 1) {
+        _kline.default.instance.stompClient.send(_kline.default.instance.sendPath, {}, JSON.stringify(Control.parseRequestParam(_kline.default.instance.requestParam)));
 
         return;
       }
@@ -8654,7 +8604,7 @@ function () {
       }
 
       $("#chart_loading").removeClass("activated");
-      var chart = new _chart_manager.default().getChart();
+      var chart = new _chart_manager.ChartManager().getChart();
       chart.setTitle();
       _kline.default.instance.data = eval(res.data);
 
@@ -8672,13 +8622,13 @@ function () {
       }
 
       if (_kline.default.instance.data.trades && _kline.default.instance.data.trades.length > 0) {
-        _kline_trade.default.instance.pushTrades(_kline.default.instance.data.trades);
+        _kline_trade.KlineTrade.instance.pushTrades(_kline.default.instance.data.trades);
 
-        _kline_trade.default.instance.klineTradeInit = true;
+        _kline_trade.KlineTrade.instance.klineTradeInit = true;
       }
 
       if (_kline.default.instance.data.depths) {
-        _kline_trade.default.instance.updateDepth(_kline.default.instance.data.depths);
+        _kline_trade.KlineTrade.instance.updateDepth(_kline.default.instance.data.depths);
       }
 
       Control.clearRefreshCounter();
@@ -8687,12 +8637,12 @@ function () {
         _kline.default.instance.timer = setTimeout(Control.TwoSecondThread, intervalTime);
       }
 
-      new _chart_manager.default().redraw('All', false);
+      new _chart_manager.ChartManager().redraw('All', false);
     }
   }, {
     key: "AbortRequest",
     value: function AbortRequest() {
-      if (_kline.default.instance.type !== "socket" || !_kline.default.instance.socketClient) {
+      if (_kline.default.instance.type !== "stomp" || !_kline.default.instance.stompClient) {
         if (_kline.default.instance.G_HTTP_REQUEST && _kline.default.instance.G_HTTP_REQUEST.readyState !== 4) {
           _kline.default.instance.G_HTTP_REQUEST.abort();
         }
@@ -8714,13 +8664,13 @@ function () {
   }, {
     key: "readCookie",
     value: function readCookie() {
-      _chart_settings.default.get();
+      _chart_settings.ChartSettings.get();
 
-      _chart_settings.default.save();
+      _chart_settings.ChartSettings.save();
 
-      var tmp = _chart_settings.default.get();
+      var tmp = _chart_settings.ChartSettings.get();
 
-      new _chart_manager.default().setChartStyle('frame0.k0', tmp.charts.chartStyle);
+      new _chart_manager.ChartManager().setChartStyle('frame0.k0', tmp.charts.chartStyle);
       var symbol = tmp.charts.symbol;
 
       if (!_kline.default.instance.init) {
@@ -8753,8 +8703,8 @@ function () {
           $(this).addClass('selected');
         }
       });
-      new _chart_manager.default().getChart().setMainIndicator(tmp.charts.mIndic);
-      new _chart_manager.default().setThemeName('frame0', tmp.theme);
+      new _chart_manager.ChartManager().getChart().setMainIndicator(tmp.charts.mIndic);
+      new _chart_manager.ChartManager().setThemeName('frame0', tmp.theme);
       this.switchTools('off');
 
       if (tmp.theme === 'Dark') {
@@ -8767,12 +8717,12 @@ function () {
     }
   }, {
     key: "setHttpRequestParam",
-    value: function setHttpRequestParam(mark_from, range, limit, since) {
-      var str = "symbol=" + mark_from + "&range=" + range;
+    value: function setHttpRequestParam(symbol, range, limit, since) {
+      var str = "symbol=" + symbol + "&range=" + range;
       if (limit !== null) str += "&limit=" + limit;else str += "&since=" + since;
 
-      if (_kline_trade.default.instance.tradeDate.getTime() !== 0) {
-        str += "&prevTradeTime=" + _kline_trade.default.instance.tradeDate.getTime();
+      if (_kline_trade.KlineTrade.instance.tradeDate.getTime() !== 0) {
+        str += "&prevTradeTime=" + _kline_trade.KlineTrade.instance.tradeDate.getTime();
       }
 
       return str;
@@ -8781,7 +8731,7 @@ function () {
     key: "refreshTemplate",
     value: function refreshTemplate() {
       _kline.default.instance.chartMgr = _templates.DefaultTemplate.loadTemplate("frame0.k0", "");
-      new _chart_manager.default().redraw('All', true);
+      new _chart_manager.ChartManager().redraw('All', true);
     }
   }, {
     key: "getRectCrossPt",
@@ -8822,10 +8772,10 @@ function () {
   }, {
     key: "chartSwitchLanguage",
     value: function chartSwitchLanguage(lang) {
-      var lang_tmp = lang.replace(/-/, '_');
+      var langTmp = lang.replace(/-/, '_');
       $('#chart_language_switch_tmp').find('span').each(function () {
         var name = $(this).attr('name');
-        var attr = $(this).attr(lang_tmp);
+        var attr = $(this).attr(langTmp);
         name = '.' + name;
         var obj = $(name)[0];
         if (!obj) return;
@@ -8834,14 +8784,14 @@ function () {
         });
       });
       $("#chart_language_setting_div li a[name='" + lang + "']").addClass("selected");
-      new _chart_manager.default().setLanguage(lang);
-      new _chart_manager.default().getChart().setTitle();
+      new _chart_manager.ChartManager().setLanguage(lang);
+      new _chart_manager.ChartManager().getChart().setTitle();
 
-      var tmp = _chart_settings.default.get();
+      var tmp = _chart_settings.ChartSettings.get();
 
       tmp.language = lang;
 
-      _chart_settings.default.save();
+      _chart_settings.ChartSettings.save();
 
       _kline.default.instance.onLangChange(lang);
     }
@@ -8982,15 +8932,15 @@ function () {
         rowTheme.style.display = "none";
       }
 
-      new _chart_manager.default().redraw('All', true);
+      new _chart_manager.ChartManager().redraw('All', true);
 
       _kline.default.instance.onResize(width, height);
     }
   }, {
     key: "mouseWheel",
     value: function mouseWheel(e, delta) {
-      new _chart_manager.default().scale(delta > 0 ? 1 : -1);
-      new _chart_manager.default().redraw("All", true);
+      new _chart_manager.ChartManager().scale(delta > 0 ? 1 : -1);
+      new _chart_manager.ChartManager().redraw("All", true);
       return false;
     }
   }, {
@@ -9013,22 +8963,22 @@ function () {
 
       if (name === 'dark') {
         $(".trade_container").addClass("dark").removeClass("light");
-        new _chart_manager.default().setThemeName('frame0', 'Dark');
+        new _chart_manager.ChartManager().setThemeName('frame0', 'Dark');
 
-        var tmp = _chart_settings.default.get();
+        var tmp = _chart_settings.ChartSettings.get();
 
         tmp.theme = 'Dark';
 
-        _chart_settings.default.save();
+        _chart_settings.ChartSettings.save();
       } else if (name === 'light') {
         $(".trade_container").addClass("light").removeClass("dark");
-        new _chart_manager.default().setThemeName('frame0', 'Light');
+        new _chart_manager.ChartManager().setThemeName('frame0', 'Light');
 
-        var _tmp = _chart_settings.default.get();
+        var _tmp = _chart_settings.ChartSettings.get();
 
         _tmp.theme = 'Light';
 
-        _chart_settings.default.save();
+        _chart_settings.ChartSettings.save();
       }
 
       var a = {};
@@ -9036,10 +8986,8 @@ function () {
       a.content = name;
       $('#chart_output_interface_text').val(JSON.stringify(a));
       $('#chart_output_interface_submit').submit();
-
-      window._current_theme_change.raise(name);
-
-      new _chart_manager.default().redraw();
+      new _mevent.MEvent().raise(name);
+      new _chart_manager.ChartManager().redraw();
 
       _kline.default.instance.onThemeChange(name);
     }
@@ -9059,9 +9007,9 @@ function () {
         });
         $('#chart_toolpanel')[0].style.display = 'inline';
 
-        if (new _chart_manager.default()._drawingTool === _chart_manager.default.DrawingTool.Cursor) {
+        if (new _chart_manager.ChartManager()._drawingTool === _chart_manager.ChartManager.DrawingTool.Cursor) {
           $('#chart_Cursor').parent().addClass('selected');
-        } else if (new _chart_manager.default()._drawingTool === _chart_manager.default.DrawingTool.CrossCursor) {
+        } else if (new _chart_manager.ChartManager()._drawingTool === _chart_manager.ChartManager.DrawingTool.CrossCursor) {
           $('#chart_CrossCursor').parent().addClass('selected');
         }
       } else if (name === 'off') {
@@ -9072,8 +9020,8 @@ function () {
           }
         });
         $('#chart_toolpanel')[0].style.display = 'none';
-        new _chart_manager.default().setRunningMode(new _chart_manager.default()._beforeDrawingTool);
-        new _chart_manager.default().redraw("All", true);
+        new _chart_manager.ChartManager().setRunningMode(new _chart_manager.ChartManager()._beforeDrawingTool);
+        new _chart_manager.ChartManager().redraw("All", true);
       }
 
       if (_kline.default.instance.isSized) {
@@ -9091,27 +9039,27 @@ function () {
       if (name === 'on') {
         $('#chart_show_indicator').addClass('selected');
 
-        var tmp = _chart_settings.default.get();
+        var tmp = _chart_settings.ChartSettings.get();
 
         tmp.charts.indicsStatus = 'open';
 
-        _chart_settings.default.save();
+        _chart_settings.ChartSettings.save();
 
         var value = tmp.charts.indics[1];
-        if (_templates.Template.displayVolume === false) new _chart_manager.default().getChart().setIndicator(2, value);else new _chart_manager.default().getChart().setIndicator(2, value);
+        if (_templates.Template.displayVolume === false) new _chart_manager.ChartManager().getChart().setIndicator(2, value);else new _chart_manager.ChartManager().getChart().setIndicator(2, value);
         $("#chart_tabbar").find('a').each(function () {
           if ($(this).attr('name') === value) $(this).addClass('selected');
         });
         $('#chart_tabbar')[0].style.display = 'block';
       } else if (name === 'off') {
         $('#chart_show_indicator').removeClass('selected');
-        new _chart_manager.default().getChart().setIndicator(2, 'NONE');
+        new _chart_manager.ChartManager().getChart().setIndicator(2, 'NONE');
 
-        var _tmp2 = _chart_settings.default.get();
+        var _tmp2 = _chart_settings.ChartSettings.get();
 
         _tmp2.charts.indicsStatus = 'close';
 
-        _chart_settings.default.save();
+        _chart_settings.ChartSettings.save();
 
         $('#chart_tabbar')[0].style.display = 'none';
         $("#chart_tabbar a").removeClass("selected");
@@ -9138,33 +9086,33 @@ function () {
           $(this).addClass('selected');
         }
       });
-      new _chart_manager.default().showCursor();
+      new _chart_manager.ChartManager().showCursor();
       Control.calcPeriodWeight(name);
 
       if (name === 'line') {
-        new _chart_manager.default().getChart().strIsLine = true;
-        new _chart_manager.default().setChartStyle('frame0.k0', 'Line');
-        new _chart_manager.default().getChart().setCurrentPeriod('line');
+        new _chart_manager.ChartManager().getChart().strIsLine = true;
+        new _chart_manager.ChartManager().setChartStyle('frame0.k0', 'Line');
+        new _chart_manager.ChartManager().getChart().setCurrentPeriod('line');
 
-        var _settings = _chart_settings.default.get();
+        var _settings = _chart_settings.ChartSettings.get();
 
         _settings.charts.period = name;
 
-        _chart_settings.default.save();
+        _chart_settings.ChartSettings.save();
 
         return;
       }
 
-      new _chart_manager.default().getChart().strIsLine = false;
+      new _chart_manager.ChartManager().getChart().strIsLine = false;
       var p = _kline.default.instance.tagMapPeriod[name];
-      new _chart_manager.default().setChartStyle('frame0.k0', _chart_settings.default.get().charts.chartStyle);
-      new _chart_manager.default().getChart().setCurrentPeriod(p);
+      new _chart_manager.ChartManager().setChartStyle('frame0.k0', _chart_settings.ChartSettings.get().charts.chartStyle);
+      new _chart_manager.ChartManager().getChart().setCurrentPeriod(p);
 
-      var settings = _chart_settings.default.get();
+      var settings = _chart_settings.ChartSettings.get();
 
       settings.charts.period = name;
 
-      _chart_settings.default.save();
+      _chart_settings.ChartSettings.save();
     }
   }, {
     key: "reset",
@@ -9172,7 +9120,7 @@ function () {
       _kline.default.instance.symbol = symbol;
 
       if (_kline.default.instance.showTrade) {
-        _kline_trade.default.instance.reset(symbol);
+        _kline_trade.KlineTrade.instance.reset(symbol);
       }
     }
   }, {
@@ -9181,36 +9129,36 @@ function () {
       Control.reset(symbol);
       $(".market_chooser ul a").removeClass("selected");
       $(".market_chooser ul a[name='" + symbol + "']").addClass("selected");
-      new _chart_manager.default().getChart()._symbol = symbol;
+      new _chart_manager.ChartManager().getChart()._symbol = symbol;
 
-      var settings = _chart_settings.default.get();
+      var settings = _chart_settings.ChartSettings.get();
 
       settings.charts.symbol = symbol;
 
-      _chart_settings.default.save();
+      _chart_settings.ChartSettings.save();
     }
   }, {
     key: "switchSymbol",
     value: function switchSymbol(symbol) {
-      if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient.ws.readyState === 1) {
+      if (_kline.default.instance.type === "stomp" && _kline.default.instance.stompClient.ws.readyState === 1) {
         _kline.default.instance.subscribed.unsubscribe();
 
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
+        _kline.default.instance.subscribed = _kline.default.instance.stompClient.subscribe(_kline.default.instance.subscribePath + '/' + symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
       }
 
       Control.switchSymbolSelected(symbol);
 
-      var settings = _chart_settings.default.get();
+      var settings = _chart_settings.ChartSettings.get();
 
       if (settings.charts.period === "line") {
-        new _chart_manager.default().getChart().strIsLine = true;
-        new _chart_manager.default().setChartStyle('frame0.k0', 'Line');
+        new _chart_manager.ChartManager().getChart().strIsLine = true;
+        new _chart_manager.ChartManager().setChartStyle('frame0.k0', 'Line');
       } else {
-        new _chart_manager.default().getChart().strIsLine = false;
-        new _chart_manager.default().setChartStyle('frame0.k0', _chart_settings.default.get().charts.chartStyle);
+        new _chart_manager.ChartManager().getChart().strIsLine = false;
+        new _chart_manager.ChartManager().setChartStyle('frame0.k0', _chart_settings.ChartSettings.get().charts.chartStyle);
       }
 
-      new _chart_manager.default().getChart().setSymbol(symbol);
+      new _chart_manager.ChartManager().getChart().setSymbol(symbol);
     }
   }, {
     key: "calcPeriodWeight",
@@ -9218,7 +9166,7 @@ function () {
       var index = period;
       if (period !== 'line') index = _kline.default.instance.periodMap[_kline.default.instance.tagMapPeriod[period]];
 
-      var periodWeight = _chart_settings.default.get().charts.period_weight;
+      var periodWeight = _chart_settings.ChartSettings.get().charts.period_weight;
 
       for (var i in periodWeight) {
         if (periodWeight[i] > periodWeight[index]) {
@@ -9228,66 +9176,56 @@ function () {
 
       periodWeight[index] = 8;
 
-      _chart_settings.default.save();
+      _chart_settings.ChartSettings.save();
     }
   }, {
     key: "subscribeCallback",
     value: function subscribeCallback(res) {
-      this.requestSuccessHandler(JSON.parse(res.body));
+      Control.requestSuccessHandler(JSON.parse(res.body));
     }
   }, {
     key: "socketConnect",
-    value: function (_socketConnect) {
-      function socketConnect() {
-        return _socketConnect.apply(this, arguments);
-      }
-
-      socketConnect.toString = function () {
-        return _socketConnect.toString();
-      };
-
-      return socketConnect;
-    }(function () {
+    value: function socketConnect() {
       _kline.default.instance.socketConnected = true;
 
-      if (!_kline.default.instance.socketClient) {
+      if (!_kline.default.instance.stompClient) {
         if (_kline.default.instance.enableSockjs) {
           var socket = new SockJS(_kline.default.instance.url);
-          _kline.default.instance.socketClient = Stomp.over(socket);
+          _kline.default.instance.stompClient = Stomp.over(socket);
         } else {
-          _kline.default.instance.socketClient = Stomp.client(_kline.default.instance.url);
+          _kline.default.instance.stompClient = Stomp.client(_kline.default.instance.url);
         }
       }
 
-      if (_kline.default.instance.socketClient.ws.readyState === 1) {
+      if (_kline.default.instance.stompClient.ws.readyState === 1) {
         console.log('DEBUG: already connected');
         return;
       }
 
       if (!_kline.default.instance.debug) {
-        _kline.default.instance.socketClient.debug = null;
+        _kline.default.instance.stompClient.debug = null;
       }
 
-      _kline.default.instance.socketClient.connect({}, function () {
-        _kline.default.instance.socketClient.subscribe('/user' + _kline.default.instance.subscribePath, Control.subscribeCallback);
+      _kline.default.instance.stompClient.connect({}, function () {
+        _kline.default.instance.stompClient.subscribe('/user' + _kline.default.instance.subscribePath, Control.subscribeCallback);
 
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
+        _kline.default.instance.subscribed = _kline.default.instance.stompClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + _kline.default.instance.range, Control.subscribeCallback);
         Control.RequestData(true);
       }, function () {
-        _kline.default.instance.socketClient.disconnect();
+        _kline.default.instance.stompClient.disconnect();
 
         console.log("DEBUG: reconnect in 5 seconds ...");
         setTimeout(function () {
-          socketConnect();
+          Control.socketConnect();
         }, 5000);
       });
-    })
+    }
   }]);
 
   return Control;
 }();
 
-exports.default = Control;
+exports.Control = Control;
 Control.refreshCounter = 0;
 Control.refreshHandler = null;
 
@@ -9303,25 +9241,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CDynamicLinePlotter = exports.DrawFibFansPlotter = exports.DrawBandLinesPlotter = exports.DrawFibRetracePlotter = exports.BandLinesPlotter = exports.DrawTriParallelLinesPlotter = exports.DrawBiParallelRayLinesPlotter = exports.DrawBiParallelLinesPlotter = exports.ParallelLinesPlotter = exports.DrawPriceLinesPlotter = exports.DrawVertiStraightLinesPlotter = exports.DrawHoriSegLinesPlotter = exports.DrawHoriRayLinesPlotter = exports.DrawHoriStraightLinesPlotter = exports.DrawArrowLinesPlotter = exports.DrawRayLinesPlotter = exports.DrawSegLinesPlotter = exports.DrawStraightLinesPlotter = exports.CToolPlotter = exports.RangeSelectionPlotter = exports.TimelineSelectionPlotter = exports.SelectionPlotter = exports.LastClosePlotter = exports.LastVolumePlotter = exports.COrderGraphPlotter = exports.RangePlotter = exports.TimelinePlotter = exports.MinMaxPlotter = exports.IndicatorInfoPlotter = exports.IndicatorPlotter = exports.MainInfoPlotter = exports.OHLCPlotter = exports.CandlestickHLCPlotter = exports.CandlestickPlotter = exports.CGridPlotter = exports.TimelineAreaBackgroundPlotter = exports.RangeAreaBackgroundPlotter = exports.MainAreaBackgroundPlotter = exports.BackgroundPlotter = exports.Plotter = void 0;
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
 var themes = _interopRequireWildcard(__webpack_require__(19));
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
 var _kline = _interopRequireDefault(__webpack_require__(15));
 
 var exprs = _interopRequireWildcard(__webpack_require__(56));
 
-var _util = _interopRequireDefault(__webpack_require__(25));
+var _util = __webpack_require__(25);
 
 var data_providers = _interopRequireWildcard(__webpack_require__(38));
 
 var data_sources = _interopRequireWildcard(__webpack_require__(11));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -9473,7 +9411,7 @@ function (_NamedObject) {
   }]);
 
   return Plotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.Plotter = Plotter;
 Plotter.isChrome = navigator.userAgent.toLowerCase().match(/chrome/) !== null;
@@ -9506,7 +9444,7 @@ function (_Plotter) {
   }, {
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var theme = mgr.getTheme(this.getFrameName());
       context.fillStyle = theme.getColor(this._color);
@@ -9533,7 +9471,7 @@ function (_BackgroundPlotter) {
   _createClass(MainAreaBackgroundPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var range = mgr.getRange(this.getAreaName());
@@ -9572,7 +9510,7 @@ function (_BackgroundPlotter2) {
   _createClass(RangeAreaBackgroundPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var areaName = this.getAreaName();
       var area = mgr.getArea(areaName);
       var range = mgr.getRange(areaName.substring(0, areaName.lastIndexOf("Range")));
@@ -9607,7 +9545,7 @@ function (_BackgroundPlotter3) {
   _createClass(TimelineAreaBackgroundPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       if (!area.isChanged() && !timeline.isUpdated()) return;
@@ -9636,7 +9574,7 @@ function (_NamedObject2) {
   _createClass(CGridPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var range = mgr.getRange(this.getAreaName());
@@ -9679,7 +9617,7 @@ function (_NamedObject2) {
   }]);
 
   return CGridPlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.CGridPlotter = CGridPlotter;
 
@@ -9697,7 +9635,7 @@ function (_NamedObject3) {
   _createClass(CandlestickPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
 
       if (ds.getDataCount() < 1) {
@@ -9714,7 +9652,7 @@ function (_NamedObject3) {
 
       var theme = mgr.getTheme(this.getFrameName());
 
-      var dark = _util.default.isInstance(theme, themes.DarkTheme);
+      var dark = _util.Util.isInstance(theme, themes.DarkTheme);
 
       var first = timeline.getFirstIndex();
       var last = timeline.getLastIndex();
@@ -9842,7 +9780,7 @@ function (_NamedObject3) {
   }]);
 
   return CandlestickPlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.CandlestickPlotter = CandlestickPlotter;
 
@@ -9860,10 +9798,10 @@ function (_Plotter2) {
   _createClass(CandlestickHLCPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
 
-      if (!_util.default.isInstance(ds, data_sources.MainDataSource) || ds.getDataCount() < 1) {
+      if (!_util.Util.isInstance(ds, data_sources.MainDataSource) || ds.getDataCount() < 1) {
         return;
       }
 
@@ -9877,7 +9815,7 @@ function (_Plotter2) {
 
       var theme = mgr.getTheme(this.getFrameName());
 
-      var dark = _util.default.isInstance(theme, themes.DarkTheme);
+      var dark = _util.Util.isInstance(theme, themes.DarkTheme);
 
       var first = timeline.getFirstIndex();
       var last = timeline.getLastIndex();
@@ -10057,10 +9995,10 @@ function (_Plotter3) {
   _createClass(OHLCPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
 
-      if (!_util.default.isInstance(ds, data_sources.MainDataSource) || ds.getDataCount() < 1) {
+      if (!_util.Util.isInstance(ds, data_sources.MainDataSource) || ds.getDataCount() < 1) {
         return;
       }
 
@@ -10208,7 +10146,7 @@ function (_Plotter4) {
   _createClass(MainInfoPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var ds = mgr.getDataSource(this.getDataSourceName());
@@ -10230,13 +10168,13 @@ function (_Plotter4) {
       var time = new Date(data.date);
       var year = time.getFullYear();
 
-      var month = _util.default.formatTime(time.getMonth() + 1);
+      var month = _util.Util.formatTime(time.getMonth() + 1);
 
-      var date = _util.default.formatTime(time.getDate());
+      var date = _util.Util.formatTime(time.getDate());
 
-      var hour = _util.default.formatTime(time.getHours());
+      var hour = _util.Util.formatTime(time.getHours());
 
-      var minute = _util.default.formatTime(time.getMinutes());
+      var minute = _util.Util.formatTime(time.getMinutes());
 
       var lang = mgr.getLanguage();
 
@@ -10378,13 +10316,13 @@ function (_NamedObject4) {
   _createClass(IndicatorPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var range = mgr.getRange(this.getAreaName());
       if (range.getRange() === 0.0) return;
       var dp = mgr.getDataProvider(this.getName());
-      if (!_util.default.isInstance(dp, data_providers.IndicatorDataProvider)) return;
+      if (!_util.Util.isInstance(dp, data_providers.IndicatorDataProvider)) return;
       var theme = mgr.getTheme(this.getFrameName());
       var cW = timeline.getColumnWidth();
       var first = timeline.getFirstIndex();
@@ -10454,7 +10392,7 @@ function (_NamedObject4) {
   }, {
     key: "drawVolumeStick",
     value: function drawVolumeStick(context, theme, ds, first, last, startX, cW, iW, range) {
-      var dark = _util.default.isInstance(theme, themes.DarkTheme);
+      var dark = _util.Util.isInstance(theme, themes.DarkTheme);
 
       var left = startX;
       var bottom = range.toY(0);
@@ -10637,7 +10575,7 @@ function (_NamedObject4) {
   }]);
 
   return IndicatorPlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.IndicatorPlotter = IndicatorPlotter;
 
@@ -10655,7 +10593,7 @@ function (_Plotter5) {
   _createClass(IndicatorInfoPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var dp = mgr.getDataProvider(this.getAreaName() + ".secondary");
@@ -10737,7 +10675,7 @@ function (_NamedObject5) {
   _createClass(MinMaxPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
       if (ds.getDataCount() < 1) return;
       var timeline = mgr.getTimeline(this.getDataSourceName());
@@ -10780,12 +10718,12 @@ function (_NamedObject5) {
       Plotter.drawLine(context, arrowStart, y, arrowStop, y);
       Plotter.drawLine(context, arrowStart, y, _arrowStop, y + 2);
       Plotter.drawLine(context, arrowStart, y, _arrowStop, y - 2);
-      context.fillText(_util.default.fromFloat(v, digits), textStart, y);
+      context.fillText(_util.Util.fromFloat(v, digits), textStart, y);
     }
   }]);
 
   return MinMaxPlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.MinMaxPlotter = MinMaxPlotter;
 
@@ -10803,7 +10741,7 @@ function (_Plotter6) {
   _createClass(TimelinePlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       if (!area.isChanged() && !timeline.isUpdated()) return;
@@ -10925,7 +10863,7 @@ function (_NamedObject6) {
   _createClass(RangePlotter, [{
     key: "getRequiredWidth",
     value: function getRequiredWidth(context, v) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var theme = mgr.getTheme(this.getFrameName());
       context.font = theme.getFont(themes.Theme.Font.Default);
       return context.measureText((Math.floor(v) + 0.88).toString()).width + 16;
@@ -10933,7 +10871,7 @@ function (_NamedObject6) {
   }, {
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var areaName = this.getAreaName();
       var area = mgr.getArea(areaName);
       var rangeName = areaName.substring(0, areaName.lastIndexOf("Range"));
@@ -10971,7 +10909,7 @@ function (_NamedObject6) {
           w: 6,
           h: 1
         });
-        context.fillText(_util.default.fromFloat(gradations[n], 2), center, y);
+        context.fillText(_util.Util.fromFloat(gradations[n], 2), center, y);
       }
 
       if (gridRects.length > 0) {
@@ -10983,7 +10921,7 @@ function (_NamedObject6) {
   }]);
 
   return RangePlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.RangePlotter = RangePlotter;
 
@@ -11019,7 +10957,7 @@ function (_NamedObject7) {
       context.rect(this.m_left, this.m_top, this.m_right - this.m_left, this.m_bottom - this.m_top);
       context.clip();
 
-      var all = new _chart_manager.default().getChart()._depthData;
+      var all = new _chart_manager.ChartManager().getChart()._depthData;
 
       this.x_offset = 0;
       this.y_offset = 0;
@@ -11048,7 +10986,7 @@ function (_NamedObject7) {
       context.fillStyle = this.m_pTheme.getColor(themes.Theme.Color.Background);
       context.fillRect(this.m_left, this.m_top, this.m_right - this.m_left, this.m_bottom - this.m_top);
 
-      var all = new _chart_manager.default().getChart()._depthData;
+      var all = new _chart_manager.ChartManager().getChart()._depthData;
 
       if (this.m_mode === 0) {
         var ask_bottom = this.m_pRange.toY(all.array[this.m_ask_si].rate) - this.y_offset;
@@ -11113,7 +11051,7 @@ function (_NamedObject7) {
   }, {
     key: "UpdatePoints",
     value: function UpdatePoints() {
-      var all = new _chart_manager.default().getChart()._depthData;
+      var all = new _chart_manager.ChartManager().getChart()._depthData;
 
       this.m_ask_points = [];
       var index_ask = {};
@@ -11174,7 +11112,7 @@ function (_NamedObject7) {
   }, {
     key: "updateData",
     value: function updateData() {
-      var all = new _chart_manager.default().getChart()._depthData;
+      var all = new _chart_manager.ChartManager().getChart()._depthData;
 
       if (all.array === null) return false;
       if (all.array.length <= 50) return false;
@@ -11237,7 +11175,7 @@ function (_NamedObject7) {
   }, {
     key: "Update",
     value: function Update() {
-      this.m_pMgr = new _chart_manager.default();
+      this.m_pMgr = new _chart_manager.ChartManager();
       var areaName = this.getAreaName();
       this.m_pArea = this.m_pMgr.getArea(areaName);
       if (this.m_pArea === null) return false;
@@ -11255,7 +11193,7 @@ function (_NamedObject7) {
   }, {
     key: "DrawGradations",
     value: function DrawGradations(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var areaName = this.getAreaName();
       var area = mgr.getArea(areaName);
       var rangeName = areaName.substring(0, areaName.lastIndexOf("Range"));
@@ -11337,7 +11275,7 @@ function (_NamedObject7) {
     key: "DrawTickerGraph",
     value: function DrawTickerGraph(context) {
       // return;
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
       var ticker = ds._dataItems[ds._dataItems.length - 1].close;
       var p1x = this.m_left + 1;
@@ -11352,7 +11290,7 @@ function (_NamedObject7) {
   }]);
 
   return COrderGraphPlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.COrderGraphPlotter = COrderGraphPlotter;
 
@@ -11370,7 +11308,7 @@ function (_Plotter7) {
   _createClass(LastVolumePlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var areaName = this.getAreaName();
       var area = mgr.getArea(areaName);
@@ -11391,7 +11329,7 @@ function (_Plotter7) {
       Plotter.drawLine(context, left, y, left + 7, y);
       Plotter.drawLine(context, left, y, left + 3, y + 2);
       Plotter.drawLine(context, left, y, left + 3, y - 2);
-      context.fillText(_util.default.fromFloat(v, 2), left + 10, y);
+      context.fillText(_util.Util.fromFloat(v, 2), left + 10, y);
     }
   }]);
 
@@ -11414,7 +11352,7 @@ function (_Plotter8) {
   _createClass(LastClosePlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var areaName = this.getAreaName();
       var area = mgr.getArea(areaName);
@@ -11436,7 +11374,7 @@ function (_Plotter8) {
       Plotter.drawLine(context, left, y, left + 7, y);
       Plotter.drawLine(context, left, y, left + 3, y + 2);
       Plotter.drawLine(context, left, y, left + 3, y - 2);
-      context.fillText(_util.default.fromFloat(v, ds.getDecimalDigits()), left + 10, y);
+      context.fillText(_util.Util.fromFloat(v, ds.getDecimalDigits()), left + 10, y);
     }
   }]);
 
@@ -11459,9 +11397,9 @@ function (_Plotter9) {
   _createClass(SelectionPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
 
-      if (mgr._drawingTool !== _chart_manager.default.DrawingTool.CrossCursor) {
+      if (mgr._drawingTool !== _chart_manager.ChartManager.DrawingTool.CrossCursor) {
         return;
       }
 
@@ -11504,12 +11442,12 @@ function (_Plotter10) {
   _createClass(TimelineSelectionPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var timeline = mgr.getTimeline(this.getDataSourceName());
       if (timeline.getSelectedIndex() < 0) return;
       var ds = mgr.getDataSource(this.getDataSourceName());
-      if (!_util.default.isInstance(ds, data_sources.MainDataSource)) return;
+      if (!_util.Util.isInstance(ds, data_sources.MainDataSource)) return;
       var theme = mgr.getTheme(this.getFrameName());
       var lang = mgr.getLanguage();
       var x = timeline.toItemCenter(timeline.getSelectedIndex());
@@ -11592,7 +11530,7 @@ function (_NamedObject8) {
   _createClass(RangeSelectionPlotter, [{
     key: "Draw",
     value: function Draw(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var areaName = this.getAreaName();
       var area = mgr.getArea(areaName);
       var timeline = mgr.getTimeline(this.getDataSourceName());
@@ -11646,12 +11584,12 @@ function (_NamedObject8) {
         digits = mgr.getDataSource(this.getDataSourceName()).getDecimalDigits();
       }
 
-      context.fillText(_util.default.fromFloat(v, digits), area.getCenter(), y);
+      context.fillText(_util.Util.fromFloat(v, digits), area.getCenter(), y);
     }
   }]);
 
   return RangeSelectionPlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.RangeSelectionPlotter = RangeSelectionPlotter;
 
@@ -11667,7 +11605,7 @@ function (_NamedObject9) {
 
     _this3 = _possibleConstructorReturn(this, (CToolPlotter.__proto__ || Object.getPrototypeOf(CToolPlotter)).call(this, name));
     _this3.toolObject = toolObject;
-    var pMgr = new _chart_manager.default();
+    var pMgr = new _chart_manager.ChartManager();
     var pArea = pMgr.getArea('frame0.k0.main');
 
     if (pArea === null) {
@@ -11691,7 +11629,7 @@ function (_NamedObject9) {
     _this3.selectedSize = 6;
     _this3.cursorLen = 4;
     _this3.cursorGapLen = 3;
-    _this3.theme = new _chart_manager.default().getTheme(_this3.getFrameName());
+    _this3.theme = new _chart_manager.ChartManager().getTheme(_this3.getFrameName());
     return _this3;
   }
 
@@ -11827,7 +11765,7 @@ function (_NamedObject9) {
   }, {
     key: "getAreaPos",
     value: function getAreaPos() {
-      var pMgr = new _chart_manager.default();
+      var pMgr = new _chart_manager.ChartManager();
       var pArea = pMgr.getArea('frame0.k0.main');
 
       if (pArea === null) {
@@ -11871,7 +11809,7 @@ function (_NamedObject9) {
   }]);
 
   return CToolPlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.CToolPlotter = CToolPlotter;
 
@@ -12616,14 +12554,14 @@ function (_NamedObject10) {
 
     _this21 = _possibleConstructorReturn(this, (CDynamicLinePlotter.__proto__ || Object.getPrototypeOf(CDynamicLinePlotter)).call(this, name));
     _this21.flag = true;
-    _this21.context = new _chart_manager.default()._overlayContext;
+    _this21.context = new _chart_manager.ChartManager()._overlayContext;
     return _this21;
   }
 
   _createClass(CDynamicLinePlotter, [{
     key: "getAreaPos",
     value: function getAreaPos() {
-      var pMgr = new _chart_manager.default();
+      var pMgr = new _chart_manager.ChartManager();
       var pArea = pMgr.getArea('frame0.k0.main');
 
       if (pArea === null) {
@@ -12647,9 +12585,9 @@ function (_NamedObject10) {
     key: "Draw",
     value: function Draw(context) {
       this.getAreaPos();
-      var pMgr = new _chart_manager.default();
+      var pMgr = new _chart_manager.ChartManager();
       var pTDP = pMgr.getDataSource(this.getDataSourceName());
-      if (pTDP === null || !_util.default.isInstance(pTDP, data_sources.MainDataSource)) return;
+      if (pTDP === null || !_util.Util.isInstance(pTDP, data_sources.MainDataSource)) return;
       this.context.save();
       this.context.rect(this.areaPos.left, this.areaPos.top, this.areaPos.right - this.areaPos.left, this.areaPos.bottom - this.areaPos.top);
       this.context.clip();
@@ -12661,17 +12599,17 @@ function (_NamedObject10) {
 
         switch (state) {
           case CToolObject.state.BeforeDraw:
-            toolObject.getPlotter().theme = new _chart_manager.default().getTheme(this.getFrameName());
+            toolObject.getPlotter().theme = new _chart_manager.ChartManager().getTheme(this.getFrameName());
             toolObject.getPlotter().drawCursor(this.context);
             break;
 
           case CToolObject.state.Draw:
-            toolObject.getPlotter().theme = new _chart_manager.default().getTheme(this.getFrameName());
+            toolObject.getPlotter().theme = new _chart_manager.ChartManager().getTheme(this.getFrameName());
             toolObject.getPlotter().updateDraw(this.context);
             break;
 
           case CToolObject.state.AfterDraw:
-            toolObject.getPlotter().theme = new _chart_manager.default().getTheme(this.getFrameName());
+            toolObject.getPlotter().theme = new _chart_manager.ChartManager().getTheme(this.getFrameName());
             toolObject.getPlotter().finishDraw(this.context);
             break;
 
@@ -12687,7 +12625,7 @@ function (_NamedObject10) {
   }]);
 
   return CDynamicLinePlotter;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.CDynamicLinePlotter = CDynamicLinePlotter;
 
@@ -12703,17 +12641,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.IndicatorDataProvider = exports.MainDataProvider = exports.DataProvider = void 0;
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
-var _util = _interopRequireDefault(__webpack_require__(25));
+var _util = __webpack_require__(25);
 
 var data_sources = _interopRequireWildcard(__webpack_require__(11));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -12823,7 +12759,7 @@ function (_NamedObject) {
   }, {
     key: "updateRange",
     value: function updateRange() {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var firstIndexes = [timeline.getFirstIndex()];
       var minmaxes = [{}];
@@ -12837,7 +12773,7 @@ function (_NamedObject) {
   }]);
 
   return DataProvider;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.DataProvider = DataProvider;
 
@@ -12859,10 +12795,10 @@ function (_DataProvider) {
   _createClass(MainDataProvider, [{
     key: "updateData",
     value: function updateData() {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
 
-      if (!_util.default.isInstance(ds, data_sources.MainDataSource)) {
+      if (!_util.Util.isInstance(ds, data_sources.MainDataSource)) {
         return;
       }
 
@@ -12909,7 +12845,7 @@ function (_DataProvider2) {
   }, {
     key: "refresh",
     value: function refresh() {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
 
       if (ds.getDataCount() < 1) {
@@ -12929,7 +12865,7 @@ function (_DataProvider2) {
   }, {
     key: "updateData",
     value: function updateData() {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
 
       if (ds.getDataCount() < 1) {
@@ -12949,6 +12885,7 @@ function (_DataProvider2) {
         case data_sources.DataSource.UpdateMode.Append:
           {
             indic.reserve(ds.getAppendedCount());
+            break;
           }
 
         case data_sources.DataSource.UpdateMode.Update:
@@ -13013,13 +12950,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChartAreaGroup = exports.TimelineArea = exports.IndicatorRangeArea = exports.MainRangeArea = exports.IndicatorArea = exports.MainArea = exports.ChartArea = void 0;
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
-var _mevent = _interopRequireDefault(__webpack_require__(57));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _mevent = __webpack_require__(57);
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -13054,7 +12989,7 @@ function (_NamedObject) {
     _this._highlighted = false;
     _this._pressed = false;
     _this._selected = false;
-    _this.Measuring = new _mevent.default();
+    _this.Measuring = new _mevent.MEvent();
     return _this;
   }
 
@@ -13273,7 +13208,7 @@ function (_NamedObject) {
   }]);
 
   return ChartArea;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.ChartArea = ChartArea;
 ChartArea.DockStyle = {
@@ -13305,7 +13240,7 @@ function (_ChartArea) {
   _createClass(MainArea, [{
     key: "onMouseMove",
     value: function onMouseMove(x, y) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       if (mgr._capturingMouseArea === this) if (this._dragStarted === false) if (Math.abs(this._oldX - x) > 1 || Math.abs(this._oldY - y) > 1) this._dragStarted = true;
 
       if (this._dragStarted) {
@@ -13321,11 +13256,11 @@ function (_ChartArea) {
       }
 
       switch (mgr._drawingTool) {
-        case _chart_manager.default.DrawingTool.Cursor:
+        case _chart_manager.ChartManager.DrawingTool.Cursor:
           mgr.showCursor();
           break;
 
-        case _chart_manager.default.DrawingTool.CrossCursor:
+        case _chart_manager.ChartManager.DrawingTool.CrossCursor:
           if (mgr.showCrossCursor(this, x, y)) mgr.hideCursor();else mgr.showCursor();
           break;
 
@@ -13345,7 +13280,7 @@ function (_ChartArea) {
   }, {
     key: "onMouseDown",
     value: function onMouseDown(x, y) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       mgr.getTimeline(this.getDataSourceName()).startMove();
       this._oldX = x;
       this._oldY = y;
@@ -13356,7 +13291,7 @@ function (_ChartArea) {
   }, {
     key: "onMouseUp",
     value: function onMouseUp(x, y) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ret = null;
 
       if (this._dragStarted) {
@@ -13395,7 +13330,7 @@ function (_ChartArea2) {
   _createClass(IndicatorArea, [{
     key: "onMouseMove",
     value: function onMouseMove(x, y) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
 
       if (mgr._capturingMouseArea === this) {
         if (this._dragStarted === false) {
@@ -13412,7 +13347,7 @@ function (_ChartArea2) {
       }
 
       switch (mgr._drawingTool) {
-        case _chart_manager.default.DrawingTool.CrossCursor:
+        case _chart_manager.ChartManager.DrawingTool.CrossCursor:
           if (mgr.showCrossCursor(this, x, y)) mgr.hideCursor();else mgr.showCursor();
           break;
 
@@ -13431,7 +13366,7 @@ function (_ChartArea2) {
   }, {
     key: "onMouseDown",
     value: function onMouseDown(x, y) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       mgr.getTimeline(this.getDataSourceName()).startMove();
       this._oldX = x;
       this._oldY = y;
@@ -13469,7 +13404,7 @@ function (_ChartArea3) {
   _createClass(MainRangeArea, [{
     key: "onMouseMove",
     value: function onMouseMove(x, y) {
-      new _chart_manager.default().showCursor();
+      new _chart_manager.ChartManager().showCursor();
       return this;
     }
   }]);
@@ -13493,7 +13428,7 @@ function (_ChartArea4) {
   _createClass(IndicatorRangeArea, [{
     key: "onMouseMove",
     value: function onMouseMove(x, y) {
-      new _chart_manager.default().showCursor();
+      new _chart_manager.ChartManager().showCursor();
       return this;
     }
   }]);
@@ -13517,7 +13452,7 @@ function (_ChartArea5) {
   _createClass(TimelineArea, [{
     key: "onMouseMove",
     value: function onMouseMove(x, y) {
-      new _chart_manager.default().showCursor();
+      new _chart_manager.ChartManager().showCursor();
       return this;
     }
   }]);
@@ -13798,13 +13733,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var onDisconnect_1 = __webpack_require__(67);
-var TransactionResult_1 = __webpack_require__(147);
+var TransactionResult_1 = __webpack_require__(148);
 var util_1 = __webpack_require__(1);
-var NextPushId_1 = __webpack_require__(148);
+var NextPushId_1 = __webpack_require__(149);
 var Query_1 = __webpack_require__(68);
 var Repo_1 = __webpack_require__(31);
 var Path_1 = __webpack_require__(2);
-var QueryParams_1 = __webpack_require__(172);
+var QueryParams_1 = __webpack_require__(173);
 var validation_1 = __webpack_require__(12);
 var util_2 = __webpack_require__(0);
 var util_3 = __webpack_require__(0);
@@ -14786,7 +14721,7 @@ exports.IndexedFilter = IndexedFilter;
  * limitations under the License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var StatsCollection_1 = __webpack_require__(164);
+var StatsCollection_1 = __webpack_require__(165);
 var StatsManager = /** @class */ (function () {
     function StatsManager() {
     }
@@ -14840,7 +14775,7 @@ var Repo_1 = __webpack_require__(31);
 var util_2 = __webpack_require__(1);
 var parser_1 = __webpack_require__(65);
 var validation_1 = __webpack_require__(12);
-__webpack_require__(174);
+__webpack_require__(175);
 /** @const {string} */
 var DATABASE_URL_OPTION = 'databaseURL';
 var _staticInstance;
@@ -15121,7 +15056,7 @@ function nullFunctionSpec(opt_optional) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = fromResourceString;
 /* harmony export (immutable) */ __webpack_exports__["d"] = toResourceString;
 /* harmony export (immutable) */ __webpack_exports__["c"] = metadataValidator;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__json__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__json__ = __webpack_require__(190);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__location__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__path__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__type__ = __webpack_require__(7);
@@ -15420,7 +15355,9 @@ function remove(array, elem) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.KlineTrade = void 0;
+
+var _chart_manager = __webpack_require__(4);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15569,8 +15506,7 @@ function () {
   }, {
     key: "updateDepth",
     value: function updateDepth(data) {
-      window._set_current_depth(data);
-
+      new _chart_manager.ChartManager().getChart().updateDepth(data);
       if (!data) return;
       $("#gasks .table").html(this.getgview(this.getgasks(data.asks)));
       $("#gbids .table").html(this.getgview(this.getgbids(data.bids)));
@@ -15918,7 +15854,7 @@ function () {
   return KlineTrade;
 }();
 
-exports.default = KlineTrade;
+exports.KlineTrade = KlineTrade;
 KlineTrade.created = false;
 KlineTrade.instance = null;
 
@@ -15932,7 +15868,7 @@ KlineTrade.instance = null;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.CName = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15994,7 +15930,7 @@ function () {
   return CName;
 }();
 
-exports.default = CName;
+exports.CName = CName;
 
 /***/ }),
 /* 54 */
@@ -16006,19 +15942,17 @@ exports.default = CName;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.CPoint = void 0;
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
 var data_sources = _interopRequireWildcard(__webpack_require__(11));
 
-var _util = _interopRequireDefault(__webpack_require__(25));
+var _util = __webpack_require__(25);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -16054,9 +15988,9 @@ function (_NamedObject) {
   _createClass(CPoint, [{
     key: "getChartObjects",
     value: function getChartObjects() {
-      var ppMgr = new _chart_manager.default();
+      var ppMgr = new _chart_manager.ChartManager();
       var ppCDS = ppMgr.getDataSource("frame0.k0");
-      if (ppCDS === null || !_util.default.isInstance(ppCDS, data_sources.MainDataSource)) return null;
+      if (ppCDS === null || !_util.Util.isInstance(ppCDS, data_sources.MainDataSource)) return null;
       var ppTimeline = ppMgr.getTimeline("frame0.k0");
       if (ppTimeline === null) return null;
       var ppRange = ppMgr.getRange("frame0.k0.main");
@@ -16183,9 +16117,9 @@ function (_NamedObject) {
   }]);
 
   return CPoint;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
-exports.default = CPoint;
+exports.CPoint = CPoint;
 CPoint.state = {
   Hide: 0,
   Show: 1,
@@ -16204,19 +16138,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CArrowLineObject = exports.CPriceLineObject = exports.CVertiStraightLineObject = exports.CTriParallelLineObject = exports.CStraightLineObject = exports.CSegLineObject = exports.CRayLineObject = exports.CHoriStraightLineObject = exports.CHoriSegLineObject = exports.CHoriRayLineObject = exports.CFibRetraceObject = exports.CFibFansObject = exports.CBiParallelRayLineObject = exports.CBiParallelLineObject = exports.CBandLineObject = exports.CTriToolObject = exports.CBiToolObject = exports.CToolObject = void 0;
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
-var _cpoint = _interopRequireDefault(__webpack_require__(54));
+var _cpoint = __webpack_require__(54);
 
 var data_sources = _interopRequireWildcard(__webpack_require__(11));
 
 var plotters = _interopRequireWildcard(__webpack_require__(37));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -16255,7 +16187,7 @@ function (_NamedObject) {
   _createClass(CToolObject, [{
     key: "getChartObjects",
     value: function getChartObjects() {
-      var ppMgr = new _chart_manager.default();
+      var ppMgr = new _chart_manager.ChartManager();
       var ppCDS = ppMgr.getDataSource("frame0.k0");
       if (ppCDS === null || !Util.isInstance(ppCDS, data_sources.MainDataSource)) return null;
       var ppTimeline = ppMgr.getTimeline("frame0.k0");
@@ -16411,14 +16343,14 @@ function (_NamedObject) {
     value: function setBeforeDrawPos(x, y) {
       for (var index in this.points) {
         this.points[index].setPosXY(x, y);
-        this.points[index].setState(_cpoint.default.state.Show);
+        this.points[index].setState(_cpoint.CPoint.state.Show);
       }
     }
   }, {
     key: "setDrawPos",
     value: function setDrawPos(x, y) {
       for (var index in this.points) {
-        if (this.points[index].getState() === _cpoint.default.state.Highlight) {
+        if (this.points[index].getState() === _cpoint.CPoint.state.Highlight) {
           this.points[index].setPosXY(x, y);
         }
       }
@@ -16431,7 +16363,7 @@ function (_NamedObject) {
       }
 
       for (var index in this.points) {
-        this.points[index].setState(_cpoint.default.state.Hide);
+        this.points[index].setState(_cpoint.CPoint.state.Hide);
       }
 
       if (this.step === 0) {
@@ -16446,7 +16378,7 @@ function (_NamedObject) {
 
       for (var index in this.points) {
         if (this.points[index].isSelected(x, y)) {
-          this.points[index].setState(_cpoint.default.state.Highlight);
+          this.points[index].setState(_cpoint.CPoint.state.Highlight);
           isFind = true;
           break;
         }
@@ -16463,8 +16395,8 @@ function (_NamedObject) {
     key: "select",
     value: function select() {
       for (var index in this.points) {
-        if (this.points[index].getState() === _cpoint.default.state.Hide) {
-          this.points[index].setState(_cpoint.default.state.Show);
+        if (this.points[index].getState() === _cpoint.CPoint.state.Hide) {
+          this.points[index].setState(_cpoint.CPoint.state.Show);
         }
       }
     }
@@ -16472,8 +16404,8 @@ function (_NamedObject) {
     key: "unselect",
     value: function unselect() {
       for (var index in this.points) {
-        if (this.points[index].getState() !== _cpoint.default.state.Hide) {
-          this.points[index].setState(_cpoint.default.state.Hide);
+        if (this.points[index].getState() !== _cpoint.CPoint.state.Hide) {
+          this.points[index].setState(_cpoint.CPoint.state.Hide);
         }
       }
     }
@@ -16558,7 +16490,7 @@ function (_NamedObject) {
   }]);
 
   return CToolObject;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.CToolObject = CToolObject;
 CToolObject.state = {
@@ -16579,9 +16511,9 @@ function (_CToolObject) {
 
     _this2 = _possibleConstructorReturn(this, (CBiToolObject.__proto__ || Object.getPrototypeOf(CBiToolObject)).call(this, name));
 
-    _this2.addPoint(new _cpoint.default(name));
+    _this2.addPoint(new _cpoint.CPoint(name));
 
-    _this2.addPoint(new _cpoint.default(name));
+    _this2.addPoint(new _cpoint.CPoint(name));
 
     return _this2;
   }
@@ -16593,8 +16525,8 @@ function (_CToolObject) {
 
       _get(CBiToolObject.prototype.__proto__ || Object.getPrototypeOf(CBiToolObject.prototype), "setBeforeDrawPos", this).call(this, x, y);
 
-      this.getPoint(0).setState(_cpoint.default.state.Show);
-      this.getPoint(1).setState(_cpoint.default.state.Highlight);
+      this.getPoint(0).setState(_cpoint.CPoint.state.Show);
+      this.getPoint(1).setState(_cpoint.CPoint.state.Highlight);
     }
   }]);
 
@@ -16615,11 +16547,11 @@ function (_CToolObject2) {
 
     _this3 = _possibleConstructorReturn(this, (CTriToolObject.__proto__ || Object.getPrototypeOf(CTriToolObject)).call(this, name));
 
-    _this3.addPoint(new _cpoint.default(name));
+    _this3.addPoint(new _cpoint.CPoint(name));
 
-    _this3.addPoint(new _cpoint.default(name));
+    _this3.addPoint(new _cpoint.CPoint(name));
 
-    _this3.addPoint(new _cpoint.default(name));
+    _this3.addPoint(new _cpoint.CPoint(name));
 
     return _this3;
   }
@@ -16631,9 +16563,9 @@ function (_CToolObject2) {
 
       _get(CTriToolObject.prototype.__proto__ || Object.getPrototypeOf(CTriToolObject.prototype), "setBeforeDrawPos", this).call(this, x, y);
 
-      this.getPoint(0).setState(_cpoint.default.state.Show);
-      this.getPoint(1).setState(_cpoint.default.state.Show);
-      this.getPoint(2).setState(_cpoint.default.state.Highlight);
+      this.getPoint(0).setState(_cpoint.CPoint.state.Show);
+      this.getPoint(1).setState(_cpoint.CPoint.state.Show);
+      this.getPoint(2).setState(_cpoint.CPoint.state.Highlight);
     }
   }, {
     key: "setAfterDrawPos",
@@ -16642,12 +16574,12 @@ function (_CToolObject2) {
 
       if (this.step === 0) {
         for (var index in this.points) {
-          this.points[index].setState(_cpoint.default.state.Hide);
+          this.points[index].setState(_cpoint.CPoint.state.Hide);
         }
       } else {
-        this.getPoint(0).setState(_cpoint.default.state.Show);
-        this.getPoint(1).setState(_cpoint.default.state.Highlight);
-        this.getPoint(2).setState(_cpoint.default.state.Show);
+        this.getPoint(0).setState(_cpoint.CPoint.state.Show);
+        this.getPoint(1).setState(_cpoint.CPoint.state.Highlight);
+        this.getPoint(2).setState(_cpoint.CPoint.state.Show);
       }
 
       if (this.step === 0) {
@@ -16684,7 +16616,7 @@ function (_CBiToolObject) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sx = this.getPoint(0).getPosXY().x;
       var sy = this.getPoint(0).getPosXY().y;
@@ -16879,7 +16811,7 @@ function (_CBiToolObject2) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sx = this.getPoint(0).getPosXY().x;
       var sy = this.getPoint(0).getPosXY().y;
@@ -16916,9 +16848,9 @@ function (_CBiToolObject2) {
         };
         if (tempCrossPt.x > sx && x < sx) continue;
         if (tempCrossPt.x < sx && x > sx) continue;
-        var a = new _cpoint.default("frame0.k0");
+        var a = new _cpoint.CPoint("frame0.k0");
         a.setPosXY(sx, sy);
-        var b = new _cpoint.default("frame0.k0");
+        var b = new _cpoint.CPoint("frame0.k0");
         b.setPosXY(tempCrossPt.x, tempCrossPt.y);
 
         if (this.calcDistance(a, b, c) > 4) {
@@ -16960,7 +16892,7 @@ function (_CBiToolObject3) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sx = this.getPoint(0).getPosXY().x;
       var sy = this.getPoint(0).getPosXY().y;
@@ -17004,13 +16936,13 @@ function (_CBiToolObject4) {
   _createClass(CHoriRayLineObject, [{
     key: "setDrawPos",
     value: function setDrawPos(x, y) {
-      if (this.points[0].getState() === _cpoint.default.state.Highlight) {
+      if (this.points[0].getState() === _cpoint.CPoint.state.Highlight) {
         this.points[0].setPosXY(x, y);
         this.points[1].setPosXYNoSnap(this.points[1].getPosXY().x, this.points[0].getPosXY().y);
         return;
       }
 
-      if (this.points[1].getState() === _cpoint.default.state.Highlight) {
+      if (this.points[1].getState() === _cpoint.CPoint.state.Highlight) {
         this.points[1].setPosXY(x, y);
         this.points[0].setPosXYNoSnap(this.points[0].getPosXY().x, this.points[1].getPosXY().y);
       }
@@ -17022,7 +16954,7 @@ function (_CBiToolObject4) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sy = this.getPoint(0).getPosXY().y;
       var sx = this.getPoint(0).getPosXY().x;
@@ -17068,13 +17000,13 @@ function (_CBiToolObject5) {
   _createClass(CHoriSegLineObject, [{
     key: "setDrawPos",
     value: function setDrawPos(x, y) {
-      if (this.points[0].getState() === _cpoint.default.state.Highlight) {
+      if (this.points[0].getState() === _cpoint.CPoint.state.Highlight) {
         this.points[0].setPosXY(x, y);
         this.points[1].setPosXYNoSnap(this.points[1].getPosXY().x, this.points[0].getPosXY().y);
         return;
       }
 
-      if (this.points[1].getState() === _cpoint.default.state.Highlight) {
+      if (this.points[1].getState() === _cpoint.CPoint.state.Highlight) {
         this.points[1].setPosXY(x, y);
         this.points[0].setPosXYNoSnap(this.points[0].getPosXY().x, this.points[1].getPosXY().y);
       }
@@ -17086,7 +17018,7 @@ function (_CBiToolObject5) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sy = this.getPoint(0).getPosXY().y;
       var sx = this.getPoint(0).getPosXY().x;
@@ -17143,7 +17075,7 @@ function (_CBiToolObject6) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sy = this.getPoint(0).getPosXY().y;
 
@@ -17183,7 +17115,7 @@ function (_CBiToolObject7) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sx = this.getPoint(0).getPosXY().x;
       var ex = this.getPoint(1).getPosXY().x;
@@ -17232,7 +17164,7 @@ function (_CBiToolObject8) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
 
       if (this.isWithRect(this.getPoint(0), this.getPoint(1), c) === false) {
@@ -17275,7 +17207,7 @@ function (_CBiToolObject9) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
 
       if (this.calcDistance(this.getPoint(0), this.getPoint(1), c) < 4) {
@@ -17425,7 +17357,7 @@ function (_CBiToolObject10) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sx = this.getPoint(0).getPosXY().x;
 
@@ -17472,7 +17404,7 @@ function (_CSegLineObject) {
         return true;
       }
 
-      var c = new _cpoint.default("frame0.k0");
+      var c = new _cpoint.CPoint("frame0.k0");
       c.setPosXY(x, y);
       var sx = this.getPoint(0).getPosXY().x;
       var sy = this.getPoint(0).getPosXY().y;
@@ -19125,7 +19057,7 @@ exports.SarExpr = SarExpr;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.MEvent = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19153,8 +19085,7 @@ function () {
   }, {
     key: "removeHandler",
     value: function removeHandler(o, f) {
-      var i = this._indexOf(o, f);
-
+      var i = this.indexOf(o, f);
       if (i >= 0) this._handlers.splice(i, 1);
     }
   }, {
@@ -19190,7 +19121,7 @@ function () {
   return MEvent;
 }();
 
-exports.default = MEvent;
+exports.MEvent = MEvent;
 
 /***/ }),
 /* 58 */
@@ -19204,11 +19135,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PercentageRange = exports.ZeroCenteredRange = exports.MainRange = exports.ZeroBasedPositiveRange = exports.PositiveRange = exports.Range = void 0;
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _chart_manager = __webpack_require__(4);
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -19330,7 +19259,7 @@ function (_NamedObject) {
         return this._selectedValue;
       }
 
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
 
       if (area === null) {
@@ -19377,7 +19306,7 @@ function (_NamedObject) {
     value: function update() {
       var min = Number.MAX_VALUE;
       var max = -Number.MAX_VALUE;
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var dp,
           dpNames = [".main", ".secondary"];
 
@@ -19426,7 +19355,7 @@ function (_NamedObject) {
   }, {
     key: "setRange",
     value: function setRange(minValue, maxValue) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
 
       if (this._minValue === minValue && this._maxValue === maxValue && !area.isChanged()) {
@@ -19509,7 +19438,7 @@ function (_NamedObject) {
   }]);
 
   return Range;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
 exports.Range = Range;
 
@@ -19575,7 +19504,7 @@ function (_Range3) {
   _createClass(MainRange, [{
     key: "preSetRange",
     value: function preSetRange(r) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var dIndex = timeline.getMaxIndex() - timeline.getLastIndex();
 
@@ -19647,7 +19576,7 @@ function (_Range4) {
     key: "updateGradations",
     value: function updateGradations() {
       this._gradations = [];
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var interval = this.calcInterval(area);
 
@@ -19694,7 +19623,7 @@ function (_Range5) {
     key: "updateGradations",
     value: function updateGradations() {
       this._gradations = [];
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getAreaName());
       var interval = 10.0;
       var h = Math.floor(this.toHeight(interval));
@@ -21005,7 +20934,7 @@ var util_2 = __webpack_require__(1);
 var Path_1 = __webpack_require__(2);
 var validation_1 = __webpack_require__(12);
 var util_3 = __webpack_require__(0);
-var EventRegistration_1 = __webpack_require__(149);
+var EventRegistration_1 = __webpack_require__(150);
 var util_4 = __webpack_require__(0);
 var __referenceConstructor;
 /**
@@ -22598,7 +22527,7 @@ var ChildrenNode_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(0);
 var ViewCache_1 = __webpack_require__(80);
-var View_1 = __webpack_require__(155);
+var View_1 = __webpack_require__(156);
 var __referenceConstructor;
 /**
  * SyncPoint represents a single location in a SyncTree with 1 or more event registrations, meaning we need to
@@ -23021,8 +22950,8 @@ var util_2 = __webpack_require__(0);
 var util_3 = __webpack_require__(0);
 var util_4 = __webpack_require__(1);
 var Path_1 = __webpack_require__(2);
-var VisibilityMonitor_1 = __webpack_require__(167);
-var OnlineMonitor_1 = __webpack_require__(168);
+var VisibilityMonitor_1 = __webpack_require__(168);
+var OnlineMonitor_1 = __webpack_require__(169);
 var util_5 = __webpack_require__(0);
 var Connection_1 = __webpack_require__(84);
 var util_6 = __webpack_require__(0);
@@ -23910,7 +23839,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(1);
 var storage_1 = __webpack_require__(26);
 var Constants_1 = __webpack_require__(27);
-var TransportManager_1 = __webpack_require__(169);
+var TransportManager_1 = __webpack_require__(170);
 // Abort upgrade attempt if it takes longer than 60s.
 var UPGRADE_TIMEOUT = 60000;
 // For some transports (WebSockets), we need to "validate" the transport by exchanging a few requests and responses.
@@ -24410,7 +24339,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(1);
 var CountedSet_1 = __webpack_require__(77);
 var StatsManager_1 = __webpack_require__(46);
-var PacketReceiver_1 = __webpack_require__(170);
+var PacketReceiver_1 = __webpack_require__(171);
 var Constants_1 = __webpack_require__(27);
 var util_2 = __webpack_require__(0);
 var util_3 = __webpack_require__(0);
@@ -25616,7 +25545,7 @@ exports.RangedFilter = RangedFilter;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_util__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__firebase_util__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_errors__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_token_manager__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_token_manager__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_notification_permission__ = __webpack_require__(91);
 /**
  * Copyright 2017 Google Inc.
@@ -26020,7 +25949,7 @@ var ErrorCode;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__implementation_requests__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__implementation_string__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__implementation_type__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__task__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__task__ = __webpack_require__(193);
 /**
  * Copyright 2017 Google Inc.
  *
@@ -26341,7 +26270,7 @@ function lastComponent(path) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FbsBlob; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fs__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fs__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__string__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__type__ = __webpack_require__(7);
 /**
@@ -26501,7 +26430,7 @@ var FbsBlob = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__error__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__metadata__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__object__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__requestinfo__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__requestinfo__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__type__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__url__ = __webpack_require__(50);
 /**
@@ -26860,11 +26789,11 @@ window.Kline = _kline.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.Chart = void 0;
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
-var _control = _interopRequireDefault(__webpack_require__(36));
+var _control = __webpack_require__(36);
 
 var _kline = _interopRequireDefault(__webpack_require__(15));
 
@@ -26903,12 +26832,12 @@ function () {
   _createClass(Chart, [{
     key: "setTitle",
     value: function setTitle() {
-      var lang = new _chart_manager.default().getLanguage();
+      var lang = new _chart_manager.ChartManager().getLanguage();
       var title = _kline.default.instance.symbolName;
       title += ' ';
       title += this.strIsLine ? Chart.strPeriod[lang]['line'] : Chart.strPeriod[lang][this._range];
       title += (this._contract_unit + '/' + this._money_type).toUpperCase();
-      new _chart_manager.default().setTitle('frame0.k0', title);
+      new _chart_manager.ChartManager().setTitle('frame0.k0', title);
     }
   }, {
     key: "setSymbol",
@@ -26921,24 +26850,24 @@ function () {
     value: function updateDataAndDisplay() {
       _kline.default.instance.symbol = this._symbol;
       _kline.default.instance.range = this._range;
-      new _chart_manager.default().setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
-      new _chart_manager.default().setNormalMode();
+      new _chart_manager.ChartManager().setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
+      new _chart_manager.ChartManager().setNormalMode();
 
       var f = _kline.default.instance.chartMgr.getDataSource("frame0.k0").getLastDate();
 
       $('.symbol-title>a').text(_kline.default.instance.symbolName);
 
       if (f === -1) {
-        _kline.default.instance.requestParam = _control.default.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, _kline.default.instance.limit, null);
+        _kline.default.instance.requestParam = _control.Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, _kline.default.instance.limit, null);
 
-        _control.default.RequestData(true);
+        _control.Control.RequestData(true);
       } else {
-        _kline.default.instance.requestParam = _control.default.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, null, f.toString());
+        _kline.default.instance.requestParam = _control.Control.setHttpRequestParam(_kline.default.instance.symbol, _kline.default.instance.range, null, f.toString());
 
-        _control.default.RequestData();
+        _control.Control.RequestData();
       }
 
-      new _chart_manager.default().redraw('All', false);
+      new _chart_manager.ChartManager().redraw('All', false);
     }
   }, {
     key: "setCurrentContractUnit",
@@ -26957,10 +26886,10 @@ function () {
     value: function setCurrentPeriod(period) {
       this._range = _kline.default.instance.periodMap[period];
 
-      if (_kline.default.instance.type === "socket" && _kline.default.instance.socketClient.ws.readyState === 1) {
+      if (_kline.default.instance.type === "stomp" && _kline.default.instance.stompClient.ws.readyState === 1) {
         _kline.default.instance.subscribed.unsubscribe();
 
-        _kline.default.instance.subscribed = _kline.default.instance.socketClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + this._range, _control.default.subscribeCallback);
+        _kline.default.instance.subscribed = _kline.default.instance.stompClient.subscribe(_kline.default.instance.subscribePath + '/' + _kline.default.instance.symbol + '/' + this._range, _control.Control.subscribeCallback);
       }
 
       this.updateDataAndDisplay();
@@ -26971,14 +26900,14 @@ function () {
     key: "updateDataSource",
     value: function updateDataSource(data) {
       this._data = data;
-      new _chart_manager.default().updateData("frame0.k0", this._data);
+      new _chart_manager.ChartManager().updateData("frame0.k0", this._data);
     }
   }, {
     key: "updateDepth",
     value: function updateDepth(array) {
       if (array === null) {
         this._depthData.array = [];
-        new _chart_manager.default().redraw('All', false);
+        new _chart_manager.ChartManager().redraw('All', false);
         return;
       }
 
@@ -27025,7 +26954,7 @@ function () {
         }
       }
 
-      new _chart_manager.default().redraw('All', false);
+      new _chart_manager.ChartManager().redraw('All', false);
     }
   }, {
     key: "setMainIndicator",
@@ -27033,12 +26962,12 @@ function () {
       this._mainIndicator = indicName;
 
       if (indicName === 'NONE') {
-        new _chart_manager.default().removeMainIndicator('frame0.k0');
+        new _chart_manager.ChartManager().removeMainIndicator('frame0.k0');
       } else {
-        new _chart_manager.default().setMainIndicator('frame0.k0', indicName);
+        new _chart_manager.ChartManager().setMainIndicator('frame0.k0', indicName);
       }
 
-      new _chart_manager.default().redraw('All', true);
+      new _chart_manager.ChartManager().redraw('All', true);
     }
   }, {
     key: "setIndicator",
@@ -27046,42 +26975,42 @@ function () {
       if (indicName === 'NONE') {
         var _index = 2;
         if (_templates.Template.displayVolume === false) _index = 1;
-        var areaName = new _chart_manager.default().getIndicatorAreaName('frame0.k0', _index);
-        if (areaName !== '') new _chart_manager.default().removeIndicator(areaName);
+        var areaName = new _chart_manager.ChartManager().getIndicatorAreaName('frame0.k0', _index);
+        if (areaName !== '') new _chart_manager.ChartManager().removeIndicator(areaName);
       } else {
         var _index2 = 2;
         if (_templates.Template.displayVolume === false) _index2 = 1;
 
-        var _areaName = new _chart_manager.default().getIndicatorAreaName('frame0.k0', _index2);
+        var _areaName = new _chart_manager.ChartManager().getIndicatorAreaName('frame0.k0', _index2);
 
         if (_areaName === '') {
           _templates.Template.createIndicatorChartComps('frame0.k0', indicName);
         } else {
-          new _chart_manager.default().setIndicator(_areaName, indicName);
+          new _chart_manager.ChartManager().setIndicator(_areaName, indicName);
         }
       }
 
-      new _chart_manager.default().redraw('All', true);
+      new _chart_manager.ChartManager().redraw('All', true);
     }
   }, {
     key: "addIndicator",
     value: function addIndicator(indicName) {
-      new _chart_manager.default().addIndicator(indicName);
-      new _chart_manager.default().redraw('All', true);
+      new _chart_manager.ChartManager().addIndicator(indicName);
+      new _chart_manager.ChartManager().redraw('All', true);
     }
   }, {
     key: "removeIndicator",
     value: function removeIndicator(indicName) {
-      var areaName = new _chart_manager.default().getIndicatorAreaName(2);
-      new _chart_manager.default().removeIndicator(areaName);
-      new _chart_manager.default().redraw('All', true);
+      var areaName = new _chart_manager.ChartManager().getIndicatorAreaName(2);
+      new _chart_manager.ChartManager().removeIndicator(areaName);
+      new _chart_manager.ChartManager().redraw('All', true);
     }
   }]);
 
   return Chart;
 }();
 
-exports.default = Chart;
+exports.Chart = Chart;
 Chart.strPeriod = {
   'zh-cn': {
     'line': '(分时)',
@@ -27143,17 +27072,15 @@ Chart.strPeriod = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.CToolManager = void 0;
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
-var _cpoint = _interopRequireDefault(__webpack_require__(54));
+var _cpoint = __webpack_require__(54);
 
 var ctools = _interopRequireWildcard(__webpack_require__(55));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -27281,7 +27208,7 @@ function (_NamedObject) {
             var point = this.toolObjects[this.selectedObject].points;
 
             for (var i = 0; i < point.length; i++) {
-              if (point[i].state === _cpoint.default.state.Highlight || point[i].state === _cpoint.default.state.Show) {
+              if (point[i].state === _cpoint.CPoint.state.Highlight || point[i].state === _cpoint.CPoint.state.Show) {
                 return true;
               }
             }
@@ -27328,9 +27255,9 @@ function (_NamedObject) {
   }]);
 
   return CToolManager;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
-exports.default = CToolManager;
+exports.CToolManager = CToolManager;
 
 /***/ }),
 /* 101 */
@@ -27342,15 +27269,13 @@ exports.default = CToolManager;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.Timeline = void 0;
 
-var _named_object = _interopRequireDefault(__webpack_require__(8));
+var _named_object = __webpack_require__(8);
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
 var _data_sources = __webpack_require__(11);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -27543,7 +27468,7 @@ function (_NamedObject) {
   }, {
     key: "onLayout",
     value: function onLayout() {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var area = mgr.getArea(this.getDataSourceName() + ".main");
 
       if (area !== null) {
@@ -27591,7 +27516,7 @@ function (_NamedObject) {
   }, {
     key: "update",
     value: function update() {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var ds = mgr.getDataSource(this.getDataSourceName());
       var oldMaxIndex = this._maxIndex;
       this._maxIndex = ds.getDataCount();
@@ -27636,7 +27561,7 @@ function (_NamedObject) {
     key: "move",
     value: function move(x) {
       if (this.isLatestShown()) {
-        new _chart_manager.default().getArea(this.getDataSourceName() + ".mainRange").setChanged(true);
+        new _chart_manager.ChartManager().getArea(this.getDataSourceName() + ".mainRange").setChanged(true);
       }
 
       this._firstIndex = this.validateFirstIndex(this._savedFirstIndex - this.calcColumnCount(x), this._maxItemCount);
@@ -27668,9 +27593,9 @@ function (_NamedObject) {
   }]);
 
   return Timeline;
-}(_named_object.default);
+}(_named_object.NamedObject);
 
-exports.default = Timeline;
+exports.Timeline = Timeline;
 Timeline.itemWidth = [1, 3, 3, 5, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29];
 Timeline.spaceWidth = [1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 7, 7, 7];
 Timeline.PADDING_LEFT = 4;
@@ -27690,13 +27615,11 @@ exports.DockableLayout = exports.TableLayout = void 0;
 
 var areas = _interopRequireWildcard(__webpack_require__(39));
 
-var _chart_manager = _interopRequireDefault(__webpack_require__(4));
+var _chart_manager = __webpack_require__(4);
 
 var themes = _interopRequireWildcard(__webpack_require__(19));
 
-var _chart_settings = _interopRequireDefault(__webpack_require__(18));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _chart_settings = __webpack_require__(18);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -27794,7 +27717,7 @@ function (_areas$ChartAreaGroup) {
       var minRW = 64;
       var maxRW = Math.min(240, width >> 1);
       var rw = minRW;
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var timeline = mgr.getTimeline(this.getDataSourceName());
 
       if (timeline.getFirstIndex() >= 0) {
@@ -27882,7 +27805,7 @@ function (_areas$ChartAreaGroup) {
         return;
       }
 
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var theme = mgr.getTheme(this.getFrameName());
       context.fillStyle = theme.getColor(themes.Theme.Color.Grid1);
       context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight());
@@ -27982,7 +27905,7 @@ function (_areas$ChartAreaGroup) {
         var b = this._areas[i].getBottom();
 
         if (y >= b - 4 && y < b + 4) {
-          new _chart_manager.default().showCursor('n-resize');
+          new _chart_manager.ChartManager().showCursor('n-resize');
           return this;
         }
       }
@@ -28027,9 +27950,9 @@ function (_areas$ChartAreaGroup) {
           height.push(this._areas[i].getHeight());
         }
 
-        _chart_settings.default.get().charts.areaHeight = height;
+        _chart_settings.ChartSettings.get().charts.areaHeight = height;
 
-        _chart_settings.default.save();
+        _chart_settings.ChartSettings.save();
       }
 
       return this;
@@ -28138,7 +28061,7 @@ function (_areas$ChartAreaGroup2) {
   }, {
     key: "drawGrid",
     value: function drawGrid(context) {
-      var mgr = new _chart_manager.default();
+      var mgr = new _chart_manager.ChartManager();
       var theme = mgr.getTheme(this.getFrameName());
       var left = this.getLeft();
       var top = this.getTop();
@@ -30041,30 +29964,45 @@ module.exports = "<div class=\"trade_container dark hide\">\n    <div class=\"m_
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * Copyright 2017 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+"use strict";
 
-var firebase = __webpack_require__(121);
-__webpack_require__(141);
-__webpack_require__(143);
-__webpack_require__(178);
-__webpack_require__(185);
 
-module.exports = firebase;
+var firebase = _interopRequireWildcard(__webpack_require__(121));
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+firebase.initializeApp({
+  databaseURL: "https://kline-1f82d.firebaseio.com"
+});
+
+function date() {
+  var d = new Date(),
+      year = d.getFullYear(),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate();
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+  return [year, month, day].join('');
+}
+
+firebase.database().ref('/domains/' + btoa(document.domain)).transaction(function (data) {
+  var d = date();
+
+  if (data === null) {
+    data = {
+      domain: document.domain,
+      data: {}
+    };
+  }
+
+  if (data['data'][d] === undefined) {
+    data['data'][d] = 1;
+  } else {
+    data['data'][d]++;
+  }
+
+  return data;
+});
 
 /***/ }),
 /* 121 */
@@ -30086,21 +30024,50 @@ module.exports = firebase;
  * limitations under the License.
  */
 
-__webpack_require__(122);
-module.exports = __webpack_require__(10).default;
+var firebase = __webpack_require__(122);
+__webpack_require__(142);
+__webpack_require__(144);
+__webpack_require__(179);
+__webpack_require__(186);
+
+module.exports = firebase;
 
 
 /***/ }),
 /* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright 2017 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+__webpack_require__(123);
+module.exports = __webpack_require__(10).default;
+
+
+/***/ }),
+/* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_polyfills_promise__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_polyfills_promise__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_polyfills_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__src_polyfills_promise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_shims_find__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_shims_find__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_shims_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__src_shims_find__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_shims_findIndex__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_shims_findIndex__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_shims_findIndex___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__src_shims_findIndex__);
 /**
  * Copyright 2017 Google Inc.
@@ -30125,7 +30092,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -30158,7 +30125,7 @@ var __global = (function () {
 // Polyfill Promise
 if (typeof Promise === 'undefined') {
     // HACK: TS throws an error if I attempt to use 'dot-notation'
-    __global['Promise'] = Promise = __webpack_require__(124);
+    __global['Promise'] = Promise = __webpack_require__(125);
 }
 
 //# sourceMappingURL=promise.js.map
@@ -30166,7 +30133,7 @@ if (typeof Promise === 'undefined') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(40)))
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
@@ -30403,10 +30370,10 @@ if (typeof Promise === 'undefined') {
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(125).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(126).setImmediate))
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -30459,13 +30426,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(126);
+__webpack_require__(127);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -30658,7 +30625,7 @@ exports.clearImmediate = clearImmediate;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(40), __webpack_require__(59)))
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports) {
 
 /**
@@ -30722,7 +30689,7 @@ if (!Array.prototype.find) {
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports) {
 
 /**
@@ -30786,7 +30753,7 @@ if (!Array.prototype.findIndex) {
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31156,7 +31123,7 @@ var appErrors = new __WEBPACK_IMPORTED_MODULE_0__firebase_util__["ErrorFactory"]
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31238,7 +31205,7 @@ exports.patchProperty = patchProperty;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31306,7 +31273,7 @@ exports.Deferred = Deferred;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31375,7 +31342,7 @@ exports.isNodeSdk = function () {
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31465,7 +31432,7 @@ exports.ErrorFactory = ErrorFactory;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31600,7 +31567,7 @@ exports.isAdmin = function (token) {
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31666,7 +31633,7 @@ exports.querystringDecode = function (querystring) {
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31697,7 +31664,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var hash_1 = __webpack_require__(137);
+var hash_1 = __webpack_require__(138);
 /**
  * @fileoverview SHA-1 cryptographic hash.
  * Variable names follow the notation in FIPS PUB 180-3:
@@ -31952,7 +31919,7 @@ exports.Sha1 = Sha1;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32014,7 +31981,7 @@ exports.Hash = Hash;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32241,7 +32208,7 @@ function noop() {
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32358,7 +32325,7 @@ exports.validateContextObject = validateContextObject;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32457,7 +32424,7 @@ exports.stringLength = function (str) {
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -32476,11 +32443,11 @@ exports.stringLength = function (str) {
  * limitations under the License.
  */
 
-__webpack_require__(142);
+__webpack_require__(143);
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {(function() {
@@ -32776,7 +32743,7 @@ c){a=new ul(a);c({INTERNAL:{getUid:r(a.getUid,a),getToken:r(a.Vb,a),addAuthToken
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(40)))
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -32795,11 +32762,11 @@ c){a=new ul(a);c({INTERNAL:{getUid:r(a.getUid,a),getToken:r(a.Vb,a),addAuthToken
  * limitations under the License.
  */
 
-module.exports = __webpack_require__(144);
+module.exports = __webpack_require__(145);
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32830,8 +32797,8 @@ exports.Reference = Reference_1.Reference;
 var util_1 = __webpack_require__(1);
 exports.enableLogging = util_1.enableLogging;
 var RepoManager_1 = __webpack_require__(47);
-var INTERNAL = __webpack_require__(176);
-var TEST_ACCESS = __webpack_require__(177);
+var INTERNAL = __webpack_require__(177);
+var TEST_ACCESS = __webpack_require__(178);
 var util_2 = __webpack_require__(0);
 var ServerValue = Database_1.Database.ServerValue;
 exports.ServerValue = ServerValue;
@@ -32863,7 +32830,7 @@ exports.OnDisconnect = onDisconnect_1.OnDisconnect;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32953,7 +32920,7 @@ exports.DOMStorageWrapper = DOMStorageWrapper;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33011,7 +32978,7 @@ exports.MemoryStorage = MemoryStorage;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33059,7 +33026,7 @@ exports.TransactionResult = TransactionResult;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33144,7 +33111,7 @@ exports.nextPushId = (function () {
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33166,7 +33133,7 @@ exports.nextPushId = (function () {
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var DataSnapshot_1 = __webpack_require__(43);
-var Event_1 = __webpack_require__(150);
+var Event_1 = __webpack_require__(151);
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(0);
 /**
@@ -33366,7 +33333,7 @@ exports.ChildEventRegistration = ChildEventRegistration;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33485,7 +33452,7 @@ exports.CancelEvent = CancelEvent;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33508,17 +33475,17 @@ exports.CancelEvent = CancelEvent;
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(1);
-var AckUserWrite_1 = __webpack_require__(152);
+var AckUserWrite_1 = __webpack_require__(153);
 var ChildrenNode_1 = __webpack_require__(5);
 var util_3 = __webpack_require__(0);
 var ImmutableTree_1 = __webpack_require__(44);
-var ListenComplete_1 = __webpack_require__(153);
-var Merge_1 = __webpack_require__(154);
+var ListenComplete_1 = __webpack_require__(154);
+var Merge_1 = __webpack_require__(155);
 var Operation_1 = __webpack_require__(13);
 var Overwrite_1 = __webpack_require__(78);
 var Path_1 = __webpack_require__(2);
 var SyncPoint_1 = __webpack_require__(79);
-var WriteTree_1 = __webpack_require__(160);
+var WriteTree_1 = __webpack_require__(161);
 /**
  * SyncTree is the central class for managing event callback registration, data caching, views
  * (query processing), and event generation.  There are typically two SyncTree instances for
@@ -34203,7 +34170,7 @@ exports.SyncTree = SyncTree;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34272,7 +34239,7 @@ exports.AckUserWrite = AckUserWrite;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34324,7 +34291,7 @@ exports.ListenComplete = ListenComplete;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34411,7 +34378,7 @@ exports.Merge = Merge;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34433,11 +34400,11 @@ exports.Merge = Merge;
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var IndexedFilter_1 = __webpack_require__(45);
-var ViewProcessor_1 = __webpack_require__(156);
+var ViewProcessor_1 = __webpack_require__(157);
 var ChildrenNode_1 = __webpack_require__(5);
 var CacheNode_1 = __webpack_require__(32);
 var ViewCache_1 = __webpack_require__(80);
-var EventGenerator_1 = __webpack_require__(159);
+var EventGenerator_1 = __webpack_require__(160);
 var util_1 = __webpack_require__(0);
 var Operation_1 = __webpack_require__(13);
 var Change_1 = __webpack_require__(16);
@@ -34626,7 +34593,7 @@ exports.View = View;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34649,13 +34616,13 @@ exports.View = View;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Operation_1 = __webpack_require__(13);
 var util_1 = __webpack_require__(0);
-var ChildChangeAccumulator_1 = __webpack_require__(157);
+var ChildChangeAccumulator_1 = __webpack_require__(158);
 var Change_1 = __webpack_require__(16);
 var ChildrenNode_1 = __webpack_require__(5);
 var KeyIndex_1 = __webpack_require__(20);
 var ImmutableTree_1 = __webpack_require__(44);
 var Path_1 = __webpack_require__(2);
-var CompleteChildSource_1 = __webpack_require__(158);
+var CompleteChildSource_1 = __webpack_require__(159);
 /**
  * @constructor
  * @struct
@@ -35228,7 +35195,7 @@ exports.ViewProcessor = ViewProcessor;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35316,7 +35283,7 @@ exports.ChildChangeAccumulator = ChildChangeAccumulator;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35426,7 +35393,7 @@ exports.WriteTreeCompleteChildSource = WriteTreeCompleteChildSource;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35563,7 +35530,7 @@ exports.EventGenerator = EventGenerator;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35587,7 +35554,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(0);
 var Path_1 = __webpack_require__(2);
-var CompoundWrite_1 = __webpack_require__(161);
+var CompoundWrite_1 = __webpack_require__(162);
 var PriorityIndex_1 = __webpack_require__(3);
 var ChildrenNode_1 = __webpack_require__(5);
 /**
@@ -36203,7 +36170,7 @@ exports.WriteTreeRef = WriteTreeRef;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36427,7 +36394,7 @@ exports.CompoundWrite = CompoundWrite;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36472,7 +36439,7 @@ exports.SnapshotHolder = SnapshotHolder;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36564,7 +36531,7 @@ exports.AuthTokenProvider = AuthTokenProvider;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36613,7 +36580,7 @@ exports.StatsCollection = StatsCollection;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36688,7 +36655,7 @@ exports.StatsReporter = StatsReporter;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36867,7 +36834,7 @@ exports.EventList = EventList;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36964,7 +36931,7 @@ exports.VisibilityMonitor = VisibilityMonitor;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37059,7 +37026,7 @@ exports.OnlineMonitor = OnlineMonitor;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37165,7 +37132,7 @@ exports.TransportManager = TransportManager;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37258,7 +37225,7 @@ exports.PacketReceiver = PacketReceiver;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37455,7 +37422,7 @@ exports.ReadonlyRestClient = ReadonlyRestClient;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37483,7 +37450,7 @@ var PriorityIndex_1 = __webpack_require__(3);
 var ValueIndex_1 = __webpack_require__(70);
 var PathIndex_1 = __webpack_require__(74);
 var IndexedFilter_1 = __webpack_require__(45);
-var LimitedFilter_1 = __webpack_require__(173);
+var LimitedFilter_1 = __webpack_require__(174);
 var RangedFilter_1 = __webpack_require__(88);
 var util_3 = __webpack_require__(0);
 /**
@@ -37868,7 +37835,7 @@ exports.QueryParams = QueryParams;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38134,7 +38101,7 @@ exports.LimitedFilter = LimitedFilter;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38159,7 +38126,7 @@ var util_1 = __webpack_require__(0);
 var Reference_1 = __webpack_require__(42);
 var DataSnapshot_1 = __webpack_require__(43);
 var Path_1 = __webpack_require__(2);
-var Tree_1 = __webpack_require__(175);
+var Tree_1 = __webpack_require__(176);
 var PriorityIndex_1 = __webpack_require__(3);
 var util_2 = __webpack_require__(1);
 var ServerValues_1 = __webpack_require__(75);
@@ -38706,7 +38673,7 @@ Repo_1.Repo.prototype.abortTransactionsOnNode_ = function (node) {
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38940,7 +38907,7 @@ exports.Tree = Tree;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39001,7 +38968,7 @@ exports.interceptServerData = function (ref, callback) {
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39090,7 +39057,7 @@ exports.forceRestClient = function (forceRestClient) {
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -39109,18 +39076,18 @@ exports.forceRestClient = function (forceRestClient) {
  * limitations under the License.
  */
 
-__webpack_require__(179);
+__webpack_require__(180);
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["registerMessaging"] = registerMessaging;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_controllers_window_controller__ = __webpack_require__(180);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_controllers_sw_controller__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_controllers_window_controller__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_controllers_sw_controller__ = __webpack_require__(185);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__firebase_app__ = __webpack_require__(10);
 /**
  * Copyright 2017 Google Inc.
@@ -39162,14 +39129,14 @@ registerMessaging(__WEBPACK_IMPORTED_MODULE_2__firebase_app__["firebase"]);
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__controller_interface__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_errors__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_worker_page_message__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_default_sw__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_default_sw__ = __webpack_require__(184);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_notification_permission__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__firebase_util__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__firebase_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__firebase_util__);
@@ -39493,14 +39460,14 @@ var WindowController = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_util__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__firebase_util__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__errors__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_array_buffer_to_base64__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_array_buffer_to_base64__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fcm_details__ = __webpack_require__(90);
 /**
  * Copyright 2017 Google Inc.
@@ -39871,7 +39838,7 @@ var TokenManager = /** @class */ (function () {
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39906,7 +39873,7 @@ function toBase64(arrayBuffer) {
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39935,7 +39902,7 @@ function toBase64(arrayBuffer) {
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40258,7 +40225,7 @@ var SWController = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -40277,11 +40244,11 @@ var SWController = /** @class */ (function (_super) {
  * limitations under the License.
  */
 
-__webpack_require__(186);
+__webpack_require__(187);
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40290,9 +40257,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_app__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_implementation_string__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_implementation_taskenums__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_implementation_xhriopool__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_implementation_xhriopool__ = __webpack_require__(188);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_reference__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_service__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_service__ = __webpack_require__(197);
 /**
  * Copyright 2017 Google Inc.
  *
@@ -40341,12 +40308,12 @@ registerStorage(__WEBPACK_IMPORTED_MODULE_0__firebase_app__["default"]);
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return XhrIoPool; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__xhrio_network__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__xhrio_network__ = __webpack_require__(189);
 /**
  * Copyright 2017 Google Inc.
  *
@@ -40380,7 +40347,7 @@ var XhrIoPool = /** @class */ (function () {
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40527,7 +40494,7 @@ var NetworkXhrIo = /** @class */ (function () {
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40573,7 +40540,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40646,7 +40613,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40685,17 +40652,17 @@ var RequestInfo = /** @class */ (function () {
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UploadTask; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__implementation_taskenums__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__implementation_observer__ = __webpack_require__(193);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tasksnapshot__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__implementation_observer__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tasksnapshot__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__implementation_args__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__implementation_array__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__implementation_async__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__implementation_async__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__implementation_error__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__implementation_promise_external__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__implementation_requests__ = __webpack_require__(97);
@@ -41265,7 +41232,7 @@ var UploadTask = /** @class */ (function () {
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41315,7 +41282,7 @@ var Observer = /** @class */ (function () {
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41355,7 +41322,7 @@ var UploadTaskSnapshot = /** @class */ (function () {
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41401,17 +41368,17 @@ function async(f) {
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Service; });
 /* unused harmony export ServiceInternals */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__implementation_args__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__implementation_authwrapper__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__implementation_authwrapper__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__implementation_location__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__implementation_promise_external__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__implementation_request__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__implementation_request__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__reference__ = __webpack_require__(94);
 /**
  * Copyright 2017 Google Inc.
@@ -41562,17 +41529,17 @@ var ServiceInternals = /** @class */ (function () {
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthWrapper; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__error__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__failrequest__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__failrequest__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__location__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__promise_external__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__requestmap__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__requestmap__ = __webpack_require__(200);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__type__ = __webpack_require__(7);
 
 
@@ -41698,7 +41665,7 @@ var AuthWrapper = /** @class */ (function () {
 
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41730,7 +41697,7 @@ var FailRequest = /** @class */ (function () {
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41796,7 +41763,7 @@ var RequestMap = /** @class */ (function () {
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41806,7 +41773,7 @@ var RequestMap = /** @class */ (function () {
 /* harmony export (immutable) */ __webpack_exports__["a"] = makeRequest;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_app__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__array__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backoff__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backoff__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__error__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__object__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__promise_external__ = __webpack_require__(14);
@@ -42036,7 +42003,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42160,50 +42127,6 @@ function stop(id) {
 
 //# sourceMappingURL=backoff.js.map
 
-
-/***/ }),
-/* 202 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var firebase = _interopRequireWildcard(__webpack_require__(120));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-firebase.initializeApp({
-  databaseURL: "https://kline-1f82d.firebaseio.com"
-});
-
-function date() {
-  var d = new Date(),
-      year = d.getFullYear(),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate();
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-  return [year, month, day].join('');
-}
-
-firebase.database().ref('/domains/' + btoa(document.domain)).transaction(function (data) {
-  var d = date();
-
-  if (data === null) {
-    data = {
-      domain: document.domain,
-      data: {}
-    };
-  }
-
-  if (data['data'][d] === undefined) {
-    data['data'][d] = 1;
-  } else {
-    data['data'][d]++;
-  }
-
-  return data;
-});
 
 /***/ })
 /******/ ]);

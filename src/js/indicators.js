@@ -9,7 +9,7 @@ export class Indicator {
         this._params = [];
         this._assigns = [];
         this._outputs = [];
-    };
+    }
 
     addParameter(expr) {
         this._params.push(expr);
@@ -176,11 +176,11 @@ export class MAIndicator extends Indicator {
         this.addOutput(new exprs.RangeOutputExpr("MA",
             new exprs.MaExpr(new exprs.CloseExpr(), M6)
         ));
-    };
+    }
 
     getName() {
         return "MA";
-    };
+    }
 }
 
 
@@ -218,7 +218,7 @@ export class EMAIndicator extends Indicator {
         this.addOutput(new exprs.RangeOutputExpr("EMA",
             new exprs.EmaExpr(new exprs.CloseExpr(), M6)
         ));
-    };
+    }
 
     getName() {
         return "EMA";
@@ -251,7 +251,7 @@ export class VOLUMEIndicator extends Indicator {
             exprs.OutputExpr.outputStyle.Line,
             themes.Theme.Color.Indicator1
         ));
-    };
+    }
 
     getName() {
         return "VOLUME";
@@ -288,7 +288,7 @@ export class MACDIndicator extends Indicator {
             exprs.OutputExpr.outputStyle.MACDStick
         );
         this.addOutput(MACD);
-    };
+    }
 
     getName() {
         return "MACD";
@@ -402,11 +402,12 @@ export class DMIIndicator extends Indicator {
             new exprs.ExpmemaExpr(ADX, MM)
         );
         this.addOutput(ADXR);
-    };
+    }
 
     getName() {
         return "DMI";
     }
+
 }
 
 
@@ -436,6 +437,7 @@ export class DMAIndicator extends Indicator {
     getName() {
         return "DMA";
     }
+
 }
 
 
@@ -550,6 +552,7 @@ export class BRARIndicator extends Indicator {
     getName() {
         return "BRAR";
     }
+
 }
 
 
@@ -638,6 +641,7 @@ export class VRIndicator extends Indicator {
     getName() {
         return "VR";
     }
+
 }
 
 
@@ -742,6 +746,7 @@ export class EMVIndicator extends Indicator {
     getName() {
         return "EMV";
     }
+
 }
 
 
@@ -795,6 +800,7 @@ export class RSIIndicator extends Indicator {
     getName() {
         return "RSI";
     }
+
 }
 
 
@@ -859,6 +865,7 @@ export class WRIndicator extends Indicator {
     getName() {
         return "WR";
     }
+
 }
 
 
@@ -879,6 +886,7 @@ export class SARIndicator extends Indicator {
     getName() {
         return "SAR";
     }
+
 }
 
 
@@ -942,6 +950,7 @@ export class KDJIndicator extends Indicator {
     getName() {
         return "KDJ";
     }
+
 }
 
 
@@ -980,6 +989,7 @@ export class ROCIndicator extends Indicator {
     getName() {
         return "ROC";
     }
+
 }
 
 
@@ -1007,6 +1017,7 @@ export class MTMIndicator extends Indicator {
     getName() {
         return "MTM";
     }
+
 }
 
 
@@ -1050,6 +1061,7 @@ export class BOLLIndicator extends Indicator {
     getName() {
         return "BOLL";
     }
+
 }
 
 
@@ -1087,6 +1099,7 @@ export class PSYIndicator extends Indicator {
     getName() {
         return "PSY";
     }
+
 }
 
 
@@ -1151,5 +1164,6 @@ export class STOCHRSIIndicator extends Indicator {
     getName = function () {
         return "StochRSI";
     }
+
 }
 

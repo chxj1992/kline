@@ -1,4 +1,4 @@
-export default class CName {
+export class CName {
 
     constructor(name) {
         this._names = [];

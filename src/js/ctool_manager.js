@@ -1,8 +1,8 @@
-import NamedObject from './named_object'
-import CPoint from './cpoint'
+import {NamedObject} from './named_object'
+import {CPoint} from './cpoint'
 import * as ctools from './ctools'
 
-export default class CToolManager extends NamedObject {
+export class CToolManager extends NamedObject {
 
     constructor(name) {
         super(name);

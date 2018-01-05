@@ -1,6 +1,6 @@
-import CName from './cname';
+import {CName} from './cname'
 
-export default class NamedObject {
+export class NamedObject {
 
     constructor(name) {
         this._name = name;

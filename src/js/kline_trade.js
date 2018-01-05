@@ -1,5 +1,6 @@
+import {ChartManager} from './chart_manager'
 
-export default class KlineTrade {
+export class KlineTrade {
 
     static created = false;
     static instance = null;
@@ -123,7 +124,7 @@ export default class KlineTrade {
     }
 
     updateDepth(data) {
-        window._set_current_depth(data);
+        new ChartManager().getChart().updateDepth(data);
         if (!data) return;
         $("#gasks .table").html(this.getgview(this.getgasks(data.asks)));
         $("#gbids .table").html(this.getgview(this.getgbids(data.bids)));
@@ -379,7 +380,7 @@ export default class KlineTrade {
         return [price1, price2];
     }
 
-    getAmount (arr) {
+    getAmount(arr) {
         let amount1 = arr[0];
         let amount2 = "";
         let zerosLen = this.amountDecimalDigits - amount1.length + 1;
@@ -397,8 +398,8 @@ export default class KlineTrade {
         }
         return [amount1, amount2];
     }
-    
-    dateFormatTf (i) {
+
+    dateFormatTf(i) {
         return (i < 10 ? '0' : '') + i;
     }
 

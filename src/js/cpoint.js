@@ -1,9 +1,9 @@
-import ChartManager from './chart_manager'
-import NamedObject from './named_object'
+import {ChartManager} from './chart_manager'
+import {NamedObject} from './named_object'
 import * as data_sources from './data_sources'
-import Util from './util'
+import {Util} from './util'
 
-export default class CPoint extends NamedObject {
+export class CPoint extends NamedObject {
 
     static state = {
         Hide: 0,

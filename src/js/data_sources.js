@@ -1,5 +1,5 @@
-import NamedObject from './named_object'
-import CToolManager from './ctool_manager'
+import {NamedObject} from './named_object'
+import {CToolManager} from './ctool_manager'
 import Kline from './kline'
 
 export class DataSource extends NamedObject {

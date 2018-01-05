@@ -1,8 +1,8 @@
-import NamedObject from './named_object'
-import ChartManager from './chart_manager'
+import {NamedObject} from './named_object'
+import {ChartManager} from './chart_manager'
 import {DataSource} from './data_sources'
 
-export default class Timeline extends NamedObject {
+export class Timeline extends NamedObject {
 
     static itemWidth = [1, 3, 3, 5, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29];
 

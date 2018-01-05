@@ -1,5 +1,5 @@
-import NamedObject from './named_object'
-import ChartManager from './chart_manager'
+import {NamedObject} from './named_object'
+import {ChartManager} from './chart_manager'
 
 export class Range extends NamedObject {
 

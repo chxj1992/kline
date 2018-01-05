@@ -2,12 +2,13 @@
 
 [![NPM](https://nodei.co/npm/kline.png)](https://npmjs.org/package/kline)
 
-> 本项目基于某网站的K线插件做了一些封装和二次开发,使插件更加易用,方便后来的开发者. 修改主要涉及以下几个点:
+> 本项目基于某K线插件做了一些封装和二次开发,使其更加便于使用和修改,方便后来的开发者. 修改主要涉及以下几个点:
 
+* 使用 [webpack](https://webpack.js.org/) 打包 css/images/html
+* 使用 ES6 + Babel 对原有代码进行了拆分和重构
 * 删除了一些不必要的逻辑
 * 把源码中可配置的部分抽出来
-* 添加了对 websocket(websocket over stomp) 连接方式的支持
-* 用 js 创建 K 线页面元素
+* 添加了对 websocket(stomp over websocket) 连接方式的支持
 * 增加对外接口及事件回调
 
 ### Features
@@ -30,8 +31,8 @@
 
 * jquery
 * jquery.mousewheel
-* sockjs (仅socket方式需要)
-* stomp (仅socket方式需要)
+* sockjs (仅stomp方式需要)
+* stomp (仅stomp方式需要)
 
 ### Install & Load
 
@@ -44,14 +45,14 @@ $ npm install kline
 * 使用标签引入, 在HTML页面头部加入
 
 ```html
-    <link href="/js/kline.css" rel="stylesheet"/>
     <script src="/lib/sockjs.js"></script>
     <script src="/lib/stomp.js"></script>
     <script src="/lib/jquery.js"></script>
     <script src="/lib/jquery.mousewheel.js"></script>
+    <script src="/dist/kline.js"></script>
 ```
 
-* OR 使用RequireJs引入
+* OR RequireJS
 
 ```javascript
     require.config({
@@ -77,6 +78,21 @@ $ npm install kline
     });
 ```
 
+
+* OR CommonJS
+
+```javascript
+    var Kline = require('kline');
+```
+
+
+* OR ES6
+
+```javascript
+    import {Kline} from 'kline';
+```
+
+
 * 在页面中加入
 
 ```html
@@ -92,7 +108,7 @@ $ npm install kline
         element: "#kline_container",
         symbol: "BTC",
         symbolName: "比特币",
-        type: "poll", // poll/socket
+        type: "poll", // poll/stomp
         url: "http://127.0.0.1:8080/mock.json"
     });
     kline.draw();
@@ -105,10 +121,10 @@ $ npm install kline
         element: "#kline_container",
         symbol: "BTC",
         symbolName: "比特币",
-        type: "socket", // poll/socket
+        type: "stomp", // poll/stomp
         url: 'http://127.0.0.1:8088/socket',
-        subscribePath: "/kline/down",
-        sendPath: "/kline/up"       
+        subscribePath: "/kline/subscribe",
+        sendPath: "/kline/send"       
     });
     kline.draw();
 ```
@@ -126,17 +142,17 @@ $ npm install kline
 |`ranges` | 聚合选项 1w/1d/12h/6h/4h/2h/1h/30m/15m/5m/3m/1m/line (w:周, d:天, h:小时, m:分钟, line:分时数据) | ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
 |`symbol` | 交易代号 | 
 |`symbolName`  | 交易名称 | 
-|`type`  | 连接类型 socket(websocket)/poll(轮询) |  poll
+|`type`  | 连接类型 stomp/poll(轮询) |  poll
 |`url`  | 请求地址 | 
 |`limit`  | 分页大小 | 1000
 |`intervalTime`  | 请求间隔时间(ms) | 3000
-|`subscribePath`   | 订阅地址 (仅socket方式需要) | 
-|`sendPath`   | 发送地址 (仅socket方式需要) | 
+|`subscribePath`   | 订阅地址 (仅stomp方式需要) | 
+|`sendPath`   | 发送地址 (仅stomp方式需要) | 
 |`debug`   | 是否开启调试模式 true/false |  true
 |`showTrade`   | 是否显示行情侧边栏 true/false |  true
 |`enableSockjs`   | 是否开启sockjs支持 true/false |  true
 |`reverseColor`   | 是否反色, 默认绿涨红跌 true/false | false
-|`socketClient`   | websocket 连接对象 | null
+|`stompClient`   | stomp 连接对象 | null
 
 
 ### Methods
@@ -255,7 +271,7 @@ kline.resend();
         element: "#kline_container",
         symbol: "BTC",
         symbolName: "比特币",
-        type: "poll", // poll/socket
+        type: "poll", // poll/stomp
         url: "http://127.0.0.1:8080/mock.json",
         onResize: function(width, height) {
             console.log("chart resized: " + width + " " + height);

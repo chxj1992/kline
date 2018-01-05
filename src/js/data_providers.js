@@ -1,6 +1,6 @@
-import NamedObject from './named_object'
-import ChartManager from './chart_manager'
-import Util from './util'
+import {NamedObject} from './named_object'
+import {ChartManager} from './chart_manager'
+import {Util} from './util'
 import * as data_sources from './data_sources'
 
 
@@ -151,6 +151,7 @@ export class IndicatorDataProvider extends DataProvider {
             }
             case data_sources.DataSource.UpdateMode.Append: {
                 indic.reserve(ds.getAppendedCount());
+                break;
             }
             case data_sources.DataSource.UpdateMode.Update: {
                 let i, last = ds.getDataCount();

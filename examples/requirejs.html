@@ -32,7 +32,7 @@
             "jquery.mousewheel": "../lib/jquery.mousewheel",
             "sockjs": "../lib/sockjs",
             "stomp": "../lib/stomp",
-            "kline": "../src/js/areas"
+            "kline": "../dist/kline"
         },
         shim: {
             "jquery.mousewheel": {
@@ -44,7 +44,7 @@
         }
     });
 
-    require(['backup.js'], function () {
+    require(['kline'], function () {
         var kline = new Kline({
             element: "#kline_container",
             width: 1200,

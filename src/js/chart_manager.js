@@ -1,19 +1,19 @@
-import Control from './control'
-import Chart from './chart'
+import {Control} from './control'
+import {Chart} from './chart'
 import * as indicators from './indicators'
 import * as ranges from './ranges'
 import * as templates from './templates'
 import * as data_sources from './data_sources'
-import ChartSettings from './chart_settings'
+import {ChartSettings} from './chart_settings'
 import * as data_providers from './data_providers'
 import * as themes from './themes'
 import * as plotters from './plotters'
 import * as ctools from './ctools'
 import * as areas from './areas'
-import Util from './util'
+import {Util} from './util'
 
 
-export default class ChartManager {
+export class ChartManager {
 
     static DrawingTool = {
         Cursor: 0,
@@ -622,7 +622,6 @@ export default class ChartManager {
     }
 
     SelectRange(pArea, y) {
-        let it;
         for (let ee in this._ranges) {
             let _1 = this._ranges[ee].getAreaName();
             let _2 = pArea.getName();
