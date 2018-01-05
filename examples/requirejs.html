@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>K线图</title>
-    <link href="/js/kline.css" rel="stylesheet"/>
+    <link href="/src/css/main.css" rel="stylesheet"/>
     <script src="../lib/require.js"></script>
     <style type="text/css">
         .kline {
@@ -32,7 +32,7 @@
             "jquery.mousewheel": "../lib/jquery.mousewheel",
             "sockjs": "../lib/sockjs",
             "stomp": "../lib/stomp",
-            "kline": "../js/kline"
+            "kline": "../dist/kline"
         },
         shim: {
             "jquery.mousewheel": {
@@ -52,10 +52,10 @@
             theme: 'dark', // light/dark
             language: 'zh-cn', // zh-cn/en-us/zh-tw
             ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
-            symbol: "coin5/coin4",
-            symbolName: "COIN5_COIN4",
+            symbol: "BTC",
+            symbolName: "BTC/USD",
             type: "poll", // poll/socket
-            url: "http://127.0.0.1:8080/mock.json",
+            url: "/examples/mock.json",
             limit: 1000,
             intervalTime: 5000,
             debug: true,

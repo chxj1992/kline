@@ -4,7 +4,6 @@
     <meta name="renderer" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link href="/js/kline.css" rel="stylesheet"/>
     <script src="/lib/jquery.js"></script>
     <script src="/lib/jquery.mousewheel.js"></script>
     <style type="text/css">
@@ -34,8 +33,8 @@
     <button id="switch-trade-btn">Switch Trade</button>
     <hr>
 
-    Symbol: <input id="symbol" type="text" value="usd/btc">
-    Symbol Name: <input id="symbol-name" type="text" value="USD/BTC">
+    Symbol: <input id="symbol" type="text" value="BTC">
+    Symbol Name: <input id="symbol-name" type="text" value="BTC/USD">
     <button id="set-symbol-btn">setSymbol</button>
     <hr>
 
@@ -53,7 +52,7 @@
 
 </div>
 
-<script src="/js/kline.js"></script>
+<script src="/dist/kline.js"></script>
 
 <script type="text/javascript">
 
@@ -64,10 +63,10 @@
         theme: 'dark', // light/dark
         language: 'zh-cn', // zh-cn/en-us/zh-tw
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
-        symbol: "coin5/coin4",
-        symbolName: "COIN5_COIN4",
+        symbol: "BTC",
+        symbolName: "BTC/USD",
         type: "poll", // poll/socket
-        url: "http://127.0.0.1:8080/mock.json",
+        url: "/examples/mock.json",
         limit: 1000,
         intervalTime: 5000,
         debug: true,
