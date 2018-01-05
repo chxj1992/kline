@@ -114,7 +114,7 @@ $ npm install kline
     kline.draw();
 ```
 
-* Websocket Over Stomp
+* Stomp Over Websocket
 
 ```javascript
    var kline = new Kline({
