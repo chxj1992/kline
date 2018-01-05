@@ -357,7 +357,7 @@ export class Control {
         canvasGroup.css({
             left: canvasGroupRect.x + 'px',
             top: canvasGroupRect.y + 'px',
-            width: canvasGroupRect.w + 'px',
+            // width: canvasGroupRect.w + 'px',
             height: canvasGroupRect.h + 'px'
         });
         let mainCanvas = $('#chart_mainCanvas')[0];
