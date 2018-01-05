@@ -5,7 +5,7 @@ import {ChartSettings} from './chart_settings'
 import {Template} from './templates'
 import '../css/main.css'
 import tpl from '../view/tpl.html'
-// import './firebase'
+import './firebase'
 
 
 export default class Kline {

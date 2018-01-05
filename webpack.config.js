@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: './src/entry.js',
@@ -9,6 +10,9 @@ module.exports = {
         libraryTarget: 'umd',
         umdNamedDefine: true
     },
+    plugins: [
+        new UglifyJsPlugin()
+    ],
     module: {
         rules: [
             {
