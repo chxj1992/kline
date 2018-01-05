@@ -52,7 +52,7 @@ export class Control {
         Control.refreshHandler = setInterval(this.refreshFunction, Kline.instance.intervalTime);
     }
 
-    static RequestData(showLoading) {
+    static requestData(showLoading) {
         this.AbortRequest();
         window.clearTimeout(Kline.instance.timer);
         if (Kline.instance.paused) {
@@ -62,7 +62,7 @@ export class Control {
             $("#chart_loading").addClass("activated");
         }
         if (Kline.instance.type === "stomp" && Kline.instance.stompClient) {
-            this.requestOverSocket();
+            this.requestOverStomp();
         } else {
             this.requestOverHttp();
         }
@@ -72,7 +72,7 @@ export class Control {
         return JSON.parse('{"' + decodeURI(str.replace(/&/g, "\",\"").replace(/=/g, "\":\"")) + '"}')
     }
 
-    static requestOverSocket() {
+    static requestOverStomp() {
         if (!Kline.instance.socketConnected) {
             if (Kline.instance.debug) {
                 console.log("DEBUG: socket is not coonnected")
@@ -84,10 +84,10 @@ export class Control {
             return;
         }
         if (Kline.instance.debug) {
-            console.log("DEBUG: socket client is not ready yet ...");
+            console.log("DEBUG: stomp client is not ready yet ...");
         }
         Kline.instance.timer = setTimeout(function () {
-            this.RequestData(true);
+            Control.requestData(true);
         }, 1000);
     }
 
@@ -120,7 +120,7 @@ export class Control {
                         return;
                     }
                     Kline.instance.timer = setTimeout(function () {
-                        RequestData(true);
+                        Control.requestData(true);
                     }, Kline.instance.intervalTime);
                 },
                 complete: function () {
@@ -137,7 +137,7 @@ export class Control {
         if (!res || !res.success) {
             if (Kline.instance.type === 'poll') {
                 Kline.instance.timer = setTimeout(function () {
-                    Control.RequestData(true);
+                    Control.requestData(true);
                 }, Kline.instance.intervalTime);
             }
             return;
@@ -192,7 +192,7 @@ export class Control {
             Kline.instance.requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, null, f.toString());
         }
 
-        Control.RequestData();
+        Control.requestData();
     }
 
     static readCookie() {
@@ -660,7 +660,7 @@ export class Control {
         Kline.instance.stompClient.connect({}, function () {
             Kline.instance.stompClient.subscribe('/user' + Kline.instance.subscribePath, Control.subscribeCallback);
             Kline.instance.subscribed = Kline.instance.stompClient.subscribe(Kline.instance.subscribePath + '/' + Kline.instance.symbol + '/' + Kline.instance.range, Control.subscribeCallback);
-            Control.RequestData(true);
+            Control.requestData(true);
         }, function () {
             Kline.instance.stompClient.disconnect();
             console.log("DEBUG: reconnect in 5 seconds ...");

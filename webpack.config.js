@@ -2,9 +2,12 @@ const path = require('path');
 
 module.exports = {
     entry: './src/entry.js',
+    devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'kline.js'
+        filename: 'kline.js',
+        libraryTarget: 'umd',
+        umdNamedDefine: true
     },
     module: {
         rules: [

@@ -99,10 +99,10 @@ export class Chart {
 
         if (f === -1) {
             Kline.instance.requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, Kline.instance.limit, null);
-            Control.RequestData(true);
+            Control.requestData(true);
         } else {
             Kline.instance.requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, null, f.toString());
-            Control.RequestData();
+            Control.requestData();
         }
         new ChartManager().redraw('All', false);
     }
