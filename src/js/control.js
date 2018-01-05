@@ -4,6 +4,8 @@ import {ChartManager} from './chart_manager'
 import {ChartSettings} from './chart_settings'
 import {DefaultTemplate, Template} from './templates'
 import {MEvent} from './mevent'
+import $ from 'jquery'
+
 
 export class Control {
 

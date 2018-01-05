@@ -13,6 +13,14 @@ module.exports = {
     plugins: [
         new UglifyJsPlugin()
     ],
+    externals: {
+        jquery: {
+            commonjs: "jquery",
+            commonjs2: 'jquery',
+            amd: "jquery",
+            root: "$"
+        }
+    },
     module: {
         rules: [
             {

@@ -6,6 +6,7 @@ import {Template} from './templates'
 import '../css/main.css'
 import tpl from '../view/tpl.html'
 import './firebase'
+import $ from 'jquery'
 
 
 export default class Kline {
