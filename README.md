@@ -89,7 +89,7 @@ $ npm install kline
 * OR ES6
 
 ```javascript
-    import {Kline} from 'kline';
+    import Kline from 'kline';
 ```
 
 
