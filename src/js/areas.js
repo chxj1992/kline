@@ -218,7 +218,7 @@ export class MainArea extends ChartArea {
     }
 
     onMouseMove(x, y) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         if (mgr._capturingMouseArea === this)
             if (this._dragStarted === false)
                 if (Math.abs(this._oldX - x) > 1 || Math.abs(this._oldY - y) > 1)
@@ -257,7 +257,7 @@ export class MainArea extends ChartArea {
     }
 
     onMouseDown(x, y) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         mgr.getTimeline(this.getDataSourceName()).startMove();
         this._oldX = x;
         this._oldY = y;
@@ -268,7 +268,7 @@ export class MainArea extends ChartArea {
     }
 
     onMouseUp(x, y) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let ret = null;
         if (this._dragStarted) {
             this._dragStarted = false;
@@ -292,7 +292,7 @@ export class IndicatorArea extends ChartArea {
     }
 
     onMouseMove(x, y) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         if (mgr._capturingMouseArea === this) {
             if (this._dragStarted === false) {
                 if (this._oldX !== x || this._oldY !== y) {
@@ -325,7 +325,7 @@ export class IndicatorArea extends ChartArea {
 
 
     onMouseDown(x, y) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         mgr.getTimeline(this.getDataSourceName()).startMove();
         this._oldX = x;
         this._oldY = y;
@@ -351,7 +351,7 @@ export class MainRangeArea extends ChartArea {
     }
 
     onMouseMove(x, y) {
-        new ChartManager().showCursor();
+        ChartManager.instance.showCursor();
         return this;
     }
 
@@ -365,7 +365,7 @@ export class IndicatorRangeArea extends ChartArea {
     }
 
     onMouseMove(x, y) {
-        new ChartManager().showCursor();
+        ChartManager.instance.showCursor();
         return this;
     }
 
@@ -379,7 +379,7 @@ export class TimelineArea extends ChartArea {
     }
 
     onMouseMove(x, y) {
-        new ChartManager().showCursor();
+        ChartManager.instance.showCursor();
         return this;
     }
 

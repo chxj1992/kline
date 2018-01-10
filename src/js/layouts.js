@@ -61,7 +61,7 @@ export class TableLayout extends areas.ChartAreaGroup {
         let minRW = 64;
         let maxRW = Math.min(240, width >> 1);
         let rw = minRW;
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let timeline = mgr.getTimeline(this.getDataSourceName());
         if (timeline.getFirstIndex() >= 0) {
             let firstIndexes = [];
@@ -129,7 +129,7 @@ export class TableLayout extends areas.ChartAreaGroup {
         if (this._areas.length < 1) {
             return;
         }
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let theme = mgr.getTheme(this.getFrameName());
         context.fillStyle = theme.getColor(themes.Theme.Color.Grid1);
         context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight());
@@ -209,7 +209,7 @@ export class TableLayout extends areas.ChartAreaGroup {
         for (i = 0; i < cnt; i += 2) {
             let b = this._areas[i].getBottom();
             if (y >= b - 4 && y < b + 4) {
-                new ChartManager().showCursor('n-resize');
+                ChartManager.instance.showCursor('n-resize');
                 return this;
             }
         }
@@ -326,7 +326,7 @@ export class DockableLayout extends areas.ChartAreaGroup {
     }
 
     drawGrid(context) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let theme = mgr.getTheme(this.getFrameName());
         let left = this.getLeft();
         let top = this.getTop();

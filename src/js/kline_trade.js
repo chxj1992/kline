@@ -124,7 +124,7 @@ export class KlineTrade {
     }
 
     updateDepth(data) {
-        new ChartManager().getChart().updateDepth(data);
+        ChartManager.instance.getChart().updateDepth(data);
         if (!data) return;
         $("#gasks .table").html(this.getgview(this.getgasks(data.asks)));
         $("#gbids .table").html(this.getgview(this.getgbids(data.bids)));

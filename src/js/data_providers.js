@@ -69,7 +69,7 @@ export class DataProvider extends NamedObject {
     }
 
     updateRange() {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let timeline = mgr.getTimeline(this.getDataSourceName());
         let firstIndexes = [timeline.getFirstIndex()];
         let minmaxes = [{}];
@@ -92,7 +92,7 @@ export class MainDataProvider extends DataProvider {
     }
 
     updateData() {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let ds = mgr.getDataSource(this.getDataSourceName());
         if (!Util.isInstance(ds, data_sources.MainDataSource)) {
             return;
@@ -122,7 +122,7 @@ export class IndicatorDataProvider extends DataProvider {
     }
 
     refresh() {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let ds = mgr.getDataSource(this.getDataSourceName());
         if (ds.getDataCount() < 1) {
             return;
@@ -137,7 +137,7 @@ export class IndicatorDataProvider extends DataProvider {
     }
 
     updateData() {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let ds = mgr.getDataSource(this.getDataSourceName());
         if (ds.getDataCount() < 1) {
             return;

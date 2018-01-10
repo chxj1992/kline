@@ -22,7 +22,7 @@ export class CToolObject extends NamedObject {
     }
 
     getChartObjects() {
-        let ppMgr = new ChartManager();
+        let ppMgr = ChartManager.instance;
         let ppCDS = ppMgr.getDataSource("frame0.k0");
         if (ppCDS === null || !Util.isInstance(ppCDS, data_sources.MainDataSource))
             return null;

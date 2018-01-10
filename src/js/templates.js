@@ -19,7 +19,7 @@ export class Template {
     }
 
     static createDataSource(dsName, dsAlias, createFunc) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         if (mgr.getCachedDataSource(dsAlias) === null)
             mgr.setCachedDataSource(dsAlias, createFunc(dsAlias));
         mgr.setCurrentDataSource(dsName, dsAlias);
@@ -35,7 +35,7 @@ export class Template {
     }
 
     static createMainChartComps(dsName) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let tableLayout = mgr.getArea(dsName + ".charts");
         let areaName = dsName + ".main";
         let rangeAreaName = areaName + "Range";
@@ -79,7 +79,7 @@ export class Template {
     }
 
     static createIndicatorChartComps(dsName, indicName) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let tableLayout = mgr.getArea(dsName + ".charts");
         let areaName = dsName + ".indic" + tableLayout.getNextRowId();
         let rangeAreaName = areaName + "Range";
@@ -126,7 +126,7 @@ export class Template {
     }
 
     static createTimelineComps(dsName) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let plotter;
         let timeline = new Timeline(dsName);
         mgr.setTimeline(timeline.getName(), timeline);
@@ -139,7 +139,7 @@ export class Template {
     }
 
     static createLiveOrderComps(dsName) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let plotter;
         plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
         mgr.setPlotter(plotter.getName(), plotter);
@@ -148,7 +148,7 @@ export class Template {
     }
 
     static createLiveTradeComps(dsName) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let plotter;
         plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
         mgr.setPlotter(plotter.getName(), plotter);
@@ -161,7 +161,7 @@ export class Template {
 export class DefaultTemplate extends Template {
 
     static loadTemplate(dsName, dsAlias) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let settings = ChartSettings.get();
         let frameName = (new CName(dsName)).getCompAt(0);
         mgr.unloadTemplate(frameName);

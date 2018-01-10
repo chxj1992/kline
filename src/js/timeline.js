@@ -154,7 +154,7 @@ export class Timeline extends NamedObject {
     }
 
     onLayout() {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let area = mgr.getArea(this.getDataSourceName() + ".main");
         if (area !== null) {
             this._innerLeft = area.getLeft() + Timeline.PADDING_LEFT;
@@ -193,7 +193,7 @@ export class Timeline extends NamedObject {
     }
 
     update() {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let ds = mgr.getDataSource(this.getDataSourceName());
         let oldMaxIndex = this._maxIndex;
         this._maxIndex = ds.getDataCount();
@@ -232,7 +232,7 @@ export class Timeline extends NamedObject {
 
     move(x) {
         if (this.isLatestShown()) {
-            new ChartManager().getArea(this.getDataSourceName() + ".mainRange").setChanged(true);
+            ChartManager.instance.getArea(this.getDataSourceName() + ".mainRange").setChanged(true);
         }
         this._firstIndex = this.validateFirstIndex(
             this._savedFirstIndex - this.calcColumnCount(x), this._maxItemCount);

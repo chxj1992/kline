@@ -83,7 +83,7 @@ export class Range extends NamedObject {
         if (this._selectedValue > -Number.MAX_VALUE) {
             return this._selectedValue;
         }
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let area = mgr.getArea(this.getAreaName());
         if (area === null) {
             return -Number.MAX_VALUE;
@@ -120,7 +120,7 @@ export class Range extends NamedObject {
     update() {
         let min = Number.MAX_VALUE;
         let max = -Number.MAX_VALUE;
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let dp, dpNames = [".main", ".secondary"];
         for (let i = 0; i < dpNames.length; i++) {
             dp = mgr.getDataProvider(this.getName() + dpNames[i]);
@@ -157,7 +157,7 @@ export class Range extends NamedObject {
     }
 
     setRange(minValue, maxValue) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let area = mgr.getArea(this.getAreaName());
         if (this._minValue === minValue && this._maxValue === maxValue && !area.isChanged()) {
             return;
@@ -263,7 +263,7 @@ export class MainRange extends Range {
     }
 
     preSetRange(r) {
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
 
         let timeline = mgr.getTimeline(this.getDataSourceName());
         let dIndex = timeline.getMaxIndex() - timeline.getLastIndex();
@@ -321,7 +321,7 @@ export class ZeroCenteredRange extends Range {
 
     updateGradations() {
         this._gradations = [];
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let area = mgr.getArea(this.getAreaName());
         let interval = this.calcInterval(area);
         if (interval <= 0.0) {
@@ -352,7 +352,7 @@ export class PercentageRange extends Range {
 
     updateGradations() {
         this._gradations = [];
-        let mgr = new ChartManager();
+        let mgr = ChartManager.instance;
         let area = mgr.getArea(this.getAreaName());
         let interval = 10.0;
         let h = Math.floor(this.toHeight(interval));

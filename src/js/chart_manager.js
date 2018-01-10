@@ -74,18 +74,18 @@ export class ChartManager {
     }
 
     redraw(layer, refresh) {
-        if (layer === undefined || refresh)
+        if (layer === undefined || refresh) {
             layer = "All";
+        }
         if (layer === "All" || layer === "MainCanvas") {
-            if (refresh)
+            if (refresh) {
                 this.getFrame("frame0").setChanged(true);
-            this.layout(this._mainContext, "frame0",
-                0, 0, this._mainCanvas.width, this._mainCanvas.height);
+            }
+            this.layout(this._mainContext, "frame0", 0, 0, this._mainCanvas.width, this._mainCanvas.height);
             this.drawMain("frame0", this._mainContext);
         }
         if (layer === "All" || layer === "OverlayCanvas") {
-            this._overlayContext.clearRect(
-                0, 0, this._overlayCanvas.width, this._overlayCanvas.height);
+            this._overlayContext.clearRect(0, 0, this._overlayCanvas.width, this._overlayCanvas.height);
             this.drawOverlay("frame0", this._overlayContext);
         }
     }
@@ -98,8 +98,9 @@ export class ChartManager {
         } else if (layer === "overlay") {
             this._overlayCanvas = canvas;
             this._overlayContext = canvas.getContext("2d");
-            if (this._captureMouseWheelDirectly)
+            if (this._captureMouseWheelDirectly) {
                 $(this._overlayCanvas).bind('mousewheel', Control.mouseWheel);
+            }
         }
     }
 
@@ -124,7 +125,7 @@ export class ChartManager {
         delete this._ranges['frame0.k0.indic1Range'];
         delete this._areas['frame0.k0.indic1'];
         delete this._areas['frame0.k0.indic1Range'];
-        new templates.DefaultTemplate().loadTemplate("frame0.k0", "");
+        templates.DefaultTemplate.loadTemplate("frame0.k0", "");
         this.redraw('All', true);
     }
 
@@ -332,14 +333,9 @@ export class ChartManager {
         if (cached !== undefined && cached !== null) {
             this.setDataSource(dsName, cached, true);
         } else {
-            let ds = this.getDataSource(dsName);
-            if (ds !== undefined && ds !== null) {
-                this.setCachedDataSource(dsAlias, cached);
-            } else {
-                cached = new data_sources.MainDataSource(dsAlias);
-                this.setDataSource(dsName, cached, true);
-                this.setCachedDataSource(dsAlias, cached);
-            }
+            cached = new data_sources.MainDataSource(dsAlias);
+            this.setDataSource(dsName, cached, true);
+            this.setCachedDataSource(dsAlias, cached);
         }
     }
 
@@ -544,34 +540,41 @@ export class ChartManager {
 
     updateData(dsName, data) {
         let ds = this.getDataSource(dsName);
-        if (ds === undefined)
+        if (ds === undefined || ds === null) {
             return;
-        if (data !== null) {
-            if (!ds.update(data))
+        }
+        if (data !== undefined && data !== null) {
+            if (!ds.update(data)) {
                 return false;
+            }
             if (ds.getUpdateMode() === data_sources.DataSource.UpdateMode.DoNothing)
                 return true;
         } else {
             ds.setUpdateMode(data_sources.DataSource.UpdateMode.Refresh);
         }
         let timeline = this.getTimeline(dsName);
-        if (timeline !== undefined)
+        if (timeline !== undefined && timeline !== null) {
             timeline.update();
-        if (ds.getDataCount() < 1)
+        }
+        if (ds.getDataCount() < 1) {
             return true;
+        }
         let dpNames = [".main", ".secondary"];
         let area, areaName;
         for (let n in this._areas) {
             area = this._areas[n];
-            if (Util.isInstance(area, areas.ChartAreaGroup))
+            if (Util.isInstance(area, areas.ChartAreaGroup)) {
                 continue;
-            if (area.getDataSourceName() !== dsName)
+            }
+            if (area.getDataSourceName() !== dsName) {
                 continue;
+            }
             areaName = area.getName();
             for (let i = 0; i < dpNames.length; i++) {
                 let dp = this.getDataProvider(areaName + dpNames[i]);
-                if (dp !== undefined)
+                if (dp !== undefined && dp !== null) {
                     dp.updateData();
+                }
             }
         }
         return true;
@@ -579,8 +582,9 @@ export class ChartManager {
 
     updateRange(dsName) {
         let ds = this.getDataSource(dsName);
-        if (ds.getDataCount() < 1)
+        if (ds.getDataCount() < 1) {
             return;
+        }
         let dpNames = [".main", ".secondary"];
         let area, areaName;
         for (let n in this._areas) {

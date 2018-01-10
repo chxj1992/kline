@@ -74,12 +74,12 @@ export class Chart {
     }
 
     setTitle() {
-        let lang = new ChartManager().getLanguage();
+        let lang = ChartManager.instance.getLanguage();
         let title = Kline.instance.symbolName;
         title += ' ';
         title += this.strIsLine ? Chart.strPeriod[lang]['line'] : Chart.strPeriod[lang][this._range];
         title += (this._contract_unit + '/' + this._money_type).toUpperCase();
-        new ChartManager().setTitle('frame0.k0', title);
+        ChartManager.instance.setTitle('frame0.k0', title);
     }
 
 
@@ -91,8 +91,8 @@ export class Chart {
     updateDataAndDisplay() {
         Kline.instance.symbol = this._symbol;
         Kline.instance.range = this._range;
-        new ChartManager().setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
-        new ChartManager().setNormalMode();
+        ChartManager.instance.setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
+        ChartManager.instance.setNormalMode();
         let f = Kline.instance.chartMgr.getDataSource("frame0.k0").getLastDate();
 
         $('.symbol-title>a').text(Kline.instance.symbolName);
@@ -104,7 +104,7 @@ export class Chart {
             Kline.instance.requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, null, f.toString());
             Control.requestData();
         }
-        new ChartManager().redraw('All', false);
+        ChartManager.instance.redraw('All', false);
     }
 
 
@@ -130,13 +130,13 @@ export class Chart {
 
     updateDataSource(data) {
         this._data = data;
-        new ChartManager().updateData("frame0.k0", this._data);
+        ChartManager.instance.updateData("frame0.k0", this._data);
     }
 
     updateDepth(array) {
         if (array === null) {
             this._depthData.array = [];
-            new ChartManager().redraw('All', false);
+            ChartManager.instance.redraw('All', false);
             return;
         }
         if (!array.asks || !array.bids || array.asks === '' || array.bids === '')
@@ -159,8 +159,8 @@ export class Chart {
         _data.bids_count = array.bids.length;
         _data.asks_si = _data.asks_count - 1;
         _data.asks_ei = 0;
-        _data.bids_si = _data.asks_count;
-        _data.bids_ei = _data.asks_count + _data.bids_count - 1;
+        _data.bids_si = _data.asks_count - 1;
+        _data.bids_ei = _data.asks_count + _data.bids_count - 2;
         for (let i = _data.asks_si; i >= _data.asks_ei; i--) {
             if (i === _data.asks_si) {
                 _data.array[i].amounts = _data.array[i].amount;
@@ -175,17 +175,17 @@ export class Chart {
                 _data.array[i].amounts = _data.array[i - 1].amounts + _data.array[i].amount;
             }
         }
-        new ChartManager().redraw('All', false);
+        ChartManager.instance.redraw('All', false);
     }
 
     setMainIndicator(indicName) {
         this._mainIndicator = indicName;
         if (indicName === 'NONE') {
-            new ChartManager().removeMainIndicator('frame0.k0');
+            ChartManager.instance.removeMainIndicator('frame0.k0');
         } else {
-            new ChartManager().setMainIndicator('frame0.k0', indicName);
+            ChartManager.instance.setMainIndicator('frame0.k0', indicName);
         }
-        new ChartManager().redraw('All', true);
+        ChartManager.instance.redraw('All', true);
     }
 
     setIndicator(index, indicName) {
@@ -193,32 +193,32 @@ export class Chart {
             let index = 2;
             if (Template.displayVolume === false)
                 index = 1;
-            let areaName = new ChartManager().getIndicatorAreaName('frame0.k0', index);
+            let areaName = ChartManager.instance.getIndicatorAreaName('frame0.k0', index);
             if (areaName !== '')
-                new ChartManager().removeIndicator(areaName);
+                ChartManager.instance.removeIndicator(areaName);
         } else {
             let index = 2;
             if (Template.displayVolume === false)
                 index = 1;
-            let areaName = new ChartManager().getIndicatorAreaName('frame0.k0', index);
+            let areaName = ChartManager.instance.getIndicatorAreaName('frame0.k0', index);
             if (areaName === '') {
                 Template.createIndicatorChartComps('frame0.k0', indicName);
             } else {
-                new ChartManager().setIndicator(areaName, indicName);
+                ChartManager.instance.setIndicator(areaName, indicName);
             }
         }
-        new ChartManager().redraw('All', true);
+        ChartManager.instance.redraw('All', true);
     }
 
     addIndicator(indicName) {
-        new ChartManager().addIndicator(indicName);
-        new ChartManager().redraw('All', true);
+        ChartManager.instance.addIndicator(indicName);
+        ChartManager.instance.redraw('All', true);
     }
 
     removeIndicator(indicName) {
-        let areaName = new ChartManager().getIndicatorAreaName(2);
-        new ChartManager().removeIndicator(areaName);
-        new ChartManager().redraw('All', true);
+        let areaName = ChartManager.instance.getIndicatorAreaName(2);
+        ChartManager.instance.removeIndicator(areaName);
+        ChartManager.instance.redraw('All', true);
     };
 
 }

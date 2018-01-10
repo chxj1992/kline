@@ -42,7 +42,7 @@ export class ChartSettings {
         let _indic_param = {};
         let _name = ['MA', 'EMA', 'VOLUME', 'MACD', 'KDJ', 'StochRSI', 'RSI', 'DMI', 'OBV', 'BOLL', 'DMA', 'TRIX', 'BRAR', 'VR', 'EMV', 'WR', 'ROC', 'MTM', 'PSY'];
         for (let i = 0; i < _name.length; i++) {
-            let _value = new ChartManager().createIndicatorAndRange('', _name[i], true);
+            let _value = ChartManager.instance.createIndicatorAndRange('', _name[i], true);
             if (_value === null) continue;
             _indic_param[_name[i]] = [];
             let param = _value.indic.getParameters();
