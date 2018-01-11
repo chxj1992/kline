@@ -1,11 +1,13 @@
-import {NamedObject} from './named_object'
-import * as themes from './themes'
-import {ChartManager} from './chart_manager'
 import Kline from './kline'
-import * as exprs from './exprs'
+import {NamedObject} from './named_object'
+import {ChartManager} from './chart_manager'
 import {Util} from './util'
+import {CPoint} from './cpoint'
+import * as exprs from './exprs'
+import * as themes from './themes'
 import * as data_providers from './data_providers'
 import * as data_sources from './data_sources'
+import * as ctools from './ctools'
 
 
 export class Plotter extends NamedObject {
@@ -15,7 +17,6 @@ export class Plotter extends NamedObject {
     constructor(name) {
         super(name);
     }
-
 
     static drawLine(context, x1, y1, x2, y2) {
         context.beginPath();
@@ -1882,7 +1883,7 @@ export class CToolPlotter extends NamedObject {
         this.getAreaPos();
         let tempStartPt = {x: startPoint.x, y: startPoint.y};
         let tempEndPt = {x: endPoint.x, y: endPoint.y};
-        let crossPt = getRectCrossPt(this.areaPos, tempStartPt, tempEndPt);
+        let crossPt = this.getRectCrossPt(this.areaPos, tempStartPt, tempEndPt);
         let tempCrossPt;
         if (endPoint.x === startPoint.x) {
             if (endPoint.y === startPoint.y) {
@@ -1977,7 +1978,7 @@ export class DrawStraightLinesPlotter extends CToolPlotter {
         if (this.startPoint.x === this.endPoint.x && this.startPoint.y === this.endPoint.y) {
             Plotter.drawLine(context, this.areaPos.left, this.startPoint.y, this.areaPos.right, this.startPoint.y);
         } else {
-            this.crossPt = getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
+            this.crossPt = this.getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
             Plotter.drawLine(context, this.crossPt[0].x, this.crossPt[0].y, this.crossPt[1].x, this.crossPt[1].y);
         }
     }
@@ -2231,9 +2232,9 @@ export class DrawBiParallelLinesPlotter extends ParallelLinesPlotter {
         this.endPoint = this.ctrlPts[1][2];
         this.getParaPt();
         this.getAreaPos();
-        this.crossPt0 = getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
+        this.crossPt0 = this.getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
         Plotter.drawLine(context, this.crossPt0[0].x, this.crossPt0[0].y, this.crossPt0[1].x, this.crossPt0[1].y);
-        this.crossPt1 = getRectCrossPt(this.areaPos, this.paraStartPoint, this.paraEndPoint);
+        this.crossPt1 = this.getRectCrossPt(this.areaPos, this.paraStartPoint, this.paraEndPoint);
         Plotter.drawLine(context, this.crossPt1[0].x, this.crossPt1[0].y, this.crossPt1[1].x, this.crossPt1[1].y);
     }
 
@@ -2299,11 +2300,11 @@ export class DrawTriParallelLinesPlotter extends ParallelLinesPlotter {
         this.para2EndPoint.x = this.endPoint.x - vectorB[0];
         this.para2EndPoint.y = this.endPoint.y - vectorB[1];
         this.getAreaPos();
-        this.crossPt0 = getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
+        this.crossPt0 = this.getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
         Plotter.drawLine(context, this.crossPt0[0].x, this.crossPt0[0].y, this.crossPt0[1].x, this.crossPt0[1].y);
-        this.crossPt1 = getRectCrossPt(this.areaPos, this.paraStartPoint, this.para1EndPoint);
+        this.crossPt1 = this.getRectCrossPt(this.areaPos, this.paraStartPoint, this.para1EndPoint);
         Plotter.drawLine(context, this.crossPt1[0].x, this.crossPt1[0].y, this.crossPt1[1].x, this.crossPt1[1].y);
-        this.crossPt2 = getRectCrossPt(this.areaPos, this.para2StartPoint, this.para2EndPoint);
+        this.crossPt2 = this.getRectCrossPt(this.areaPos, this.para2StartPoint, this.para2EndPoint);
         Plotter.drawLine(context, this.crossPt2[0].x, this.crossPt2[0].y, this.crossPt2[1].x, this.crossPt2[1].y);
     }
 
@@ -2325,7 +2326,7 @@ export class BandLinesPlotter extends CToolPlotter {
         context.textAlign = "left";
         context.fillStyle = this.theme.getColor(themes.Theme.Color.LineColorNormal);
         let text;
-        if (this.toolObject.state === CToolObject.state.Draw) {
+        if (this.toolObject.state === ctools.CToolObject.state.Draw) {
             this.startPtValue = this.toolObject.getPoint(0).getPosIV().v;
             this.endPtValue = this.toolObject.getPoint(1).getPosIV().v;
         }
@@ -2445,15 +2446,15 @@ export class CDynamicLinePlotter extends NamedObject {
             let toolObject = pTDP.getToolObject(i);
             let state = toolObject.getState();
             switch (state) {
-                case CToolObject.state.BeforeDraw:
+                case ctools.CToolObject.state.BeforeDraw:
                     toolObject.getPlotter().theme = ChartManager.instance.getTheme(this.getFrameName());
                     toolObject.getPlotter().drawCursor(this.context);
                     break;
-                case CToolObject.state.Draw:
+                case ctools.CToolObject.state.Draw:
                     toolObject.getPlotter().theme = ChartManager.instance.getTheme(this.getFrameName());
                     toolObject.getPlotter().updateDraw(this.context);
                     break;
-                case CToolObject.state.AfterDraw:
+                case ctools.CToolObject.state.AfterDraw:
                     toolObject.getPlotter().theme = ChartManager.instance.getTheme(this.getFrameName());
                     toolObject.getPlotter().finishDraw(this.context);
                     break;
@@ -2462,7 +2463,7 @@ export class CDynamicLinePlotter extends NamedObject {
             }
         }
         let sel = pTDP.getSelectToolObjcet();
-        if (sel !== null && sel !== CToolObject.state.Draw)
+        if (sel !== null && sel !== ctools.CToolObject.state.Draw)
             sel.getPlotter().highlight(this.context);
         this.context.restore();
 

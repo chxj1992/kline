@@ -1525,6 +1525,42 @@ function () {
     value: function getNameObject() {
       return this._nameObj;
     }
+  }, {
+    key: "getRectCrossPt",
+    value: function getRectCrossPt(rect, startPt, endPt) {
+      var crossPt;
+      var firstPt = {
+        x: -1,
+        y: -1
+      };
+      var secondPt = {
+        x: -1,
+        y: -1
+      };
+      var xdiff = endPt.x - startPt.x;
+      var ydiff = endPt.y - startPt.y;
+
+      if (Math.abs(xdiff) < 2) {
+        firstPt = {
+          x: startPt.x,
+          y: rect.top
+        };
+        secondPt = {
+          x: endPt.x,
+          y: rect.bottom
+        };
+        crossPt = [firstPt, secondPt];
+        return crossPt;
+      }
+
+      var k = ydiff / xdiff;
+      secondPt.x = rect.right;
+      secondPt.y = startPt.y + (rect.right - startPt.x) * k;
+      firstPt.x = rect.left;
+      firstPt.y = startPt.y + (rect.left - startPt.x) * k;
+      crossPt = [firstPt, secondPt];
+      return crossPt;
+    }
   }]);
 
   return NamedObject;
@@ -3562,42 +3598,6 @@ function () {
       _chart_manager.ChartManager.instance.redraw('All', true);
     }
   }, {
-    key: "getRectCrossPt",
-    value: function getRectCrossPt(rect, startPt, endPt) {
-      var crossPt;
-      var firstPt = {
-        x: -1,
-        y: -1
-      };
-      var secondPt = {
-        x: -1,
-        y: -1
-      };
-      var xdiff = endPt.x - startPt.x;
-      var ydiff = endPt.y - startPt.y;
-
-      if (Math.abs(xdiff) < 2) {
-        firstPt = {
-          x: startPt.x,
-          y: rect.top
-        };
-        secondPt = {
-          x: endPt.x,
-          y: rect.bottom
-        };
-        crossPt = [firstPt, secondPt];
-        return crossPt;
-      }
-
-      var k = ydiff / xdiff;
-      secondPt.x = rect.right;
-      secondPt.y = startPt.y + (rect.right - startPt.x) * k;
-      firstPt.x = rect.left;
-      firstPt.y = startPt.y + (rect.left - startPt.x) * k;
-      crossPt = [firstPt, secondPt];
-      return crossPt;
-    }
-  }, {
     key: "chartSwitchLanguage",
     value: function chartSwitchLanguage(lang) {
       var langTmp = lang.replace(/-/, '_');
@@ -4032,15 +4032,15 @@ function () {
   }, {
     key: "socketConnect",
     value: function socketConnect() {
-      _kline.default.instance.socketConnected = true;
-
-      if (!_kline.default.instance.stompClient) {
+      if (!_kline.default.instance.stompClient || !_kline.default.instance.socketConnected) {
         if (_kline.default.instance.enableSockjs) {
           var socket = new SockJS(_kline.default.instance.url);
           _kline.default.instance.stompClient = Stomp.over(socket);
         } else {
           _kline.default.instance.stompClient = Stomp.client(_kline.default.instance.url);
         }
+
+        _kline.default.instance.socketConnected = true;
       }
 
       if (_kline.default.instance.stompClient.ws.readyState === 1) {
@@ -4087,25 +4087,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CDynamicLinePlotter = exports.DrawFibFansPlotter = exports.DrawBandLinesPlotter = exports.DrawFibRetracePlotter = exports.BandLinesPlotter = exports.DrawTriParallelLinesPlotter = exports.DrawBiParallelRayLinesPlotter = exports.DrawBiParallelLinesPlotter = exports.ParallelLinesPlotter = exports.DrawPriceLinesPlotter = exports.DrawVertiStraightLinesPlotter = exports.DrawHoriSegLinesPlotter = exports.DrawHoriRayLinesPlotter = exports.DrawHoriStraightLinesPlotter = exports.DrawArrowLinesPlotter = exports.DrawRayLinesPlotter = exports.DrawSegLinesPlotter = exports.DrawStraightLinesPlotter = exports.CToolPlotter = exports.RangeSelectionPlotter = exports.TimelineSelectionPlotter = exports.SelectionPlotter = exports.LastClosePlotter = exports.LastVolumePlotter = exports.COrderGraphPlotter = exports.RangePlotter = exports.TimelinePlotter = exports.MinMaxPlotter = exports.IndicatorInfoPlotter = exports.IndicatorPlotter = exports.MainInfoPlotter = exports.OHLCPlotter = exports.CandlestickHLCPlotter = exports.CandlestickPlotter = exports.CGridPlotter = exports.TimelineAreaBackgroundPlotter = exports.RangeAreaBackgroundPlotter = exports.MainAreaBackgroundPlotter = exports.BackgroundPlotter = exports.Plotter = void 0;
 
-var _named_object = __webpack_require__(1);
+var _kline = _interopRequireDefault(__webpack_require__(3));
 
-var themes = _interopRequireWildcard(__webpack_require__(5));
+var _named_object = __webpack_require__(1);
 
 var _chart_manager = __webpack_require__(0);
 
-var _kline = _interopRequireDefault(__webpack_require__(3));
+var _util = __webpack_require__(7);
+
+var _cpoint = __webpack_require__(14);
 
 var exprs = _interopRequireWildcard(__webpack_require__(16));
 
-var _util = __webpack_require__(7);
+var themes = _interopRequireWildcard(__webpack_require__(5));
 
 var data_providers = _interopRequireWildcard(__webpack_require__(10));
 
 var data_sources = _interopRequireWildcard(__webpack_require__(2));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var ctools = _interopRequireWildcard(__webpack_require__(15));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -6528,7 +6532,7 @@ function (_NamedObject9) {
       context.strokeStyle = this.theme.getColor(themes.Theme.Color.CircleColorStroke);
 
       for (var i = 0; i < this.ctrlPtsNum; i++) {
-        if (this.toolObject.getPoint(i).getState() === CPoint.state.Highlight) this.drawCircle(context, this.ctrlPts[1][i], this.selectedSize);
+        if (this.toolObject.getPoint(i).getState() === _cpoint.CPoint.state.Highlight) this.drawCircle(context, this.ctrlPts[1][i], this.selectedSize);
       }
     }
   }, {
@@ -6559,7 +6563,7 @@ function (_NamedObject9) {
         x: endPoint.x,
         y: endPoint.y
       };
-      var crossPt = getRectCrossPt(this.areaPos, tempStartPt, tempEndPt);
+      var crossPt = this.getRectCrossPt(this.areaPos, tempStartPt, tempEndPt);
       var tempCrossPt;
 
       if (endPoint.x === startPoint.x) {
@@ -6687,7 +6691,7 @@ function (_CToolPlotter) {
       if (this.startPoint.x === this.endPoint.x && this.startPoint.y === this.endPoint.y) {
         Plotter.drawLine(context, this.areaPos.left, this.startPoint.y, this.areaPos.right, this.startPoint.y);
       } else {
-        this.crossPt = getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
+        this.crossPt = this.getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
         Plotter.drawLine(context, this.crossPt[0].x, this.crossPt[0].y, this.crossPt[1].x, this.crossPt[1].y);
       }
     }
@@ -7113,9 +7117,9 @@ function (_ParallelLinesPlotter) {
       this.endPoint = this.ctrlPts[1][2];
       this.getParaPt();
       this.getAreaPos();
-      this.crossPt0 = getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
+      this.crossPt0 = this.getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
       Plotter.drawLine(context, this.crossPt0[0].x, this.crossPt0[0].y, this.crossPt0[1].x, this.crossPt0[1].y);
-      this.crossPt1 = getRectCrossPt(this.areaPos, this.paraStartPoint, this.paraEndPoint);
+      this.crossPt1 = this.getRectCrossPt(this.areaPos, this.paraStartPoint, this.paraEndPoint);
       Plotter.drawLine(context, this.crossPt1[0].x, this.crossPt1[0].y, this.crossPt1[1].x, this.crossPt1[1].y);
     }
   }]);
@@ -7222,11 +7226,11 @@ function (_ParallelLinesPlotter3) {
       this.para2EndPoint.x = this.endPoint.x - vectorB[0];
       this.para2EndPoint.y = this.endPoint.y - vectorB[1];
       this.getAreaPos();
-      this.crossPt0 = getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
+      this.crossPt0 = this.getRectCrossPt(this.areaPos, this.startPoint, this.endPoint);
       Plotter.drawLine(context, this.crossPt0[0].x, this.crossPt0[0].y, this.crossPt0[1].x, this.crossPt0[1].y);
-      this.crossPt1 = getRectCrossPt(this.areaPos, this.paraStartPoint, this.para1EndPoint);
+      this.crossPt1 = this.getRectCrossPt(this.areaPos, this.paraStartPoint, this.para1EndPoint);
       Plotter.drawLine(context, this.crossPt1[0].x, this.crossPt1[0].y, this.crossPt1[1].x, this.crossPt1[1].y);
-      this.crossPt2 = getRectCrossPt(this.areaPos, this.para2StartPoint, this.para2EndPoint);
+      this.crossPt2 = this.getRectCrossPt(this.areaPos, this.para2StartPoint, this.para2EndPoint);
       Plotter.drawLine(context, this.crossPt2[0].x, this.crossPt2[0].y, this.crossPt2[1].x, this.crossPt2[1].y);
     }
   }]);
@@ -7264,7 +7268,7 @@ function (_CToolPlotter11) {
       context.fillStyle = this.theme.getColor(themes.Theme.Color.LineColorNormal);
       var text;
 
-      if (this.toolObject.state === CToolObject.state.Draw) {
+      if (this.toolObject.state === ctools.CToolObject.state.Draw) {
         this.startPtValue = this.toolObject.getPoint(0).getPosIV().v;
         this.endPtValue = this.toolObject.getPoint(1).getPosIV().v;
       }
@@ -7441,17 +7445,17 @@ function (_NamedObject10) {
         var state = toolObject.getState();
 
         switch (state) {
-          case CToolObject.state.BeforeDraw:
+          case ctools.CToolObject.state.BeforeDraw:
             toolObject.getPlotter().theme = _chart_manager.ChartManager.instance.getTheme(this.getFrameName());
             toolObject.getPlotter().drawCursor(this.context);
             break;
 
-          case CToolObject.state.Draw:
+          case ctools.CToolObject.state.Draw:
             toolObject.getPlotter().theme = _chart_manager.ChartManager.instance.getTheme(this.getFrameName());
             toolObject.getPlotter().updateDraw(this.context);
             break;
 
-          case CToolObject.state.AfterDraw:
+          case ctools.CToolObject.state.AfterDraw:
             toolObject.getPlotter().theme = _chart_manager.ChartManager.instance.getTheme(this.getFrameName());
             toolObject.getPlotter().finishDraw(this.context);
             break;
@@ -7462,7 +7466,7 @@ function (_NamedObject10) {
       }
 
       var sel = pTDP.getSelectToolObjcet();
-      if (sel !== null && sel !== CToolObject.state.Draw) sel.getPlotter().highlight(this.context);
+      if (sel !== null && sel !== ctools.CToolObject.state.Draw) sel.getPlotter().highlight(this.context);
       this.context.restore();
     }
   }]);
@@ -9120,7 +9124,7 @@ function (_NamedObject) {
   _createClass(CPoint, [{
     key: "getChartObjects",
     value: function getChartObjects() {
-      var ppMgr = new _chart_manager.ChartManager();
+      var ppMgr = _chart_manager.ChartManager.instance;
       var ppCDS = ppMgr.getDataSource("frame0.k0");
       if (ppCDS === null || !_util.Util.isInstance(ppCDS, data_sources.MainDataSource)) return null;
       var ppTimeline = ppMgr.getTimeline("frame0.k0");
@@ -9276,6 +9280,8 @@ var _named_object = __webpack_require__(1);
 
 var _cpoint = __webpack_require__(14);
 
+var _util = __webpack_require__(7);
+
 var data_sources = _interopRequireWildcard(__webpack_require__(2));
 
 var plotters = _interopRequireWildcard(__webpack_require__(9));
@@ -9319,9 +9325,9 @@ function (_NamedObject) {
   _createClass(CToolObject, [{
     key: "getChartObjects",
     value: function getChartObjects() {
-      var ppMgr = new _chart_manager.ChartManager();
+      var ppMgr = _chart_manager.ChartManager.instance;
       var ppCDS = ppMgr.getDataSource("frame0.k0");
-      if (ppCDS === null || !Util.isInstance(ppCDS, data_sources.MainDataSource)) return null;
+      if (ppCDS === null || !_util.Util.isInstance(ppCDS, data_sources.MainDataSource)) return null;
       var ppTimeline = ppMgr.getTimeline("frame0.k0");
       if (ppTimeline === null) return null;
       var ppArea = ppMgr.getArea('frame0.k0.main');
@@ -9968,7 +9974,7 @@ function (_CBiToolObject2) {
           x: ex,
           y: stageY
         };
-        var crossPt = getRectCrossPt(areaPos, tempStartPt, tempEndPt);
+        var crossPt = this.getRectCrossPt(areaPos, tempStartPt, tempEndPt);
         var lenToStartPt = Math.pow(crossPt[0].x - sx, 2) + Math.pow(crossPt[0].y - sy, 2);
         var lenToEndPt = Math.pow(crossPt[0].x - ex, 2) + Math.pow(crossPt[0].y - ey, 2);
         var tempCrossPt = lenToStartPt > lenToEndPt ? {

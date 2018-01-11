@@ -1,6 +1,7 @@
 import {ChartManager} from './chart_manager'
 import {NamedObject} from './named_object'
 import {CPoint} from './cpoint'
+import {Util} from './util'
 import * as data_sources from './data_sources'
 import * as plotters from './plotters'
 
@@ -466,7 +467,7 @@ export class CFibFansObject extends CBiToolObject {
             let stageY = sy + (100 - fibFansSequence[i]) / 100 * (ey - sy);
             let tempStartPt = {x: sx, y: sy};
             let tempEndPt = {x: ex, y: stageY};
-            let crossPt = getRectCrossPt(areaPos, tempStartPt, tempEndPt);
+            let crossPt = this.getRectCrossPt(areaPos, tempStartPt, tempEndPt);
             let lenToStartPt = Math.pow((crossPt[0].x - sx), 2) + Math.pow((crossPt[0].y - sy), 2);
             let lenToEndPt = Math.pow((crossPt[0].x - ex), 2) + Math.pow((crossPt[0].y - ey), 2);
             let tempCrossPt = lenToStartPt > lenToEndPt ? {x: crossPt[0].x, y: crossPt[0].y} : {
