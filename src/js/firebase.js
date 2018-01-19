@@ -1,8 +1,5 @@
 import * as firebase from 'firebase';
 
-firebase.initializeApp({
-    databaseURL: "https://kline-1f82d.firebaseio.com"
-});
 
 function date() {
     let d = new Date(),
@@ -16,18 +13,24 @@ function date() {
     return [year, month, day].join('');
 }
 
-firebase.database().ref('/domains/' + btoa(document.domain)).transaction(function (data) {
-    let d = date();
-    if (data === null) {
-        data = {
-            domain: document.domain,
-            data: {}
-        };
-    }
-    if (data['data'][d] === undefined) {
-        data['data'][d] = 1;
-    } else {
-        data['data'][d]++;
-    }
-    return data;
-});
+export default function fire() {
+    firebase.initializeApp({
+        databaseURL: "https://kline-1f82d.firebaseio.com"
+    });
+
+    firebase.database().ref('/domains/' + btoa(document.domain)).transaction(function (data) {
+        let d = date();
+        if (data === null) {
+            data = {
+                domain: document.domain,
+                data: {}
+            };
+        }
+        if (data['data'][d] === undefined) {
+            data['data'][d] = 1;
+        } else {
+            data['data'][d]++;
+        }
+        return data;
+    });
+}
