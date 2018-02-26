@@ -51,11 +51,11 @@ export class Control {
         } else {
             $("#chart_updated_time_text").html(Control.refreshCounter + "秒");
         }
-        Control.refreshHandler = setInterval(this.refreshFunction, Kline.instance.intervalTime);
+        Control.refreshHandler = setInterval(Control.refreshFunction, Kline.instance.intervalTime);
     }
 
     static requestData(showLoading) {
-        this.AbortRequest();
+        Control.AbortRequest();
         window.clearTimeout(Kline.instance.timer);
         if (Kline.instance.paused) {
             return;
@@ -64,9 +64,9 @@ export class Control {
             $("#chart_loading").addClass("activated");
         }
         if (Kline.instance.type === "stomp" && Kline.instance.stompClient) {
-            this.requestOverStomp();
+            Control.requestOverStomp();
         } else {
-            this.requestOverHttp();
+            Control.requestOverHttp();
         }
     }
 
@@ -208,15 +208,15 @@ export class Control {
             Kline.instance.init = true;
         }
         Kline.instance.symbol = symbol;
-        this.switchSymbolSelected(symbol);
+        Control.switchSymbolSelected(symbol);
         let period = tmp.charts.period;
-        this.switchPeriod(period);
+        Control.switchPeriod(period);
         $('#chart_period_' + period + '_v a').addClass('selected');
         $('#chart_period_' + period + '_h a').addClass('selected');
         if (tmp.charts.indicsStatus === 'close') {
-            this.switchIndic('off');
+            Control.switchIndic('off');
         } else if (tmp.charts.indicsStatus === 'open') {
-            this.switchIndic('on');
+            Control.switchIndic('on');
         }
         let mainIndic = $('#chart_select_main_indicator');
         mainIndic.find('a').each(function () {
@@ -232,13 +232,13 @@ export class Control {
         });
         ChartManager.instance.getChart().setMainIndicator(tmp.charts.mIndic);
         ChartManager.instance.setThemeName('frame0', tmp.theme);
-        this.switchTools('off');
+        Control.switchTools('off');
         if (tmp.theme === 'Dark') {
-            this.switchTheme('dark');
+            Control.switchTheme('dark');
         } else if (tmp.theme === 'Light') {
-            this.switchTheme('light');
+            Control.switchTheme('light');
         }
-        this.chartSwitchLanguage(tmp.language || "zh-cn");
+        Control.chartSwitchLanguage(tmp.language || "zh-cn");
     }
 
 
