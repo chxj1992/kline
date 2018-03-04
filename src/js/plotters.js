@@ -593,9 +593,9 @@ export class MainInfoPlotter extends Plotter {
         let minute = Util.formatTime(time.getMinutes());
         let lang = mgr.getLanguage();
         if (lang === "zh-cn") {
-            if (!Plotter.drawString(context, '时间: ' +
-                    year + '-' + month + '-' + date + '  ' + hour + ':' + minute, rect))
-                return;
+            // if (!Plotter.drawString(context, '时间: ' +
+            //         year + '-' + month + '-' + date + '  ' + hour + ':' + minute, rect))
+            //     return;
             if (!Plotter.drawString(context, '  开: ' + data.open.toFixed(digits), rect))
                 return;
             if (!Plotter.drawString(context, '  高: ' + data.high.toFixed(digits), rect))
@@ -605,9 +605,9 @@ export class MainInfoPlotter extends Plotter {
             if (!Plotter.drawString(context, '  收: ' + data.close.toFixed(digits), rect))
                 return;
         } else if (lang === "en-us") {
-            if (!Plotter.drawString(context, 'DATE: ' +
-                    year + '-' + month + '-' + date + '  ' + hour + ':' + minute, rect))
-                return;
+            // if (!Plotter.drawString(context, 'DATE: ' +
+            //         year + '-' + month + '-' + date + '  ' + hour + ':' + minute, rect))
+            //     return;
             if (!Plotter.drawString(context, '  O: ' + data.open.toFixed(digits), rect))
                 return;
             if (!Plotter.drawString(context, '  H: ' + data.high.toFixed(digits), rect))
@@ -617,9 +617,9 @@ export class MainInfoPlotter extends Plotter {
             if (!Plotter.drawString(context, '  C: ' + data.close.toFixed(digits), rect))
                 return;
         } else if (lang === "zh-tw") {
-            if (!Plotter.drawString(context, '時間: ' +
-                    year + '-' + month + '-' + date + '  ' + hour + ':' + minute, rect))
-                return;
+            // if (!Plotter.drawString(context, '時間: ' +
+            //         year + '-' + month + '-' + date + '  ' + hour + ':' + minute, rect))
+            //     return;
             if (!Plotter.drawString(context, '  開: ' + data.open.toFixed(digits), rect))
                 return;
             if (!Plotter.drawString(context, '  高: ' + data.high.toFixed(digits), rect))
@@ -674,23 +674,23 @@ export class MainInfoPlotter extends Plotter {
             if (!Plotter.drawString(context, '  振幅: ' + amplitude.toFixed(2) + ' %', rect)) {
                 return;
             }
-            if (!Plotter.drawString(context, '  量: ' + data.volume.toFixed(2), rect)) {
-                return;
-            }
+            // if (!Plotter.drawString(context, '  量: ' + data.volume.toFixed(2), rect)) {
+            //     return;
+            // }
         } else if (lang === "en-us") {
             if (!Plotter.drawString(context, '  AMPLITUDE: ' + amplitude.toFixed(2) + ' %', rect)) {
                 return;
             }
-            if (!Plotter.drawString(context, '  V: ' + data.volume.toFixed(2), rect)) {
-                return;
-            }
+            // if (!Plotter.drawString(context, '  V: ' + data.volume.toFixed(2), rect)) {
+            //     return;
+            // }
         } else if (lang === "zh-tw") {
             if (!Plotter.drawString(context, '  振幅: ' + amplitude.toFixed(2) + ' %', rect)) {
                 return;
             }
-            if (!Plotter.drawString(context, '  量: ' + data.volume.toFixed(2), rect)) {
-                return;
-            }
+            // if (!Plotter.drawString(context, '  量: ' + data.volume.toFixed(2), rect)) {
+            //     return;
+            // }
         }
         let dp = mgr.getDataProvider(this.getAreaName() + ".secondary");
         if (dp === undefined) {
