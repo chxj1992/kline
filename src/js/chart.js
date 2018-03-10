@@ -162,16 +162,16 @@ export class Chart {
         _data.bids_si = _data.asks_count - 1;
         _data.bids_ei = _data.asks_count + _data.bids_count - 2;
         for (let i = _data.asks_si; i >= _data.asks_ei; i--) {
-            if (i === _data.asks_si) {
+            if (i === _data.asks_si && _data.array[i] !== undefined) {
                 _data.array[i].amounts = _data.array[i].amount;
-            } else {
+            } else if(_data.array[i + 1] !== undefined) {
                 _data.array[i].amounts = _data.array[i + 1].amounts + _data.array[i].amount;
             }
         }
         for (let i = _data.bids_si; i <= _data.bids_ei; i++) {
-            if (i === _data.bids_si) {
+            if (i === _data.bids_si && _data.array[i] !== undefined) {
                 _data.array[i].amounts = _data.array[i].amount;
-            } else {
+            } else if (_data.array[i - 1] !== undefined) {
                 _data.array[i].amounts = _data.array[i - 1].amounts + _data.array[i].amount;
             }
         }
