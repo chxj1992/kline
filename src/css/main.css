@@ -377,18 +377,17 @@ body {
     border: 1px solid;
     height: 16px;
     padding: 0;
-    width: 16px
+    width: 16px;
+    box-sizing:border-box;
 }
 
 .chart_container a.chart_icon:hover {
     border-width: 2px;
-    height: 14px;
-    width: 14px
 }
 
 .chart_container .chart_dropdown_data a.chart_icon {
     display: inline-block;
-    magin: 0 6px 0 6px
+    margin: 0 6px 0 6px
 }
 
 .chart_container a.chart_icon_theme_dark,
