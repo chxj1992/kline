@@ -114,7 +114,10 @@ export class Range extends NamedObject {
     }
 
     toHeight(value) {
-        return Math.floor(value * this._ratio + 1.5);
+		if (value == Infinity || this._ratio == 0) {
+		  return 1.5;
+		}
+	  	return Math.floor(value * this._ratio + 1.5);
     }
 
     update() {
