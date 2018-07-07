@@ -11,7 +11,7 @@ module.exports = {
         umdNamedDefine: true
     },
     plugins: [
-        new UglifyJsPlugin()
+        //new UglifyJsPlugin()
     ],
     externals: {
         jquery: {
@@ -33,8 +33,9 @@ module.exports = {
                             '@babel/preset-env'
                         ],
                         plugins: [
-                            'transform-class-properties'
-                        ]
+                            'transform-class-properties',
+                        ],
+                        cacheDirectory: true
                     }
                 }
             },
