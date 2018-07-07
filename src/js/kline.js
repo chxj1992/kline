@@ -123,6 +123,7 @@ export default class Kline {
 
         this.setTheme(this.theme);
         this.setLanguage(this.language);
+        this.setShowTrade(this.showTrade);
 
         $(this.element).css({visibility: "visible"});
     }
