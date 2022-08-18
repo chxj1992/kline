@@ -136,27 +136,27 @@ $ npm install kline
 
 ### Support Options
 
-| 参数名称   | 参数说明          |   默认值
-|:---------|:-----------------|:------------
-|`element` | 容器元素选择器     | #kline_container
-|`width`   | 宽度 (px)         | 1200
-|`height`   | 高度度 (px)      | 650
-|`theme`   | 主题 dark(暗色)/light(亮色) | dark
-|`language` | 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文) | zh-cn
-|`ranges` | 聚合选项 1w/1d/12h/6h/4h/2h/1h/30m/15m/5m/3m/1m/line (w:周, d:天, h:小时, m:分钟, line:分时数据) | ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"]
-|`symbol` | 交易代号 | 
-|`symbolName`  | 交易名称 | 
-|`type`  | 连接类型 stomp/poll(轮询) |  poll
-|`url`  | 请求地址 | 
-|`limit`  | 分页大小 | 1000
-|`intervalTime`  | 请求间隔时间(ms) | 3000
-|`subscribePath`   | 订阅地址 (仅stomp方式需要) | 
-|`sendPath`   | 发送地址 (仅stomp方式需要) | 
-|`debug`   | 是否开启调试模式 true/false |  true
-|`showTrade`   | 是否显示行情侧边栏 true/false |  true
-|`enableSockjs`   | 是否开启sockjs支持 true/false |  true
-|`reverseColor`   | 是否反色, 默认绿涨红跌 true/false | false
-|`stompClient`   | stomp 连接对象 | null
+| 参数名称        | 参数说明                                                                                         | 默认值                                               |
+|:----------------|:-----------------------------------------------------------------------------------------------|:-----------------------------------------------------|
+| `element`       | 容器元素选择器                                                                                   | #kline_container                                     |
+| `width`         | 宽度 (px)                                                                                        | 1200                                                 |
+| `height`        | 高度度 (px)                                                                                      | 650                                                  |
+| `theme`         | 主题 dark(暗色)/light(亮色)                                                                      | dark                                                 |
+| `language`      | 语言 zh-cn(简体中文)/en-us(英文)/zh-tw(繁体中文)                                                 | zh-cn                                                |
+| `ranges`        | 聚合选项 1w/1d/12h/6h/4h/2h/1h/30m/15m/5m/3m/1m/line (w:周, d:天, h:小时, m:分钟, line:分时数据) | ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"] |
+| `symbol`        | 交易代号                                                                                         |                                                      |
+| `symbolName`    | 交易名称                                                                                         |                                                      |
+| `type`          | 连接类型 stomp/poll(轮询)                                                                        | poll                                                 |
+| `url`           | 请求地址                                                                                         |                                                      |
+| `limit`         | 分页大小                                                                                         | 1000                                                 |
+| `intervalTime`  | 请求间隔时间(ms)                                                                                 | 3000                                                 |
+| `subscribePath` | 订阅地址 (仅stomp方式需要)                                                                       |                                                      |
+| `sendPath`      | 发送地址 (仅stomp方式需要)                                                                       |                                                      |
+| `debug`         | 是否开启调试模式 true/false                                                                      | true                                                 |
+| `showTrade`     | 是否显示行情侧边栏 true/false                                                                    | true                                                 |
+| `enableSockjs`  | 是否开启sockjs支持 true/false                                                                    | true                                                 |
+| `reverseColor`  | 是否反色, 默认绿涨红跌 true/false                                                                | false                                                |
+| `stompClient`   | stomp 连接对象                                                                                   | null                                                 |
 
 
 ### Methods
@@ -259,13 +259,13 @@ kline.resend();
 
 ### Events
 
-| 事件函数                 |   说明
-|:-----------------------|:------------
-| `onResize: function(width, height)`   | 画布尺寸改变时触发
-| `onLangChange: function(lang)`   | 语言改变时触发
-| `onSymbolChange: function(symbol, symbolName)`   | 交易品种改变时触发
-| `onThemeChange: function(theme)`   | 主题改变时触发
-| `onRangeChange: function(range)`   | 聚合时间改变时触发
+| 事件函数                                       | 说明               |
+|:-----------------------------------------------|:-----------------|
+| `onResize: function(width, height)`            | 画布尺寸改变时触发 |
+| `onLangChange: function(lang)`                 | 语言改变时触发     |
+| `onSymbolChange: function(symbol, symbolName)` | 交易品种改变时触发 |
+| `onThemeChange: function(theme)`               | 主题改变时触发     |
+| `onRangeChange: function(range)`               | 聚合时间改变时触发 |
 
 
 > Example
